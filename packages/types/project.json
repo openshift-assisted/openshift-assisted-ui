@@ -1,0 +1,53 @@
+{
+  "root": "packages/types",
+  "sourceRoot": "packages/types/src",
+  "projectType": "library",
+  "targets": {
+    "type-check": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "tsc --noEmit --project tsconfig.lib.json",
+        "cwd": "packages/types",
+        "parallel": false
+      }
+    },
+    "codegen-assisted-service": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "wget -t=3 -nv -O ${NX_ASSISTED_SERVICE_SWAGGER_OUT} ${NX_ASSISTED_SERVICE_SWAGGER_URL}",
+          "sw2dts -w -so ${NX_ASSISTED_SERVICE_TYPES_OUT} ${NX_ASSISTED_SERVICE_SWAGGER_OUT}"
+        ],
+        "cwd": "packages/types",
+        "parallel": false
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "fix": true,
+        "maxWarnings": 0,
+        "hasTypeAwareRules": true,
+        "lintFilePatterns": [
+          "packages/types/**/*.ts"
+        ]
+      }
+    },
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "yarn shx rm -rf ${NX_PACKAGE_OUT}",
+          "yarn shx mkdir -p ${NX_PACKAGE_OUT}",
+          "yarn shx cp -Rf package.json README.md src/* ${NX_PACKAGE_OUT}/"
+        ],
+        "outputPath": ["${NX_PACKAGE_OUT}"],
+        "cwd": "packages/types",
+        "parallel": false
+      }
+    }
+  },
+  "tags": [
+    "types-project"
+  ]
+}

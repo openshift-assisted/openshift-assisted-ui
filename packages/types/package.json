@@ -1,0 +1,10 @@
+{
+  "name": "@openshift-assisted-ui/types",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "types": "index.ts",
+  "dependencies": {
+    "shx": "^0.3.4",
+    "sw2dts": "^2.6.3"
+  }
+}
