@@ -1,13 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
   "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    }
-  ],
+  "include": ["**/*.ts"],
+  "exclude": ["**/*.spec.ts"],
   "compilerOptions": {
+    "declaration": true,
+    "types": [],
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitReturns": true,

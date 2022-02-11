@@ -40,7 +40,7 @@ export interface ApiVipConnectivityResponse {
      */
     ignition?: string;
     /**
-     * API VIP connectivity check result.
+     * Ignition downloadability check result.
      */
     isSuccess?: boolean;
 }
@@ -1443,7 +1443,7 @@ export interface InfraEnvCreateParams {
     /**
      * Version of the OpenShift cluster (used to infer the RHCOS version - temporary until generic logic implemented).
      */
-    openshiftVersion: string;
+    openshiftVersion?: string;
     proxy?: Proxy;
     /**
      * The pull secret obtained from Red Hat OpenShift Cluster Manager at console.redhat.com/openshift/install/pull-secret.

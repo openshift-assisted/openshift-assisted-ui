@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "Apache-2.0",
   "scripts": {
-    "build:types": "yarn nx run types:codegen-assisted-service && yarn nx run types:type-check && yarn nx run types:lint && yarn nx run types:build"
+    "build:types": "yarn nx run types:build"
   },
   "private": true,
   "workspaces": [
@@ -29,6 +29,9 @@
     "@typescript-eslint/parser": "~5.3.0",
     "eslint": "8.2.0",
     "eslint-config-prettier": "8.1.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prefer-arrow-functions": "^3.1.4",
     "jest": "27.2.3",
     "prettier": "^2.3.1",
     "ts-jest": "27.0.5",

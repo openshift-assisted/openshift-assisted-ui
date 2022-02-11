@@ -1,9 +1,22 @@
 {
   "name": "@openshift-assisted-ui/types",
-  "version": "0.0.0",
+  "version": "1.0.2",
   "license": "Apache-2.0",
-  "types": "index.ts",
-  "dependencies": {
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openshift-assisted/openshift-assisted-ui.git",
+    "directory": "packages/types"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "types": "./src/index.ts",
+  "main": "./src/index.ts",
+  "files": [
+    "src"
+  ],
+  "devDependencies": {
     "shx": "^0.3.4",
     "sw2dts": "^2.6.3"
   }

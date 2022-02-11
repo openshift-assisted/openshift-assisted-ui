@@ -4,37 +4,9 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "parserOptions": {
-        "project": ["packages/types/tsconfig.*?.json"]
-      },
       "rules": {
-        "@nrwl/nx/workspace/ban-snake-case": "error",
-        "@typescript-eslint/no-explicit-any": [
-          "warn",
-          {
-            "fixToUnknown": true
-          }
-        ],
-        "@typescript-eslint/ban-types": [
-          "error",
-          {
-            "types": {
-              "{}": {
-                "message": "Use Record<string, unknown> instead",
-                "fixWith": "Record<string, unknown>"
-              }
-            }
-          }
-        ]
+        "@nrwl/nx/workspace/ban-snake-case": "error"
       }
-    },
-    {
-      "files": ["*.ts", "*.tsx"],
-      "rules": {}
-    },
-    {
-      "files": ["*.js", "*.jsx"],
-      "rules": {}
     }
   ]
 }
