@@ -15,7 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@openshift-assisted-ui/types": ["packages/types/src/index.ts"]
+      "@openshift-assisted-ui/assisted-service-types": [
+        "packages/assisted-service-types/dist/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,20 +1,23 @@
 {
-  "name": "@openshift-assisted-ui/types",
-  "version": "1.0.2",
+  "name": "@openshift-assisted-ui/assisted-service-types",
+  "version": "1.1.0",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/openshift-assisted/openshift-assisted-ui.git",
-    "directory": "packages/types"
+    "directory": "packages/assisted-service-types"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "types": "./src/index.ts",
-  "main": "./src/index.ts",
+  "engines": {
+    "node": ">=12.22"
+  },
+  "types": "./dist/index.ts",
+  "main": "dist/index.ts",
   "files": [
-    "src"
+    "dist"
   ],
   "devDependencies": {
     "shx": "^0.3.4",

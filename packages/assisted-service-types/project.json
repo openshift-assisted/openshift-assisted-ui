@@ -1,0 +1,50 @@
+{
+  "root": "packages/assisted-service-types",
+  "sourceRoot": "packages/assisted-service-types/src",
+  "projectType": "library",
+  "targets": {
+    "codegen": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": ["${NX_ASSISTED_SERVICE_TYPES_DIST}"],
+        "commands": [
+          "wget -t=3 -nv -O ${NX_ASSISTED_SERVICE_TYPES_SRC}/swagger.yaml ${NX_ASSISTED_SERVICE_TYPES_SWAGGER_URL}",
+          "sw2dts -w -so ${NX_ASSISTED_SERVICE_TYPES_DIST}/types.ts ${NX_ASSISTED_SERVICE_TYPES_SRC}/swagger.yaml"
+        ],
+        "cwd": "packages/assisted-service-types",
+        "parallel": false
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["${NX_ASSISTED_SERVICE_TYPES_DIST}"],
+      "options": {
+        "fix": true,
+        "maxWarnings": 0,
+        "hasTypeAwareRules": true,
+        "lintFilePatterns": ["packages/assisted-service-types/dist/**/*.ts"]
+      }
+    },
+    "build": {
+      "dependsOn": [
+        {
+          "target": "codegen",
+          "projects": "self"
+        },
+        {
+          "target": "lint",
+          "projects": "self"
+        }
+      ],
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": ["${NX_ASSISTED_SERVICE_TYPES_DIST}"],
+        "command": "echo Building...",
+        "cwd": "packages/assisted-service-types",
+        "parallel": false
+      }
+    }
+  }
+}
