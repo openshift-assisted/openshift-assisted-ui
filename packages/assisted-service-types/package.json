@@ -1,6 +1,6 @@
 {
   "name": "@openshift-assisted-ui/assisted-service-types",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -20,7 +20,6 @@
     "dist"
   ],
   "devDependencies": {
-    "shx": "^0.3.4",
     "sw2dts": "^2.6.3"
   }
 }
