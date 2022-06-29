@@ -136,12 +136,6 @@ export interface Cluster {
      */
     id: string; // uuid
     /**
-     * Json formatted string containing the user overrides for the initial ignition config
-     * example:
-     * {"ignition": {"version": "3.1.0"}, "storage": {"files": [{"path": "/tmp/example", "contents": {"source": "data:text/plain;base64,aGVscGltdHJhcHBlZGluYXN3YWdnZXJzcGVj"}}]}}
-     */
-    ignitionConfigOverrides?: string;
-    /**
      * Explicit ignition endpoint overrides the default ignition endpoint.
      */
     ignitionEndpoint?: IgnitionEndpoint;
@@ -228,6 +222,12 @@ export interface Cluster {
      * Schedule workloads on masters
      */
     schedulableMasters?: boolean;
+    /**
+     * Indicates if schedule workloads on masters will be enabled regardless the value of 'schedulable_masters' property.
+     * Set to 'true' when not enough hosts are associated with this cluster to disable the scheduling on masters.
+     * 
+     */
+    schedulableMastersForcedTrue?: boolean;
     /**
      * The IP address pool to use for service IP addresses. You can enter only one IP address pool. If you need to access the services from an external network, configure load balancers and routers to manage the traffic.
      */
@@ -398,9 +398,13 @@ export interface ClusterCreateParams {
 export interface ClusterDefaultConfig {
     clusterNetworkCidr?: string; // ^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[\/]([1-9]|[1-2][0-9]|3[0-2]?)$
     clusterNetworkHostPrefix?: number;
+    clusterNetworksDualstack?: ClusterNetwork[];
+    clusterNetworksIpv4?: ClusterNetwork[];
     inactiveDeletionHours?: number;
     ntpSource?: string;
     serviceNetworkCidr?: string; // ^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[\/]([1-9]|[1-2][0-9]|3[0-2]?)$
+    serviceNetworksDualstack?: ServiceNetwork[];
+    serviceNetworksIpv4?: ServiceNetwork[];
 }
 export interface ClusterHostRequirements {
     /**
@@ -613,9 +617,13 @@ export interface Disk {
      * by-path is the shortest physical path to the device
      */
     byPath?: string;
-    driveType?: string;
+    driveType?: DriveType;
     hasUuid?: boolean;
     hctl?: string;
+    /**
+     * A comma-separated list of disk names that this disk belongs to
+     */
+    holders?: string;
     /**
      * Determine the disk's unique identifier which is the by-id field if it exists and fallback to the by-path field otherwise
      */
@@ -716,6 +724,7 @@ export interface DomainResolutionResponse {
         ipv6Addresses?: string /* ipv6 */ [];
     }[];
 }
+export type DriveType = "Unknown" | "HDD" | "FDD" | "ODD" | "SSD" | "virtual" | "Multipath" | "iSCSI" | "FC" | "LVM";
 export interface Error {
     /**
      * Globally unique code of the error, composed of the unique identifier of the API and the numeric identifier of the error. For example, if the numeric identifier of the error is 93 and the identifier of the API is assisted_install then the code will be ASSISTED-INSTALL-93.
@@ -774,7 +783,7 @@ export interface FeatureSupportLevel {
         /**
          * The ID of the feature
          */
-        featureId?: "ADDITIONAL_NTP_SOURCE" | "REQUESTED_HOSTNAME" | "PROXY" | "SNO" | "DAY2_HOSTS" | "VIP_AUTO_ALLOC" | "DISK_SELECTION" | "OVN_NETWORK_TYPE" | "SDN_NETWORK_TYPE" | "PLATFORM_SELECTION" | "SCHEDULABLE_MASTERS" | "AUTO_ASSIGN_ROLE" | "CUSTOM_MANIFEST" | "DISK_ENCRYPTION" | "CLUSTER_MANAGED_NETWORKING_WITH_VMS" | "ARM64_ARCHITECTURE";
+        featureId?: "ADDITIONAL_NTP_SOURCE" | "REQUESTED_HOSTNAME" | "PROXY" | "SNO" | "DAY2_HOSTS" | "VIP_AUTO_ALLOC" | "DISK_SELECTION" | "OVN_NETWORK_TYPE" | "SDN_NETWORK_TYPE" | "PLATFORM_SELECTION" | "SCHEDULABLE_MASTERS" | "AUTO_ASSIGN_ROLE" | "CUSTOM_MANIFEST" | "DISK_ENCRYPTION" | "CLUSTER_MANAGED_NETWORKING_WITH_VMS" | "ARM64_ARCHITECTURE" | "ARM64_ARCHITECTURE_WITH_CLUSTER_MANAGED_NETWORKING" | "SINGLE_NODE_EXPANSION";
         supportLevel?: "supported" | "unsupported" | "tech-preview" | "dev-preview";
     }[];
     /**
@@ -922,6 +931,10 @@ export interface Host {
      */
     statusUpdatedAt?: string; // date-time
     suggestedRole?: HostRole;
+    /**
+     * The time on the host as seconds since the Unix epoch.
+     */
+    timestamp?: number;
     updatedAt?: string; // date-time
     userName?: string;
     /**
@@ -1068,6 +1081,10 @@ export interface HostRegistrationResponse {
      */
     statusUpdatedAt?: string; // date-time
     suggestedRole?: HostRole;
+    /**
+     * The time on the host as seconds since the Unix epoch.
+     */
+    timestamp?: number;
     updatedAt?: string; // date-time
     userName?: string;
     /**
@@ -1733,10 +1750,6 @@ export interface OsImage {
      * Version of the OpenShift cluster.
      */
     openshiftVersion: string;
-    /**
-     * The OS rootfs url.
-     */
-    rootfsUrl: string;
     /**
      * The base OS image used for the discovery iso.
      */
