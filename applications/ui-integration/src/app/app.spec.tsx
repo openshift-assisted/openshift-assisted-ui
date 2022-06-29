@@ -9,7 +9,7 @@ describe('App', () => {
     expect(baseElement).toBeTruthy();
   });
 
-  it('should have a greeting as the title', () => {
+  it('should have display some text', () => {
     const { getByText } = render(<App />);
 
     expect(getByText(/Dummy application/gi)).toBeTruthy();

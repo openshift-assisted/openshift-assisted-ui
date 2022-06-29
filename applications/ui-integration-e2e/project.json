@@ -3,7 +3,7 @@
   "sourceRoot": "applications/ui-integration-e2e/src",
   "projectType": "application",
   "targets": {
-    "e2e": {
+    "e2e-run": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "applications/ui-integration-e2e/cypress.json",
@@ -15,14 +15,30 @@
         }
       }
     },
+    "e2e-open": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "yarn cypress open --project=applications/ui-integration-e2e"
+          }
+        ]
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["applications/ui-integration-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": [
+          "applications/ui-integration-e2e/**/*.{js,ts}"
+        ]
       }
     }
   },
   "tags": [],
-  "implicitDependencies": ["ui-integration"]
+  "implicitDependencies": [
+    "ui-integration"
+  ]
 }

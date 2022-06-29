@@ -1,7 +1,7 @@
 export function App() {
   return (
     <div>
-      Dummy application for Assisted UI integration tests"
+      Dummy application for Assisted UI integration tests
     </div>
   );
 }
