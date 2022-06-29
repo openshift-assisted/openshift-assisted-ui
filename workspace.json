@@ -1,7 +1,9 @@
 {
   "version": 2,
   "projects": {
+    "assisted-service-types": "packages/assisted-service-types",
     "eslint-rules": "tools/eslint-rules",
-    "assisted-service-types": "packages/assisted-service-types"
+    "ui-integration": "applications/ui-integration",
+    "ui-integration-e2e": "applications/ui-integration-e2e"
   }
 }

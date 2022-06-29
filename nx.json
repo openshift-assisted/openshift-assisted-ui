@@ -7,16 +7,15 @@
   "cli": {
     "defaultCollection": "@nrwl/workspace"
   },
+  "workspaceLayout": {
+    "appsDir": "applications",
+    "libsDir": "packages"
+  },
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ]
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
       }
     }
   },
@@ -27,5 +26,22 @@
     },
     ".eslintrc.json": "*",
     "tools/eslint-rules/**/*": "*"
-  }
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "css",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "css"
+      },
+      "library": {
+        "style": "css",
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "ui-integration"
 }
