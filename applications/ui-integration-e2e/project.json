@@ -3,7 +3,7 @@
   "sourceRoot": "applications/ui-integration-e2e/src",
   "projectType": "application",
   "targets": {
-    "e2e-run": {
+    "run-tests": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "applications/ui-integration-e2e/cypress.json",
@@ -15,7 +15,7 @@
         }
       }
     },
-    "e2e-open": {
+    "open-tests": {
       "executor": "nx:run-commands",
       "options": {
         "commands": [

@@ -1422,7 +1422,7 @@
   dependencies:
     nx "14.3.6"
 
-"@nrwl/cypress@14.3.6", "@nrwl/cypress@^14.3.6":
+"@nrwl/cypress@14.3.6":
   version "14.3.6"
   resolved "https://registry.npmjs.org/@nrwl/cypress/-/cypress-14.3.6.tgz"
   integrity sha512-2MOr41XgGPsaCrd2S0EK/rZTi9NEgVT/Jmt0yhNAZb0SYjOVmpiqeks/46YXIhRaNDyGaQUGCpXgNGgqqlCRsw==
@@ -1517,9 +1517,9 @@
     tmp "~0.2.1"
     tslib "^2.3.0"
 
-"@nrwl/react@^14.3.6":
+"@nrwl/react@14.3.6":
   version "14.3.6"
-  resolved "https://registry.npmjs.org/@nrwl/react/-/react-14.3.6.tgz"
+  resolved "https://registry.yarnpkg.com/@nrwl/react/-/react-14.3.6.tgz#6de682988aea6fae808926fdb3bc1b9239d802d3"
   integrity sha512-LKcWFK5cm4vMXTClgabiGGbAv/YYQ8XMdZ+Uz45vJPEgS7unycHquBTc+g0xz/BeUpXXxggLKNKBgVhR3IFLhA==
   dependencies:
     "@babel/core" "^7.15.0"
