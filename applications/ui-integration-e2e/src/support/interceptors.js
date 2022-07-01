@@ -75,7 +75,14 @@ const addClusterListIntercepts = () => {
 const addClusterPatchAndDetailsIntercepts = () => {
   cy.intercept('GET', clusterApiPath, mockClusterResponse).as('cluster-details');
 
-  cy.intercept('PATCH', clusterApiPath, mockClusterResponse).as('update-cluster');
+  cy.intercept('PATCH', clusterApiPath, (req) => {
+    if (Cypress.env('AI_FORBIDDEN_CLUSTER_PATCH') === true) {
+      throw new Error(`Forbidden patch: ${req.url} \n${JSON.stringify(req.body)}`);
+    }
+
+    req.alias = 'update-cluster';
+    mockClusterResponse(req);
+  });
 };
 
 const addInfraEnvIntercepts = () => {
