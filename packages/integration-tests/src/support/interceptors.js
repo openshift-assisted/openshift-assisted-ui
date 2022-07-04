@@ -1,5 +1,5 @@
 import { hasWizardSignal, setLastWizardSignal, isAIAPIMocked } from './utils';
-import { fakeClusterId, fakeClusterInfraEnvId } from './../fixtures/cluster/base-cluster';
+import { fakeClusterId, fakeClusterInfraEnvId } from '../fixtures/cluster/base-cluster';
 import { hostIds } from '../fixtures/hosts';
 import openShiftVersions from '../fixtures/infra-envs/openshift-versions';
 import featureSupport from '../fixtures/infra-envs/feature-support';
@@ -9,9 +9,9 @@ import { initialList, updatedList } from '../fixtures/cluster-list';
 import { infraEnv, imageDownload } from '../fixtures/infra-envs';
 import { getUpdatedHosts } from '../fixtures/hosts';
 
-import createSnoFixtureMapping from './../fixtures/create-sno';
-import createMultinodeFixtureMapping from './../fixtures/create-mn';
-import createReadOnlyClusterFixtureMapping from './../fixtures/read-only';
+import createSnoFixtureMapping from '../fixtures/create-sno';
+import createMultinodeFixtureMapping from '../fixtures/create-mn';
+import createReadOnlyClusterFixtureMapping from '../fixtures/read-only';
 
 const allInfraEnvsApiPath = '/api/assisted-install/v2/infra-envs/';
 const allClustersApiPath = '/api/assisted-install/v2/clusters/';

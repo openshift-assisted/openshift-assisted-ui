@@ -3,10 +3,8 @@
   "version": "0.0.0",
   "license": "Apache-2.0",
   "scripts": {
-    "ui-integration:run": "yarn nx serve ui-integration",
-    "ui-integration:unit": "yarn nx run ui-integration:test",
-    "ui-integration-tests:run": "yarn nx run ui-integration-e2e:run-tests",
-    "ui-integration-tests:open": "yarn nx run ui-integration-e2e:open-tests",
+    "integration-tests:run": "yarn nx run integration-tests:run-tests",
+    "integration-tests:open": "yarn nx run integration-tests:open-tests",
     "build:types": "yarn nx run assisted-service-types:build"
   },
   "private": true,

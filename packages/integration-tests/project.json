@@ -1,17 +1,17 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "applications/ui-integration-e2e/src",
+  "sourceRoot": "packages/integration-tests/src",
   "projectType": "application",
   "targets": {
     "run-tests": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
-        "cypressConfig": "applications/ui-integration-e2e/cypress.json",
-        "devServerTarget": "ui-integration:serve:development"
+        "cypressConfig": "packages/integration-tests/cypress.json",
+        "devServerTarget": ""
       },
       "configurations": {
         "production": {
-          "devServerTarget": "ui-integration:serve:production"
+          "devServerTarget": ""
         }
       }
     },
@@ -20,7 +20,7 @@
       "options": {
         "commands": [
           {
-            "command": "yarn cypress open --project=applications/ui-integration-e2e"
+            "command": "yarn cypress open --project=packages/integration-tests"
           }
         ]
       }
@@ -32,13 +32,11 @@
       ],
       "options": {
         "lintFilePatterns": [
-          "applications/ui-integration-e2e/**/*.{js,ts}"
+          "packages/integration-tests/**/*.{js,ts}"
         ]
       }
     }
   },
   "tags": [],
-  "implicitDependencies": [
-    "ui-integration"
-  ]
+  "implicitDependencies": []
 }
