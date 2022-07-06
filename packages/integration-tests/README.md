@@ -43,11 +43,11 @@ cypress.env.json
 
 # How to run the tests
 
-Run `yarn ui-tests:open` to be able to select the tests you want to run
-Run `yarn ui-tests:run` to run all of the tests
+The project defines two ways to run the tests:
+
+`integration-tests:run`: Runs the tests within headless mode Cypress
+`integration-tests:open`: Opens Cypress and lets you select which tests to run
 
 
 # Linting
-
 TODO
-From the root repository folder, run `yarn ui-tests:open`
