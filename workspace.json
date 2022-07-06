@@ -1,7 +1,8 @@
 {
   "version": 2,
   "projects": {
+    "assisted-service-types": "packages/assisted-service-types",
     "eslint-rules": "tools/eslint-rules",
-    "assisted-service-types": "packages/assisted-service-types"
+    "integration-tests": "packages/integration-tests"
   }
 }

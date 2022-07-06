@@ -1000,6 +1000,11 @@ paths:
           type: string
           format: uuid
           required: true
+        - in: query
+          name: timestamp
+          type: integer
+          description: The time on the host as seconds since the Unix epoch.
+          required: false
         - in: header
           name: discovery_agent_version
           description: The software version of the discovery agent that is retrieving instructions.
@@ -2933,6 +2938,14 @@ paths:
           description: Success.
           schema:
             $ref: '#/definitions/openshift-versions'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "500":
+          description: Error.
+          schema:
+            $ref: '#/definitions/error'
         "503":
           description: Unavailable.
           schema:
@@ -3609,6 +3622,8 @@ definitions:
               - 'DISK_ENCRYPTION'
               - 'CLUSTER_MANAGED_NETWORKING_WITH_VMS'
               - 'ARM64_ARCHITECTURE'
+              - 'ARM64_ARCHITECTURE_WITH_CLUSTER_MANAGED_NETWORKING'
+              - 'SINGLE_NODE_EXPANSION'
             support_level:
               type: string
               enum: [supported, unsupported, tech-preview, dev-preview]
@@ -4037,6 +4052,9 @@ definitions:
         example: '{"ignition": {"version": "3.1.0"}, "storage": {"files": [{"path": "/tmp/example", "contents": {"source": "data:text/plain;base64,aGVscGltdHJhcHBlZGluYXN3YWdnZXJzcGVj"}}]}}'
       installer_args:
         type: string
+      timestamp:
+        type: integer
+        description: The time on the host as seconds since the Unix epoch.
       machine_config_pool_name:
         type: string
       images_status:
@@ -4658,6 +4676,12 @@ definitions:
         type: boolean
         description: Schedule workloads on masters
         default: false
+      schedulable_masters_forced_true:
+        type: boolean
+        description: |
+          Indicates if schedule workloads on masters will be enabled regardless the value of 'schedulable_masters' property.
+          Set to 'true' when not enough hosts are associated with this cluster to disable the scheduling on masters.
+        default: true
       updated_at:
         type: string
         format: date-time
@@ -4715,11 +4739,6 @@ definitions:
         type: string
         description: JSON-formatted string containing the user overrides for the install-config.yaml file.
         example: '{"networking":{"networkType": "OVNKubernetes"},"fips":true}'
-      ignition_config_overrides:
-        x-go-custom-tag: gorm:"type:text"
-        type: string
-        description: Json formatted string containing the user overrides for the initial ignition config
-        example: '{"ignition": {"version": "3.1.0"}, "storage": {"files": [{"path": "/tmp/example", "contents": {"source": "data:text/plain;base64,aGVscGltdHJhcHBlZGluYXN3YWdnZXJzcGVj"}}]}}'
       controller_logs_collected_at:
         type: string
         format: date-time
@@ -5113,6 +5132,26 @@ definitions:
       ntp_source:
         type: string
         x-omitempty: false
+      cluster_networks_ipv4:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/cluster_network'
+      cluster_networks_dualstack:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/cluster_network'
+      service_networks_ipv4:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/service_network'
+      service_networks_dualstack:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/service_network'
 
   infra_error:
     type: object
@@ -5173,7 +5212,7 @@ definitions:
         type: string
         description: Determine the disk's unique identifier which is the by-id field if it exists and fallback to the by-path field otherwise
       drive_type:
-        type: string
+        $ref: '#/definitions/drive_type'
       has_uuid:
         type: boolean
       vendor:
@@ -5221,6 +5260,23 @@ definitions:
         type: string
       io_perf:
         $ref: '#/definitions/io_perf'
+      holders:
+        type: string
+        description: A comma-separated list of disk names that this disk belongs to
+
+  drive_type:
+    type: string
+    enum:
+      - Unknown
+      - HDD
+      - FDD
+      - ODD
+      - SSD
+      - virtual
+      - Multipath
+      - iSCSI
+      - FC
+      - LVM
 
   io_perf:
     type: object
@@ -5988,7 +6044,6 @@ definitions:
       - openshift_version
       - cpu_architecture
       - url
-      - rootfs_url
       - version
     properties:
       openshift_version:
@@ -6002,9 +6057,6 @@ definitions:
       url:
         type: string
         description: The base OS image used for the discovery iso.
-      rootfs_url:
-        type: string
-        description: The OS rootfs url.
       version:
         type: string
         description: Build ID of the OS image.
