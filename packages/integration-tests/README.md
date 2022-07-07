@@ -16,8 +16,6 @@ It's important to mock the API accurately to avoid having passing UI tests that 
 
 - Start the standalone Assisted Installer UI application running in the specified `baseUrl`
 
-- Execute the cypress command:
-   yarn cypress-open
 
 # Environment variables configuration:
 
@@ -46,7 +44,7 @@ cypress.env.json
 The project defines two ways to run the tests:
 
 `integration-tests:run`: Runs the tests within headless mode Cypress
-`integration-tests:open`: Opens Cypress and lets you select which tests to run
+`integration-tests:open`: Opens the Cypress UI and lets you select which tests to run
 
 
 # Linting
