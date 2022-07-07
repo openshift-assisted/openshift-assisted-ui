@@ -49,12 +49,18 @@ const setScenarioEnvVars = ({ activeScenario }) => {
 
   switch (activeScenario) {
     case 'AI_CREATE_SNO':
+      Cypress.env('CLUSTER_NAME', 'ai-e2e-sno');
       Cypress.env('ASSISTED_SNO_DEPLOYMENT', true);
       Cypress.env('NUM_MASTERS', 1);
       Cypress.env('NUM_WORKERS', 0);
       break;
     case 'AI_CREATE_MULTINODE':
+      Cypress.env('CLUSTER_NAME', 'ai-e2e-multinode');
       Cypress.env('ASSISTED_SNO_DEPLOYMENT', false);
+      break;
+    case 'AI_READONLY_CLUSTER':
+      Cypress.env('ASSISTED_SNO_DEPLOYMENT', false);
+      Cypress.env('CLUSTER_NAME', 'ai-e2e-readonly');
       break;
     default:
       break;
@@ -67,7 +73,7 @@ const addClusterCreationIntercepts = () => {
 
 const addClusterListIntercepts = () => {
   cy.intercept('GET', allClustersApiPath, (req) => {
-    const fixture = hasWizardSignal('CLUSTER_CREATED') ? updatedList : initialList;
+    const fixture = hasWizardSignal('CLUSTER_CREATED') ? updatedList() : initialList;
     req.reply(fixture);
   });
 };
