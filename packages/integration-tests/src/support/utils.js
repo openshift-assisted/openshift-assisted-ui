@@ -12,6 +12,7 @@ const signalOrder = [
   'HOST_DISCOVERED_3',
   'HOST_RENAMED_3',
   'READY_TO_INSTALL',
+  'READY_TO_INSTALL_DUALSTACK'
 ];
 
 export const setLastWizardSignal = (signalName) => {
