@@ -4,9 +4,7 @@ import { hostDiscoveredBuilder } from './3-host-discovered';
 import { hostRenamedBuilder } from './4-host-renamed';
 import { clusterReadyBuilder } from './5-cluster-ready';
 
-const clusterName = Cypress.env('CLUSTER_NAME');
-
-const initialCluster = getSnoCluster({ name: clusterName });
+const initialCluster = getSnoCluster({ name: "ai-e2e-sno" });
 const isoDownloadedCluster = isoDownloadedClusterBuilder(initialCluster);
 const hostDiscoveredCluster = hostDiscoveredBuilder(isoDownloadedCluster);
 const hostRenamedCluster = hostRenamedBuilder(hostDiscoveredCluster);

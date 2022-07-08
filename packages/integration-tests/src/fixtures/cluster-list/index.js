@@ -10,13 +10,13 @@ const fakeCluster = {
   href: `/api/assisted-install/v2/clusters/${fakeClusterId}`,
 };
 
-const addedCluster = {
+const addedCluster = () => ({
   ...clusterTemplate,
   name: Cypress.env('CLUSTER_NAME'),
-};
+});
 
 const initialList = [fakeCluster];
 
-const updatedList = [addedCluster, fakeCluster];
+const updatedList = () => ([addedCluster(), fakeCluster]);
 
 export { initialList, updatedList };
