@@ -1,5 +1,6 @@
 {
   "name": "openshift-assisted-ui-integration-tests",
+  "version": "0.0.1",
   "private": false,
   "license": "Apache-2.0",
   "dependencies": {
