@@ -1,4 +1,5 @@
 import { getCwd, getUiVersion } from '../support/utils';
+import * as utils from '../support/utils';
 
 export const commonActions = {
   clickButtonContainingText: (text) => {
@@ -58,5 +59,28 @@ export const commonActions = {
   },
   getDangerAlert: () => {
     return cy.get(Cypress.env('dangerAlertAriaLabel'));
+  },
+  startAtNetworkingStep: () => {
+    if (utils.isAIAPIMocked()) {
+      if (utils.hasWizardSignal('READY_TO_INSTALL')) {
+        commonActions.getHeader('h2').should('contain', 'Review and create');
+        commonActions.getBackButton().click();
+      } else {
+        commonActions.getHeader('h2').should('contain', 'Host discovery');
+        commonActions.clickNextButton();
+      }
+    } else {
+      // As the host status can differ with API polling results, the initial step can difer
+      cy.get('h2').then(($body) => {
+        const currentStepLabel = $body.text();
+        if (currentStepLabel.includes('Host discovery')) {
+          commonActions.clickNextButton();
+        } else if (currentStepLabel.includes('Review and create')) {
+          commonActions.getBackButton().click();
+        } else {
+          commonActions.getHeader('h2', 100).should('contain', 'Unexpected AI Wizard step');
+        }
+      });
+    }
   },
 };

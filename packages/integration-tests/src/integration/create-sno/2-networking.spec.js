@@ -2,30 +2,6 @@ import { commonActions } from '../../views/common';
 import { networkingPage } from '../../views/networkingPage';
 import * as utils from '../../support/utils';
 
-const startAtNetworkingStep = () => {
-  if (utils.isAIAPIMocked()) {
-    if (utils.hasWizardSignal('READY_TO_INSTALL')) {
-      commonActions.getHeader('h2').should('contain', 'Review and create');
-      commonActions.getBackButton().click();
-    } else {
-      commonActions.getHeader('h2').should('contain', 'Host discovery');
-      commonActions.clickNextButton();
-    }
-  } else {
-    // As the host status can differ with API polling results, the initial step can difer
-    cy.get('h2').then(($body) => {
-      const currentStepLabel = $body.text();
-      if (currentStepLabel.includes('Host discovery')) {
-        commonActions.clickNextButton();
-      } else if (currentStepLabel.includes('Review and create')) {
-        commonActions.getBackButton().click();
-      } else {
-        commonActions.getHeader('h2', 100).should('contain', 'Unexpected AI Wizard step');
-      }
-    });
-  }
-};
-
 describe(`Assisted Installer SNO Networking`, () => {
   before(() => {
     cy.loadAiAPIIntercepts({ activeSignal: 'HOST_RENAMED_1', activeScenario: 'AI_CREATE_SNO' });
@@ -34,7 +10,7 @@ describe(`Assisted Installer SNO Networking`, () => {
   beforeEach(() => {
     cy.loadAiAPIIntercepts(null);
     cy.visit(`/clusters/${Cypress.env('clusterId')}`);
-    startAtNetworkingStep();
+    commonActions.startAtNetworkingStep();
   });
 
   describe('Validating the Network configuration', () => {
