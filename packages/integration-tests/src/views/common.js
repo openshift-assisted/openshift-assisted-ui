@@ -52,6 +52,9 @@ export const commonActions = {
   waitForSave: () => {
     cy.get(Cypress.env('spanRoleProgressBar')).should('not.match', /.*Saving.*changes.*/);
   },
+  waitForNext: () => {
+    cy.get(Cypress.env('nextButton')).should('be.enabled');
+  },
   getHeader: (level = 'h1', timeout = Cypress.env('WAIT_FOR_HEADER_TIMEOUT')) =>
     cy.get(level, { timeout: timeout }),
   getInfoAlert: () => {
