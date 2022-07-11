@@ -21,7 +21,7 @@ describe(`Assisted Installer Dualstack Review`, () => {
     if (utils.isAIAPIMocked()) {
       reviewAndCreatePage.checkAllValidationsPassed(reviewAndCreatePage.getHostValidations());
     }
-    reviewAndCreatePage.validateClusterDetails();
+    reviewAndCreatePage.validateClusterDetails({stackType: "Dual-stack"});
     reviewAndCreatePage.waitForInstallButton();
   });
 });
