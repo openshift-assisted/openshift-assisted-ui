@@ -5,7 +5,7 @@ import * as utils from '../../support/utils';
 describe(`Assisted Installer Dualstack Networking`, () => {
   before(() => {
     cy.loadAiAPIIntercepts({
-      activeSignal: 'READY_TO_INSTALL',
+      activeSignal: 'HOST_RENAMED_3',
       activeScenario: 'AI_CREATE_DUALSTACK',
     });
   });
@@ -25,21 +25,40 @@ describe(`Assisted Installer Dualstack Networking`, () => {
     commonActions.clickNextButton();
   });
 
-  it('Can switch to dual-stack networking type', () => {
+  it('Can correctly configure IPv4 networking type', () => {
     networkingPage.getStackTypeSingleStack().should('be.enabled').and('be.checked');
+    networkingPage.getClusterManagedNetworking().should('be.enabled').and('be.checked');
+    networkingPage.getStackTypeSingleStack().should('be.enabled').and('be.checked');
+    networkingPage.getVipDhcp().should('be.enabled').and('be.checked');
+    networkingPage.getAdvancedNetwork().should('be.enabled').and('not.be.checked');
+
+    if (utils.isAIAPIMocked) {
+      utils.setTransformSignal('single-stack');
+      cy.wait('@update-cluster').then(() => {
+        utils.setLastWizardSignal('READY_TO_INSTALL');
+        utils.clearTransformSignal();
+      });
+    }
+  });
+
+  it('Can switch to dual-stack networking type', () => {
     networkingPage.getStackTypeDualStack().should('be.enabled').check();
 
     if (utils.isAIAPIMocked) {
-      Cypress.env('TRANSFORM_SIGNAL', 'dual-stack');
-      cy.wait('@update-cluster');
+      utils.setTransformSignal('dual-stack');
+      cy.wait('@update-cluster').then(() => {
+        
+        utils.setLastWizardSignal('READY_TO_INSTALL_DUALSTACK');
+        utils.clearTransformSignal();
+      });
     }
-
-
+      
     networkingPage.getClusterManagedNetworking().should('be.disabled').and('be.checked');
     networkingPage.getStackTypeDualStack().should('be.enabled').and('be.checked');
     networkingPage.getVipDhcp().should('be.disabled').and('not.be.checked');
     networkingPage.getOvnNetworkingField().should('be.enabled').and('be.checked');
     networkingPage.getSdnNetworkingField().should('be.disabled');
+    networkingPage.waitForNetworkStatusToNotContain('Some validations failed');
   });
 
   it('Can switch to IPv4 networking type', () => {
@@ -48,10 +67,13 @@ describe(`Assisted Installer Dualstack Networking`, () => {
     networkingPage.confirmStackTypeChange();
 
     if (utils.isAIAPIMocked()) {
-      Cypress.env('TRANSFORM_SIGNAL', 'single-stack');
-      cy.wait('@update-cluster');
+      utils.setTransformSignal('single-stack');
+      cy.wait('@update-cluster').then(() => {
+        
+        utils.setLastWizardSignal('READY_TO_INSTALL');
+        utils.clearTransformSignal();
+      });
     }
-
     networkingPage.getClusterManagedNetworking().should('be.enabled').and('be.checked');
     networkingPage.getStackTypeSingleStack().should('be.enabled').and('be.checked');
     networkingPage.getVipDhcp().should('be.enabled').and('be.checked');

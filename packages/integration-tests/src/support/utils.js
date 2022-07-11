@@ -28,6 +28,17 @@ export const hasWizardSignal = (signalName) => {
   return reqSignalOrder !== -1 && reqSignalOrder <= currentSignalOrder;
 };
 
+export const setTransformSignal = (signalName) => {
+  Cypress.env('TRANSFORM_SIGNAL', signalName);
+}
+
+export const clearTransformSignal = () => {
+  Cypress.env('TRANSFORM_SIGNAL', undefined);
+}
+
+export const getTransformSignal = () => Cypress.env('TRANSFORM_SIGNAL');
+
+
 export const getUiVersion = () => {
   return new Cypress.Promise((resolve) => {
     cy.newByDataTestId('assisted-ui-lib-version')

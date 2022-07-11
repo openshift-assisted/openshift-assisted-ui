@@ -1,4 +1,4 @@
-import { hasWizardSignal, setLastWizardSignal, isAIAPIMocked } from './utils';
+import { hasWizardSignal, setLastWizardSignal, isAIAPIMocked, getTransformSignal, clearTransformSignal } from './utils';
 import { fakeClusterId, fakeClusterInfraEnvId } from '../fixtures/cluster/base-cluster';
 import { hostIds, getUpdatedHosts } from '../fixtures/hosts';
 import openShiftVersions from '../fixtures/infra-envs/openshift-versions';
@@ -21,11 +21,12 @@ const clusterApiPath = `${allClustersApiPath}${fakeClusterId}`;
 
 let enhancements = {};
 const transformFixture = (req, fixture) => {
-  if (Cypress.env('TRANSFORM_SIGNAL')) {
+  const activeTransformSignal = getTransformSignal();
+  if (activeTransformSignal) {
     if (req.method === 'PATCH') {
       enhancements = req.body;
 
-      switch (Cypress.env('TRANSFORM_SIGNAL')) {
+      switch (activeTransformSignal) {
         case 'single-stack':
           enhancements = { ...req.body, ...singleStackEnhancements };
           break;
@@ -72,8 +73,8 @@ const mockClusterResponse = (req) => {
 };
 
 const setScenarioEnvVars = ({ activeScenario }) => {
-  Cypress.env('TRANSFORM_SIGNAL', undefined);
   Cypress.env('AI_SCENARIO', activeScenario);
+  clearTransformSignal();
 
   switch (activeScenario) {
     case 'AI_CREATE_SNO':
