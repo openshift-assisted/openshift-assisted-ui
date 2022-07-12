@@ -28,7 +28,6 @@ describe(`Assisted Installer Dualstack Networking`, () => {
   it('Can correctly configure IPv4 networking type', () => {
     networkingPage.getStackTypeSingleStack().should('be.enabled').and('be.checked');
     networkingPage.getClusterManagedNetworking().should('be.enabled').and('be.checked');
-    networkingPage.getStackTypeSingleStack().should('be.enabled').and('be.checked');
     networkingPage.getVipDhcp().should('be.enabled').and('be.checked');
     networkingPage.getAdvancedNetwork().should('be.enabled').and('not.be.checked');
 
@@ -40,14 +39,11 @@ describe(`Assisted Installer Dualstack Networking`, () => {
   });
 
   it('Can switch to dual-stack networking type', () => {
-    networkingPage.getStackTypeDualStack().should('be.enabled').check();
+    networkingPage.getStackTypeDualStack().should('be.enabled').and('not.be.checked');
+    networkingPage.getStackTypeDualStack().check();
 
     utils.setTransformSignal('dual-stack');
-    cy.wait('@update-cluster').then(() => {
-      
-      utils.setLastWizardSignal('READY_TO_INSTALL_DUALSTACK');
-      utils.clearTransformSignal();
-    });
+    cy.wait('@update-cluster');
       
     networkingPage.getClusterManagedNetworking().should('be.disabled').and('be.checked');
     networkingPage.getStackTypeDualStack().should('be.enabled').and('be.checked');
@@ -63,11 +59,7 @@ describe(`Assisted Installer Dualstack Networking`, () => {
     networkingPage.confirmStackTypeChange();
 
     utils.setTransformSignal('single-stack');
-    cy.wait('@update-cluster').then(() => {
-      
-      utils.setLastWizardSignal('READY_TO_INSTALL');
-      utils.clearTransformSignal();
-    });
+    cy.wait('@update-cluster');
     
     networkingPage.getClusterManagedNetworking().should('be.enabled').and('be.checked');
     networkingPage.getStackTypeSingleStack().should('be.enabled').and('be.checked');

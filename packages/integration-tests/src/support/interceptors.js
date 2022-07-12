@@ -12,6 +12,7 @@ import createSnoFixtureMapping from '../fixtures/create-sno';
 import createMultinodeFixtureMapping from '../fixtures/create-mn';
 import createReadOnlyClusterFixtureMapping from '../fixtures/read-only';
 import { createDualStackFixtureMapping, singleStackEnhancements, dualStackEnhancements } from '../fixtures/dualstack';
+import { dualStackNetworkingRequest, ipv4NetworkingRequest } from '../fixtures/dualstack/requests';
 
 const allInfraEnvsApiPath = '/api/assisted-install/v2/infra-envs/';
 const allClustersApiPath = '/api/assisted-install/v2/clusters/';
@@ -28,9 +29,11 @@ const transformFixture = (req, fixture) => {
 
       switch (activeTransformSignal) {
         case 'single-stack':
+          expect(req.body, "Networking request body").to.deep.equal(ipv4NetworkingRequest);
           enhancements = { ...req.body, ...singleStackEnhancements };
           break;
         case 'dual-stack':
+          expect(req.body, "Networking request body").to.deep.equal(dualStackNetworkingRequest);
           enhancements = { ...req.body, ...dualStackEnhancements };
           break;
         default:

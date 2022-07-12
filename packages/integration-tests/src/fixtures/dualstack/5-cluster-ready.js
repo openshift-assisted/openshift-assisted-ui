@@ -31,6 +31,25 @@ const clusterReadyBuilder = (baseCluster) => ({
   validations_info: JSON.stringify(clusterValidationsInfo),
   api_vip: '192.168.122.10',
   ingress_vip: '192.168.122.110',
+  cluster_networks: [
+    {
+      cidr: '10.128.0.0/14',
+      cluster_id: fakeClusterId,
+      host_prefix: 23,
+    },
+  ],
+  service_networks: [
+    {
+      cidr: '172.30.0.0/16',
+      cluster_id: fakeClusterId,
+    },
+  ],
+  machine_networks: [
+    {
+      cidr: '192.168.122.0/24',
+      cluster_id: fakeClusterId,
+    },
+  ],
 });
 
 
@@ -43,7 +62,7 @@ const clusterDualstackBuilder = (baseCluster) => ({
       host_prefix: 23,
     },
     {
-      cidr: '2002:db8::/53',
+      cidr: 'fd01::/48',
       cluster_id: fakeClusterId,
       host_prefix: 64,
     },
@@ -54,7 +73,7 @@ const clusterDualstackBuilder = (baseCluster) => ({
       cluster_id: fakeClusterId,
     },
     {
-      cidr: '2003:db8::/112',
+      cidr: 'fd02::/112',
       cluster_id: fakeClusterId,
     },
   ],
