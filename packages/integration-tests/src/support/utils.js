@@ -1,7 +1,3 @@
-export const isAIAPIMocked = () => {
-  return Cypress.env('AI_E2E_MOCKED_API') === true;
-};
-
 const signalOrder = [
   'CLUSTER_CREATED',
   'ISO_DOWNLOADED',

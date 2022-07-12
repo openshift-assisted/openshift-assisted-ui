@@ -1,6 +1,5 @@
 import { reviewAndCreatePage } from '../../views/reviewCreate';
 import { commonActions } from '../../views/common';
-import * as utils from '../../support/utils';
 
 describe(`Assisted Installer Dualstack Review`, () => {
   before(() => {
@@ -18,9 +17,7 @@ describe(`Assisted Installer Dualstack Review`, () => {
 
   it('Should be ready to install', () => {
     reviewAndCreatePage.checkAllValidationsPassed(reviewAndCreatePage.getClusterValidations());
-    if (utils.isAIAPIMocked()) {
-      reviewAndCreatePage.checkAllValidationsPassed(reviewAndCreatePage.getHostValidations());
-    }
+    reviewAndCreatePage.checkAllValidationsPassed(reviewAndCreatePage.getHostValidations());
     reviewAndCreatePage.validateClusterDetails({stackType: "Dual-stack"});
     reviewAndCreatePage.waitForInstallButton();
   });

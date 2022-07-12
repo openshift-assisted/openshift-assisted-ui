@@ -1,4 +1,4 @@
-import { hasWizardSignal, setLastWizardSignal, isAIAPIMocked, getTransformSignal, clearTransformSignal } from './utils';
+import { hasWizardSignal, setLastWizardSignal, getTransformSignal, clearTransformSignal } from './utils';
 import { fakeClusterId, fakeClusterInfraEnvId } from '../fixtures/cluster/base-cluster';
 import { hostIds, getUpdatedHosts } from '../fixtures/hosts';
 import openShiftVersions from '../fixtures/infra-envs/openshift-versions';
@@ -174,9 +174,6 @@ const addAdditionalIntercepts = () => {
 };
 
 const loadAiAPIIntercepts = (conf) => {
-  if (!isAIAPIMocked()) {
-    return;
-  }
   Cypress.env('clusterId', fakeClusterId);
 
   if (conf !== null) {

@@ -8,11 +8,6 @@ const NEW_CLUSTER_URL = '/clusters/~new';
 
 describe(`Assisted Installer SNO Cluster Installation`, () => {
   before(() => {
-    if (!utils.isAIAPIMocked()) {
-      cy.cleanUpE2eNodeResources();
-      cy.deleteClusterByName();
-    }
-
     cy.loadAiAPIIntercepts({ activeSignal: '', activeScenario: 'AI_CREATE_SNO' });
     transformBasedOnUIVersion();
   });
@@ -44,11 +39,9 @@ describe(`Assisted Installer SNO Cluster Installation`, () => {
       // Create the cluster and store its ID when moving to the next step
       commonActions.clickNextButton();
 
-      if (utils.isAIAPIMocked()) {
-        cy.wait('@create-cluster');
-        cy.wait('@create-infra-env');
-        utils.setLastWizardSignal('CLUSTER_CREATED');
-      }
+      cy.wait('@create-cluster');
+      cy.wait('@create-infra-env');
+      utils.setLastWizardSignal('CLUSTER_CREATED');
 
       commonActions.getHeader('h2').should('contain', 'Host discovery');
     });

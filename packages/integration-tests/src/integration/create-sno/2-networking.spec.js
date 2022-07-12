@@ -15,16 +15,12 @@ describe(`Assisted Installer SNO Networking`, () => {
 
   describe('Validating the Network configuration', () => {
     it('Should see the Ready Host inventory status', () => {
-      if (utils.isAIAPIMocked()) {
-        cy.wait('@cluster-details').then(() => {
-          utils.setLastWizardSignal('READY_TO_INSTALL');
-        });
-      }
+      cy.wait('@cluster-details').then(() => {
+        utils.setLastWizardSignal('READY_TO_INSTALL');
+      });
+      
       networkingPage.waitForNetworkStatus('Ready');
-
-      if (utils.isAIAPIMocked()) {
-        networkingPage.waitForNetworkStatusToNotContain('Some validations failed');
-      }
+      networkingPage.waitForNetworkStatusToNotContain('Some validations failed');
     });
 
     it('Should have enforced Network Management', () => {
