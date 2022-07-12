@@ -48,7 +48,6 @@ export const dualStackNetworkingRequest = {
     },
     {
       cidr: 'fd01::/48',
-      cluster_id: fakeClusterId,
       host_prefix: 64,
     },
   ],
@@ -59,7 +58,6 @@ export const dualStackNetworkingRequest = {
     },
     {
       cidr: 'fd02::/112',
-      cluster_id: fakeClusterId,
     },
   ],
   user_managed_networking: false,
