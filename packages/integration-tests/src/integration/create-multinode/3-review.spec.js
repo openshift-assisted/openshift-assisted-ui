@@ -1,6 +1,5 @@
 import { reviewAndCreatePage } from '../../views/reviewCreate';
 import { commonActions } from '../../views/common';
-import * as utils from '../../support/utils';
 import { transformBasedOnUIVersion } from '../../support/transformations';
 
 describe(`Assisted Installer Multinode Review`, () => {
@@ -18,9 +17,7 @@ describe(`Assisted Installer Multinode Review`, () => {
   describe('Cluster summary', () => {
     it('Should be ready to install', () => {
       reviewAndCreatePage.checkAllValidationsPassed(reviewAndCreatePage.getClusterValidations());
-      if (utils.isAIAPIMocked()) {
-        reviewAndCreatePage.checkAllValidationsPassed(reviewAndCreatePage.getHostValidations());
-      }
+      reviewAndCreatePage.checkAllValidationsPassed(reviewAndCreatePage.getHostValidations());
       reviewAndCreatePage.validateClusterDetails();
       reviewAndCreatePage.waitForInstallButton();
     });

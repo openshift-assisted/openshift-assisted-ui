@@ -1,23 +1,51 @@
-import { hasWizardSignal, setLastWizardSignal, isAIAPIMocked } from './utils';
+import { hasWizardSignal, setLastWizardSignal, getTransformSignal, clearTransformSignal } from './utils';
 import { fakeClusterId, fakeClusterInfraEnvId } from '../fixtures/cluster/base-cluster';
-import { hostIds } from '../fixtures/hosts';
+import { hostIds, getUpdatedHosts } from '../fixtures/hosts';
 import openShiftVersions from '../fixtures/infra-envs/openshift-versions';
 import featureSupport from '../fixtures/infra-envs/feature-support';
 import defaultConfig from '../fixtures/cluster/default-config';
 
 import { initialList, updatedList } from '../fixtures/cluster-list';
 import { infraEnv, imageDownload } from '../fixtures/infra-envs';
-import { getUpdatedHosts } from '../fixtures/hosts';
 
 import createSnoFixtureMapping from '../fixtures/create-sno';
 import createMultinodeFixtureMapping from '../fixtures/create-mn';
 import createReadOnlyClusterFixtureMapping from '../fixtures/read-only';
+import { createDualStackFixtureMapping, singleStackEnhancements, dualStackEnhancements } from '../fixtures/dualstack';
+import { dualStackNetworkingRequest, ipv4NetworkingRequest } from '../fixtures/dualstack/requests';
 
 const allInfraEnvsApiPath = '/api/assisted-install/v2/infra-envs/';
 const allClustersApiPath = '/api/assisted-install/v2/clusters/';
 
 const infraEnvApiPath = `${allInfraEnvsApiPath}${fakeClusterInfraEnvId}`;
 const clusterApiPath = `${allClustersApiPath}${fakeClusterId}`;
+
+let enhancements = {};
+const transformFixture = (req, fixture) => {
+  const activeTransformSignal = getTransformSignal();
+  if (activeTransformSignal) {
+    if (req.method === 'PATCH') {
+      enhancements = req.body;
+
+      switch (activeTransformSignal) {
+        case 'single-stack':
+          expect(req.body, "Networking request body").to.deep.equal(ipv4NetworkingRequest);
+          enhancements = { ...req.body, ...singleStackEnhancements };
+          break;
+        case 'dual-stack':
+          expect(req.body, "Networking request body").to.deep.equal(dualStackNetworkingRequest);
+          enhancements = { ...req.body, ...dualStackEnhancements };
+          break;
+        default:
+          enhancements = req.body;
+          break;
+      }
+    }
+    return { ...fixture, ...enhancements };
+  } else {
+    return fixture;
+  }
+};
 
 const mockClusterResponse = (req) => {
   const activeScenario = Cypress.env('AI_SCENARIO');
@@ -30,6 +58,9 @@ const mockClusterResponse = (req) => {
     case 'AI_CREATE_MULTINODE':
       fixtureMapping = createMultinodeFixtureMapping;
       break;
+    case 'AI_CREATE_DUALSTACK':
+      fixtureMapping = createDualStackFixtureMapping;
+      break;
     case 'AI_READONLY_CLUSTER':
       fixtureMapping = createReadOnlyClusterFixtureMapping;
       break;
@@ -38,7 +69,7 @@ const mockClusterResponse = (req) => {
   }
   if (fixtureMapping) {
     const fixture = fixtureMapping[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping['default'];
-    req.reply(fixture);
+    req.reply(transformFixture(req, fixture));
   } else {
     throw new Error('Incorrect fixture mapping for scenario ' + activeScenario);
   }
@@ -46,6 +77,7 @@ const mockClusterResponse = (req) => {
 
 const setScenarioEnvVars = ({ activeScenario }) => {
   Cypress.env('AI_SCENARIO', activeScenario);
+  clearTransformSignal();
 
   switch (activeScenario) {
     case 'AI_CREATE_SNO':
@@ -56,6 +88,10 @@ const setScenarioEnvVars = ({ activeScenario }) => {
       break;
     case 'AI_CREATE_MULTINODE':
       Cypress.env('CLUSTER_NAME', 'ai-e2e-multinode');
+      Cypress.env('ASSISTED_SNO_DEPLOYMENT', false);
+      break;
+    case 'AI_CREATE_DUALSTACK':
+      Cypress.env('CLUSTER_NAME', 'ai-e2e-dualstack');
       Cypress.env('ASSISTED_SNO_DEPLOYMENT', false);
       break;
     case 'AI_READONLY_CLUSTER':
@@ -141,9 +177,6 @@ const addAdditionalIntercepts = () => {
 };
 
 const loadAiAPIIntercepts = (conf) => {
-  if (!isAIAPIMocked()) {
-    return;
-  }
   Cypress.env('clusterId', fakeClusterId);
 
   if (conf !== null) {

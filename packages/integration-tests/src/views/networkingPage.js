@@ -273,4 +273,11 @@ export const networkingPage = {
   clickMainBody: () => {
     cy.get('.pf-c-wizard__nav').click();
   },
+  confirmStackTypeChange: () => {
+    cy.get('body').then(($body) => {
+      if ($body.hasClass('pf-c-backdrop__open')) {
+        cy.get(`button[data-testid='confirm-modal-submit']`).click();
+      }
+    });
+  }
 };

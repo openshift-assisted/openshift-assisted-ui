@@ -1,7 +1,3 @@
-export const isAIAPIMocked = () => {
-  return Cypress.env('AI_E2E_MOCKED_API') === true;
-};
-
 const signalOrder = [
   'CLUSTER_CREATED',
   'ISO_DOWNLOADED',
@@ -12,6 +8,7 @@ const signalOrder = [
   'HOST_DISCOVERED_3',
   'HOST_RENAMED_3',
   'READY_TO_INSTALL',
+  'READY_TO_INSTALL_DUALSTACK'
 ];
 
 export const setLastWizardSignal = (signalName) => {
@@ -26,6 +23,17 @@ export const hasWizardSignal = (signalName) => {
   const reqSignalOrder = signalOrder.findIndex((signal) => signal === signalName);
   return reqSignalOrder !== -1 && reqSignalOrder <= currentSignalOrder;
 };
+
+export const setTransformSignal = (signalName) => {
+  Cypress.env('TRANSFORM_SIGNAL', signalName);
+}
+
+export const clearTransformSignal = () => {
+  Cypress.env('TRANSFORM_SIGNAL', undefined);
+}
+
+export const getTransformSignal = () => Cypress.env('TRANSFORM_SIGNAL');
+
 
 export const getUiVersion = () => {
   return new Cypress.Promise((resolve) => {

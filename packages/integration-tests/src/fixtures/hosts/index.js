@@ -37,7 +37,7 @@ const getUpdatedHosts = () => {
   } else if (/HOST_RENAMED_\d/.test(lastSignal)) {
     transformer = (index) =>
       hostRename(discoveredHosts[index], `${Cypress.env('HOST_RENAME')}-${index + 1}`);
-  } else if (lastSignal === 'READY_TO_INSTALL') {
+  } else if (hasWizardSignal('READY_TO_INSTALL')) {
     transformer = (index) =>
       hostReady(hostRename(discoveredHosts[index], Cypress.env('HOST_RENAME')));
   }
