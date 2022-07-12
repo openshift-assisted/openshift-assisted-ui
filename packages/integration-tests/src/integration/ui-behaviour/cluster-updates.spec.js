@@ -22,7 +22,7 @@ describe('Assisted Installer UI behaviour', () => {
 
       navbar.clickOnNavItem('Cluster details');
       commonActions.clickNextButton();
-      commonActions.getHeader().should('contain', 'Host discovery');
+      commonActions.getHeader('h2').should('contain', 'Host discovery');
     });
   });
 });
