@@ -4,8 +4,6 @@ import { clusterListPage } from '../../views/clusterList';
 import * as utils from '../../support/utils';
 import { transformBasedOnUIVersion } from '../../support/transformations';
 
-const NEW_CLUSTER_URL = '/clusters/~new';
-
 describe(`Assisted Installer SNO Cluster Installation`, () => {
   before(() => {
     cy.loadAiAPIIntercepts({ activeSignal: '', activeScenario: 'AI_CREATE_SNO' });
@@ -22,11 +20,11 @@ describe(`Assisted Installer SNO Cluster Installation`, () => {
       clusterListPage.getCreateNewClusterButton().should('be.visible');
       clusterListPage.getCreateNewClusterButton().click();
 
-      cy.location('pathname').should('eq', NEW_CLUSTER_URL);
+      cy.location('pathname').should('eq', '/clusters/~new');
     });
 
     it('Can submit the form to create a new cluster', () => {
-      cy.visit(NEW_CLUSTER_URL);
+      commonActions.openNewClusterPage();
 
       clusterDetailsPage.inputClusterName();
       clusterDetailsPage.inputbaseDnsDomain();
