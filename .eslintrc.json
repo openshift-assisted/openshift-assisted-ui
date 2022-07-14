@@ -5,21 +5,26 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "parserOptions": {
-        "project": ["packages/*/tsconfig(.*)?.json"]
-      },
-
       "plugins": [
-        "import",
-        "prefer-arrow-functions"
+        "import"
       ],
       "extends": [
+        "eslint:recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:import/recommended",
         "plugin:import/typescript"
       ],
       "rules": {
+        "eqeqeq": "error",
         "no-void": "error",
+        "no-console": "error",
+        "no-duplicate-imports": "error",
+        "no-unmodified-loop-condition": "error",
+        "no-use-before-define": "error",
+        "consistent-return": "error",
+        "no-self-compare": "error",
+        "array-callback-return": "error",
+
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {
@@ -33,8 +38,31 @@
             ]
           }
         ],
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "variable",
+            "format": [
+              "camelCase",
+              "UPPER_CASE"
+            ]
+          },
+          {
+            "selector": "function",
+            "format": [
+              "camelCase",
+              "PascalCase"
+            ]
+          },
+          {
+            "selector": "typeLike",
+            "format": [
+              "PascalCase"
+            ]
+          }
+        ],
         "@typescript-eslint/no-explicit-any": [
-          "warn",
+          "error",
           {
             "fixToUnknown": true
           }
@@ -48,15 +76,6 @@
                 "fixWith": "Record<string, unknown>"
               }
             }
-          }
-        ],
-        "prefer-arrow-functions/prefer-arrow-functions": [
-          "warn",
-          {
-            "classPropertiesAllowed": false,
-            "disallowPrototype": false,
-            "returnStyle": "implicit",
-            "singleReturnOnly": true
           }
         ]
       }

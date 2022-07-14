@@ -4,7 +4,12 @@
     "sourceMap": false,
     "outDir": "../../dist/out-tsc",
     "allowJs": true,
-    "types": ["cypress", "node"]
+    "allowSyntheticDefaultImports": true,
+    "types": ["cypress", "cypress-file-upload", "node"]
   },
-  "include": ["src/**/*.ts", "src/**/*.js"]
+  "include": [
+    "src/**/*.ts",
+    "./Cypress.d.ts",
+    "src/**/*.js"
+  ]
 }
