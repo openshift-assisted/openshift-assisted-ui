@@ -3,8 +3,6 @@ import { clusterDetailsPage } from '../../views/clusterDetails';
 import * as utils from '../../support/utils';
 import { transformBasedOnUIVersion } from '../../support/transformations';
 
-const NEW_CLUSTER_URL = '/clusters/~new';
-
 describe(`Assisted Installer Multinode Cluster Installation`, () => {
   before(() => {
     cy.loadAiAPIIntercepts({ activeSignal: '', activeScenario: 'AI_CREATE_MULTINODE' });
@@ -18,7 +16,7 @@ describe(`Assisted Installer Multinode Cluster Installation`, () => {
 
   describe('Creating a new cluster', () => {
     it('Can submit the form to create a new cluster', () => {
-      cy.visit(NEW_CLUSTER_URL);
+      commonActions.openNewClusterPage();
 
       clusterDetailsPage.inputClusterName();
       clusterDetailsPage.getRedHatDnsServiceCheck().check();
