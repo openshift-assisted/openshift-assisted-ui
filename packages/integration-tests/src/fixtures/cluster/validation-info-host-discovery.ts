@@ -50,9 +50,6 @@ const clusterValidationInfoPartial = {
   ],
 };
 
-const clusterValidationsInfo = upgradeValidationsInfo(
-  prevClusterValidationsInfo,
-  clusterValidationInfoPartial,
-);
+const clusterValidationsInfo = upgradeValidationsInfo(prevClusterValidationsInfo, clusterValidationInfoPartial);
 
 export { clusterValidationsInfo, hostValidationsInfo };

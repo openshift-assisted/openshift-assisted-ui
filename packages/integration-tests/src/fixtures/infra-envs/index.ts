@@ -6,9 +6,7 @@ const infraEnv = {
   id: fakeClusterInfraEnvId,
   cluster_id: fakeClusterId,
   href: `/api/assisted-install/v2/infra-envs/${fakeClusterInfraEnvId}`,
-  download_url: `${Cypress.env(
-    'API_BASE_URL',
-  )}/images/${fakeClusterInfraEnvId}?arch=x86_64&type=full-iso&version=4.9`,
+  download_url: `${Cypress.env('API_BASE_URL')}/images/${fakeClusterInfraEnvId}?arch=x86_64&type=full-iso&version=4.9`,
   cpu_architecture: 'x86_64',
   created_at: '2022-04-19T10:18:35.159254Z',
   email_domain: 'Unknown',
@@ -25,9 +23,7 @@ const infraEnv = {
 
 const imageDownload = {
   expires_at: '0001-01-01T00:00:00.000Z',
-  url: `${Cypress.env(
-    'API_BASE_URL',
-  )}/images/${fakeClusterInfraEnvId}?arch=x86_64&type=full-iso&version=4.9`,
+  url: `${Cypress.env('API_BASE_URL')}/images/${fakeClusterInfraEnvId}?arch=x86_64&type=full-iso&version=4.9`,
 };
 
 const imageDownloadLink = `${Cypress.env(

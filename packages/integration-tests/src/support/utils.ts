@@ -8,7 +8,7 @@ const signalOrder = [
   'HOST_DISCOVERED_3',
   'HOST_RENAMED_3',
   'READY_TO_INSTALL',
-  'READY_TO_INSTALL_DUALSTACK'
+  'READY_TO_INSTALL_DUALSTACK',
 ];
 
 type SignalName = typeof signalOrder[number];
@@ -18,9 +18,7 @@ export const setLastWizardSignal = (signalName: SignalName) => {
 };
 
 export const hasWizardSignal = (signalName: SignalName) => {
-  const currentSignalOrder = signalOrder.findIndex(
-    (signal) => signal === Cypress.env('AI_LAST_SIGNAL'),
-  );
+  const currentSignalOrder = signalOrder.findIndex((signal) => signal === Cypress.env('AI_LAST_SIGNAL'));
 
   const reqSignalOrder = signalOrder.findIndex((signal) => signal === signalName);
   return reqSignalOrder !== -1 && reqSignalOrder <= currentSignalOrder;
@@ -28,14 +26,13 @@ export const hasWizardSignal = (signalName: SignalName) => {
 
 export const setTransformSignal = (signalName: SignalName) => {
   Cypress.env('TRANSFORM_SIGNAL', signalName);
-}
+};
 
 export const clearTransformSignal = () => {
   Cypress.env('TRANSFORM_SIGNAL', undefined);
-}
+};
 
 export const getTransformSignal = (): SignalName | undefined => Cypress.env('TRANSFORM_SIGNAL');
-
 
 export const getUiVersion = () => {
   return new Cypress.Promise((resolve) => {

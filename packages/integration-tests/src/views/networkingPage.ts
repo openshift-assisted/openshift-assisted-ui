@@ -81,10 +81,7 @@ export const networkingPage = {
       cy.hostDetailSelector(i, 'Status', timeout).should('contain', status);
     }
   },
-  waitForHostNetworkStatusInsufficient: (
-    idx,
-    timeout = Cypress.env('HOST_STATUS_INSUFFICIENT_TIMEOUT'),
-  ) => {
+  waitForHostNetworkStatusInsufficient: (idx, timeout = Cypress.env('HOST_STATUS_INSUFFICIENT_TIMEOUT')) => {
     // host row index starts at 0 and increments by 2
     cy.newByDataTestId(`host-row-${idx}`).within(() => {
       cy.newByDataTestId('nic-status', timeout).should('contain', 'Insufficient');
@@ -106,11 +103,7 @@ export const networkingPage = {
   ) => {
     networkingPage.getAdvancedNetwork().scrollIntoView().check().should('be.checked');
     if (clusterCidr) {
-      networkingPage
-        .getClusterNetworkCidr()
-        .should('be.visible')
-        .fill(clusterCidr)
-        .should('have.value', clusterCidr);
+      networkingPage.getClusterNetworkCidr().should('be.visible').fill(clusterCidr).should('have.value', clusterCidr);
     }
     if (networkPrefix) {
       networkingPage
@@ -120,11 +113,7 @@ export const networkingPage = {
         .should('have.value', networkPrefix);
     }
     if (serviceCidr) {
-      networkingPage
-        .getServiceCidr()
-        .should('be.visible')
-        .fill(serviceCidr)
-        .should('have.value', serviceCidr);
+      networkingPage.getServiceCidr().should('be.visible').fill(serviceCidr).should('have.value', serviceCidr);
     }
   },
   getApiVipField: () => {
@@ -133,10 +122,7 @@ export const networkingPage = {
   getIngressVipField: () => {
     return cy.get(Cypress.env('ingressVipFieldId'));
   },
-  inputApiVipIngressVip: (
-    apiVip = Cypress.env('API_VIP'),
-    ingressVip = Cypress.env('INGRESS_VIP'),
-  ) => {
+  inputApiVipIngressVip: (apiVip = Cypress.env('API_VIP'), ingressVip = Cypress.env('INGRESS_VIP')) => {
     const fillField = (element, value) => {
       element.should('be.visible').fill(value).should('have.value', value);
     };
@@ -148,34 +134,22 @@ export const networkingPage = {
     }
   },
   inputClusterNetworkHostPrefix: (hostPrefix = Cypress.env('NETWORK_HOST_PREFIX')) => {
-    cy.get(Cypress.env('clusterNetworks0HostPrefixFieldId'))
-      .fill(hostPrefix)
-      .should('have.value', hostPrefix);
+    cy.get(Cypress.env('clusterNetworks0HostPrefixFieldId')).fill(hostPrefix).should('have.value', hostPrefix);
   },
   inputClusterNetworkCidr: (networkCidr = Cypress.env('NETWORK_CIDR')) => {
-    cy.get(Cypress.env('clusterNetworkCidrFieldId'))
-      .fill(networkCidr)
-      .should('have.value', networkCidr);
+    cy.get(Cypress.env('clusterNetworkCidrFieldId')).fill(networkCidr).should('have.value', networkCidr);
   },
   inputServiceNetworkCidr: (serviceCidr = Cypress.env('SERVICE_NETWORK_CIDR')) => {
-    cy.get(Cypress.env('serviceNetworks0CidrFieldId'))
-      .fill(serviceCidr)
-      .should('have.value', serviceCidr);
+    cy.get(Cypress.env('serviceNetworks0CidrFieldId')).fill(serviceCidr).should('have.value', serviceCidr);
   },
   inputIpv6ClusterNetworkCidr: (ipv6ClusterNetworkCidr) => {
-    cy.get('#form-input-clusterNetworks-1-cidr-field')
-      .scrollIntoView()
-      .type(ipv6ClusterNetworkCidr);
+    cy.get('#form-input-clusterNetworks-1-cidr-field').scrollIntoView().type(ipv6ClusterNetworkCidr);
   },
   inputIpv6ClusterNetworkHostPrefix: (ipv6ClusterNetworkHostPrefix) => {
-    cy.get('#form-input-clusterNetworks-1-hostPrefix-field')
-      .scrollIntoView()
-      .type(ipv6ClusterNetworkHostPrefix);
+    cy.get('#form-input-clusterNetworks-1-hostPrefix-field').scrollIntoView().type(ipv6ClusterNetworkHostPrefix);
   },
   inputIpv6ServiceNetworkCidr: (ipv6ServiceNetworkCidr) => {
-    cy.get('#form-input-serviceNetworks-1-cidr-field')
-      .scrollIntoView()
-      .type(ipv6ServiceNetworkCidr);
+    cy.get('#form-input-serviceNetworks-1-cidr-field').scrollIntoView().type(ipv6ServiceNetworkCidr);
   },
   statusPopover: {
     waitForPrimaryStatusButton: (idx, timeout = Cypress.env('WAIT_FOR_PRIMARY_STATUS_BUTTON')) => {
@@ -205,10 +179,7 @@ export const networkingPage = {
         .should('be.visible')
         .click();
     },
-    validateAlertGroupItem: (
-      msg,
-      timeout = Cypress.env('DNS_RESOLUTION_ALERT_MESSAGE_TIMEOUT'),
-    ) => {
+    validateAlertGroupItem: (msg, timeout = Cypress.env('DNS_RESOLUTION_ALERT_MESSAGE_TIMEOUT')) => {
       cy.get(`li:contains('${msg}')`, { timeout: timeout });
     },
     close: () => {
@@ -278,5 +249,5 @@ export const networkingPage = {
         cy.get(`button[data-testid='confirm-modal-submit']`).click();
       }
     });
-  }
+  },
 };

@@ -2,7 +2,6 @@ import { commonActions } from '../../views/common';
 import { networkingPage } from '../../views/networkingPage';
 import * as utils from '../../support/utils';
 
-
 describe(`Assisted Installer Multinode Networking`, () => {
   before(() => {
     cy.loadAiAPIIntercepts({

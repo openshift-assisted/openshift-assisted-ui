@@ -2,9 +2,9 @@ import { clusterDetailsPage } from '../../views/clusterDetails';
 import { diskEncryptionSection } from '../../views/diskEncryption';
 import { bareMetalDiscoveryPage } from '../../views/bareMetalDiscovery';
 import { commonActions } from '../../views/common';
-import {diskEncryptionValues, tangServerValues} from '../../fixtures/disk-encyrpiton'
+import { diskEncryptionValues, tangServerValues } from '../../fixtures/disk-encryption';
 import * as utils from '../../support/utils';
-import {transformBasedOnUIVersion} from "../../support/transformations";
+import { transformBasedOnUIVersion } from '../../support/transformations';
 
 const fillTangServers = (index) => {
   const tangServerUrl = diskEncryptionSection.getTangServerUrl(index);

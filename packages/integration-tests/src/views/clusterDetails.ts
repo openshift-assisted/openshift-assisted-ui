@@ -41,9 +41,7 @@ export const clusterDetailsPage = {
       .contains(Cypress.env('techPreviewSupportLevel'));
   },
   checkSnoDevSupportLevel: () => {
-    cy.get(Cypress.env('snoSupportLevel'))
-      .should('be.visible')
-      .contains(Cypress.env('devPreviewSupportLevel'));
+    cy.get(Cypress.env('snoSupportLevel')).should('be.visible').contains(Cypress.env('devPreviewSupportLevel'));
   },
   getBaseDnsDomain: () => {
     return cy.get(Cypress.env('baseDnsDomainFieldId'));
@@ -62,9 +60,7 @@ export const clusterDetailsPage = {
     return cy.get(Cypress.env('cpuArchitectureFieldId'));
   },
   validateInputCpuArchitectureLabelHelper: (msg) => {
-    cy.get(
-      '.pf-c-form__group-control > .pf-c-check > .pf-c-check__label > .pf-c-button > svg',
-    ).click();
+    cy.get('.pf-c-form__group-control > .pf-c-check > .pf-c-check__label > .pf-c-button > svg').click();
     cy.get('.pf-c-popover__content').should('contain', msg);
   },
   enableCpuArchitecture: () => {

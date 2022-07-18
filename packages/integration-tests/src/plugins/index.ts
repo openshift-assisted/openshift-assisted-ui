@@ -9,10 +9,8 @@
 // https://on.cypress.io/plugins-guide
 // ***********************************************************
 
-// This function is called when a project is opened or re-opened (e.g. due to
-// the project's config changing)
-
 let shouldSkip = false;
+
 module.exports = (on) => {
   on('task', {
     resetShouldSkipFlag() {
@@ -20,7 +18,10 @@ module.exports = (on) => {
       return null;
     },
     shouldSkip(value) {
-      if (value !== null) shouldSkip = value;
+      // From the moment a test fails, set the skip flag to true for all remaining tests
+      if (value === true) {
+        shouldSkip = value;
+      }
       return shouldSkip;
     },
   });
@@ -33,12 +34,8 @@ module.exports = (on) => {
       const myMimeType = 'application/octet-stream,binary/octet-stream';
 
       // prevents the browser download prompt
-      options.preferences[
-        'browser.helperApps.neverAsk.saveToDisk'
-      ] = `${existingMimeTypes},${myMimeType}`;
-      options.preferences[
-        'browser.helperApps.neverAsk.openFile'
-      ] = `${existingMimeTypes},${myMimeType}`;
+      options.preferences['browser.helperApps.neverAsk.saveToDisk'] = `${existingMimeTypes},${myMimeType}`;
+      options.preferences['browser.helperApps.neverAsk.openFile'] = `${existingMimeTypes},${myMimeType}`;
       options.preferences['browser.helperApps.alwaysAsk.force'] = false;
       options.preferences['browser.download.manager.useWindow'] = false;
       options.preferences['browser.download.folderList'] = 1;

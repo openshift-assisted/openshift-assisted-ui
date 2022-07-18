@@ -44,10 +44,9 @@ export const clusterListPage = {
     cy.get('tbody > tr')
       .eq(1) // always assume it is most recent cluster named x
       .within(() => {
-        cy.get('td[data-label="Provider (Location)"]', { timeout: timeout }).should(
-          'contain',
-          provider,
-        );
+        cy.get('td[data-label="Provider (Location)"]', {
+          timeout: timeout,
+        }).should('contain', provider);
       });
   },
   filterSearchString: (searchString) => {

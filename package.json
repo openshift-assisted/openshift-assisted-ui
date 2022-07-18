@@ -6,6 +6,7 @@
     "integration-tests:run": "yarn nx run integration-tests:run-tests",
     "integration-tests:open": "yarn nx run integration-tests:open-tests",
     "integration-tests:lint": "yarn nx run integration-tests:lint",
+    "integration-tests:lint-fix": "yarn nx run integration-tests:lint --fix && nx format:write",
     "build:types": "yarn nx run assisted-service-types:build"
   },
   "private": true,

@@ -29,11 +29,11 @@ const transformFixture = (req, fixture) => {
 
       switch (activeTransformSignal) {
         case 'single-stack':
-          expect(req.body, "Networking request body").to.deep.equal(ipv4NetworkingRequest);
+          expect(req.body, 'Networking request body').to.deep.equal(ipv4NetworkingRequest);
           enhancements = { ...req.body, ...singleStackEnhancements };
           break;
         case 'dual-stack':
-          expect(req.body, "Networking request body").to.deep.equal(dualStackNetworkingRequest);
+          expect(req.body, 'Networking request body').to.deep.equal(dualStackNetworkingRequest);
           enhancements = { ...req.body, ...dualStackEnhancements };
           break;
         default:
@@ -128,15 +128,11 @@ const addClusterPatchAndDetailsIntercepts = () => {
 };
 
 const addInfraEnvIntercepts = () => {
-  cy.intercept('GET', `${allInfraEnvsApiPath}?cluster_id=${fakeClusterId}`, [infraEnv]).as(
-    'filter-infra-envs',
-  );
+  cy.intercept('GET', `${allInfraEnvsApiPath}?cluster_id=${fakeClusterId}`, [infraEnv]).as('filter-infra-envs');
 
   cy.intercept('GET', infraEnvApiPath, infraEnv).as('infra-env-details');
 
-  cy.intercept('GET', `${infraEnvApiPath}/downloads/image-url`, imageDownload).as(
-    'download-iso-image',
-  );
+  cy.intercept('GET', `${infraEnvApiPath}/downloads/image-url`, imageDownload).as('download-iso-image');
 
   cy.intercept('PATCH', infraEnvApiPath, infraEnv).as('update-infra-env');
 
@@ -170,9 +166,7 @@ const addPlatformFeatureIntercepts = () => {
 };
 
 const addAdditionalIntercepts = () => {
-  cy.intercept('GET', '/api/assisted-install/v2/domains', [
-    { domain: 'e2e.redhat.com', provider: 'route53' },
-  ]);
+  cy.intercept('GET', '/api/assisted-install/v2/domains', [{ domain: 'e2e.redhat.com', provider: 'route53' }]);
   cy.intercept('GET', '/api/assisted-install/v2//default-config', defaultConfig);
 };
 

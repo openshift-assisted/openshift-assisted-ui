@@ -3,35 +3,35 @@
 import { fakeClusterId } from '../cluster/base-cluster';
 
 export const ipv4NetworkingRequest = {
-  ssh_public_key: "",
+  ssh_public_key: '',
   vip_dhcp_allocation: true,
-  network_type: "OpenShiftSDN",
+  network_type: 'OpenShiftSDN',
   machine_networks: [
-      {
-          cidr: "192.168.122.0/24",
-          cluster_id: fakeClusterId,
-      }
+    {
+      cidr: '192.168.122.0/24',
+      cluster_id: fakeClusterId,
+    },
   ],
   cluster_networks: [
-      {
-          cidr: "10.128.0.0/14",
-          cluster_id: fakeClusterId,
-          host_prefix: 23,
-      }
+    {
+      cidr: '10.128.0.0/14',
+      cluster_id: fakeClusterId,
+      host_prefix: 23,
+    },
   ],
   service_networks: [
-      {
-          cidr: "172.30.0.0/16",
-          cluster_id: fakeClusterId,
-      }
+    {
+      cidr: '172.30.0.0/16',
+      cluster_id: fakeClusterId,
+    },
   ],
-  user_managed_networking: false
+  user_managed_networking: false,
 };
 
 export const dualStackNetworkingRequest = {
-  ssh_public_key: "",
+  ssh_public_key: '',
   vip_dhcp_allocation: false,
-  network_type: "OVNKubernetes",
+  network_type: 'OVNKubernetes',
   machine_networks: [
     {
       cidr: '192.168.122.0/24',

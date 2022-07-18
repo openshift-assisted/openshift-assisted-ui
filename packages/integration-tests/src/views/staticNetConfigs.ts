@@ -54,9 +54,7 @@ export const staticNetConfigsPage = {
           cy.fixture(`${masterMac}.json`).then((masterMacMapping) => {
             // Interface mapping currently only contains one interface..
             // This might change in the future
-            cy.get(`[data-testid=mac-address-${index}]`)
-              .scrollIntoView()
-              .type(masterMacMapping[0].mac_address);
+            cy.get(`[data-testid=mac-address-${index}]`).scrollIntoView().type(masterMacMapping[0].mac_address);
             cy.fixture(`${masterMac}.yaml`).then((masterMacYaml) => {
               cy.get(`[data-testid=ipv4-address-${index}]`).type(
                 YAML.parse(masterMacYaml)['interfaces'][0]['ipv4']['address'][0]['ip'],
@@ -79,9 +77,7 @@ export const staticNetConfigsPage = {
           cy.fixture(`${workerMac}.json`).then((workerMacMapping) => {
             const macIndex = index + Number(Cypress.env('NUM_MASTERS'));
             // Interface mapping currently only contains one interface.. This might change in the future
-            cy.get(`[data-testid=mac-address-${macIndex}]`)
-              .scrollIntoView()
-              .type(workerMacMapping[0].mac_address);
+            cy.get(`[data-testid=mac-address-${macIndex}]`).scrollIntoView().type(workerMacMapping[0].mac_address);
             cy.fixture(`${workerMac}.yaml`).then((workerMacYaml) => {
               cy.get(`[data-testid=ipv4-address-${macIndex}]`).type(
                 YAML.parse(workerMacYaml)['interfaces'][0]['ipv4']['address'][0]['ip'],
@@ -102,11 +98,7 @@ export const staticNetConfigsPage = {
   },
   yamlView: {
     getStartFromScratch: () => {
-      cy.get(
-        `.pf-c-empty-state__secondary > .pf-c-button:contains(${Cypress.env(
-          'yamlStartFromScratchText',
-        )})`,
-      );
+      cy.get(`.pf-c-empty-state__secondary > .pf-c-button:contains(${Cypress.env('yamlStartFromScratchText')})`);
     },
     addHostsYamlAndInterfaceMappings: () => {
       if (Cypress.env('MASTER_MAC_ADDRESSES')) {
@@ -114,9 +106,7 @@ export const staticNetConfigsPage = {
           cy.get(Cypress.env('inputTypeFile')).attachFile(`${masterMac}.yaml`);
           cy.fixture(`${masterMac}.json`).then((masterMacMapping) => {
             // Interface mapping currently only contains one interface.. This might change in the future
-            cy.get(`[data-testid=mac-address-${index}-0]`)
-              .scrollIntoView()
-              .type(masterMacMapping[0].mac_address);
+            cy.get(`[data-testid=mac-address-${index}-0]`).scrollIntoView().type(masterMacMapping[0].mac_address);
             cy.get(`[data-testid=interface-name-${index}-0]`)
               .scrollIntoView()
               .type(masterMacMapping[0].logical_nic_name);
@@ -134,9 +124,7 @@ export const staticNetConfigsPage = {
           cy.fixture(`${workerMac}.json`).then((workerMacMapping) => {
             const macIndex = index + Number(Cypress.env('NUM_MASTERS'));
             // Interface mapping currently only contains one interface. This might change in the future
-            cy.get(`[data-testid=mac-address-${macIndex}-0]`)
-              .scrollIntoView()
-              .type(workerMacMapping[0].mac_address);
+            cy.get(`[data-testid=mac-address-${macIndex}-0]`).scrollIntoView().type(workerMacMapping[0].mac_address);
             cy.get(`[data-testid=interface-name-${macIndex}-0]`)
               .scrollIntoView()
               .type(workerMacMapping[0].logical_nic_name);

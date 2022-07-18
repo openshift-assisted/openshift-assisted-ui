@@ -17,6 +17,6 @@ const addedCluster = () => ({
 
 const initialList = [fakeCluster];
 
-const updatedList = () => ([addedCluster(), fakeCluster]);
+const updatedList = () => [addedCluster(), fakeCluster];
 
 export { initialList, updatedList };

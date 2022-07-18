@@ -5,7 +5,10 @@ import { transformBasedOnUIVersion } from '../../support/transformations';
 
 describe(`Assisted Installer Multinode Cluster Installation`, () => {
   before(() => {
-    cy.loadAiAPIIntercepts({ activeSignal: '', activeScenario: 'AI_CREATE_MULTINODE' });
+    cy.loadAiAPIIntercepts({
+      activeSignal: '',
+      activeScenario: 'AI_CREATE_MULTINODE',
+    });
     transformBasedOnUIVersion();
   });
 

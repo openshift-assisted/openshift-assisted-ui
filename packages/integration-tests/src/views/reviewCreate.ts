@@ -3,14 +3,16 @@ export const reviewAndCreatePage = {
     clusterName = Cypress.env('CLUSTER_NAME'),
     dns = Cypress.env('DNS_DOMAIN_NAME'),
     version = Cypress.env('OPENSHIFT_VERSION'),
-    stackType = "IPv4"
+    stackType = 'IPv4',
   } = {}) => {
     cy.get(Cypress.env('clusterAddressValueId')).should('contain', `${clusterName}.${dns}`);
     cy.get(Cypress.env('openshiftVersionValueId')).should('contain', version);
     cy.get(Cypress.env('stackTypeValueId')).should('contain', stackType);
   },
   getClusterValidations: (timeout = 1000) => {
-    return cy.get(Cypress.env('clusterValidationsValueId'), { timeout: timeout });
+    return cy.get(Cypress.env('clusterValidationsValueId'), {
+      timeout: timeout,
+    });
   },
   getHostValidations: (timeout = 1000) => {
     return cy.get(Cypress.env('hostValidationsValueId'), { timeout: timeout });

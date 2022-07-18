@@ -5,10 +5,8 @@ import { hostRenamedBuilder } from '../create-sno/4-host-renamed';
 import { clusterReadyBuilder } from '../create-sno/5-cluster-ready';
 
 const isoDownloadedCluster = isoDownloadedClusterBuilder(multinodeCluster);
-const hostDiscoveredCluster = () =>
-  hostDiscoveredBuilder(isoDownloadedCluster);
-const hostRenamedCluster = () =>
-  hostRenamedBuilder(hostDiscoveredCluster());
+const hostDiscoveredCluster = () => hostDiscoveredBuilder(isoDownloadedCluster);
+const hostRenamedCluster = () => hostRenamedBuilder(hostDiscoveredCluster());
 const readyToInstallCluster = clusterReadyBuilder(hostRenamedCluster());
 
 const createMultinodeFixtureMapping = {

@@ -6,4 +6,3 @@ Cypress.env('openshiftVersionValueId', '[data-testid=openshift-version-value]');
 Cypress.env('allValidationsPassedText', 'All validations passed');
 Cypress.env('stackTypeValueId', '[data-testid="stack-type-value"]');
 Cypress.env('networkCidrValueId', '[data-testid="network-cidr-value"]');
-

@@ -5,7 +5,10 @@ import { transformBasedOnUIVersion } from '../../support/transformations';
 describe(`Assisted Installer Multinode Review`, () => {
   before(() => {
     transformBasedOnUIVersion();
-    cy.loadAiAPIIntercepts({ activeSignal: 'READY_TO_INSTALL', activeScenario: 'AI_CREATE_MULTINODE' });
+    cy.loadAiAPIIntercepts({
+      activeSignal: 'READY_TO_INSTALL',
+      activeScenario: 'AI_CREATE_MULTINODE',
+    });
   });
 
   beforeEach(() => {

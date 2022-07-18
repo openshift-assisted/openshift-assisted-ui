@@ -33,11 +33,9 @@ const getUpdatedHosts = () => {
   if (/HOST_DISCOVERED_\d/.test(lastSignal)) {
     transformer = (index) => discoveredHosts[index];
   } else if (/HOST_RENAMED_\d/.test(lastSignal)) {
-    transformer = (index) =>
-      hostRename(discoveredHosts[index], `${Cypress.env('HOST_RENAME')}-${index + 1}`);
+    transformer = (index) => hostRename(discoveredHosts[index], `${Cypress.env('HOST_RENAME')}-${index + 1}`);
   } else if (hasWizardSignal('READY_TO_INSTALL')) {
-    transformer = (index) =>
-      hostReady(hostRename(discoveredHosts[index], Cypress.env('HOST_RENAME')));
+    transformer = (index) => hostReady(hostRename(discoveredHosts[index], Cypress.env('HOST_RENAME')));
   }
 
   return new Array(discoveredHostsCount).fill(0).map((_, index) => {

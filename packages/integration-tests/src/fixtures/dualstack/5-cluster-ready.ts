@@ -4,7 +4,7 @@ import { clusterValidationsInfo } from '../cluster/validation-info-cluster-ready
 import { fakeClusterId } from '../cluster/base-cluster';
 import { hostIds } from '../hosts';
 
-  const featureUsageDualstack = {
+const featureUsageDualstack = {
   'OVN network type': {
     id: 'OVN_NETWORK_TYPE',
     name: 'OVN network type',
@@ -50,7 +50,6 @@ const clusterReadyBuilder = (baseCluster) => ({
     },
   ],
 });
-
 
 const clusterDualstackBuilder = (baseCluster) => ({
   ...baseCluster,
@@ -108,4 +107,4 @@ const clusterDualstackBuilder = (baseCluster) => ({
   vip_dhcp_allocation: false,
 });
 
-export { clusterReadyBuilder, clusterDualstackBuilder, featureUsageDualstack};
+export { clusterReadyBuilder, clusterDualstackBuilder, featureUsageDualstack };

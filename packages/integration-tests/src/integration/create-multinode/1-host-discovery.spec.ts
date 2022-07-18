@@ -70,11 +70,7 @@ describe(`Assisted Installer Multinode Host discovery`, () => {
         utils.setLastWizardSignal('HOST_RENAMED_3');
         bareMetalDiscoveryPage.waitForHardwareStatus('Ready');
 
-        installationPage.validateHostNames(3, 0, [
-          `${hostPrefix}-1`,
-          `${hostPrefix}-2`,
-          `${hostPrefix}-3`,
-        ]);
+        installationPage.validateHostNames(3, 0, [`${hostPrefix}-1`, `${hostPrefix}-2`, `${hostPrefix}-3`]);
       });
       commonActions.getNextButton().should('be.enabled');
     });

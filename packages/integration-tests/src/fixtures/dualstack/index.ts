@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import {
-  dualstackClusterBase,
-  featureUsage,
-} from './1-cluster-created';
+import { dualstackClusterBase, featureUsage } from './1-cluster-created';
 import { clusterReadyBuilder, clusterDualstackBuilder, featureUsageDualstack } from './5-cluster-ready';
 
 const readyToInstallCluster = clusterReadyBuilder(dualstackClusterBase);
@@ -29,8 +26,4 @@ const createDualStackFixtureMapping = {
   default: dualstackClusterBase,
 };
 
-export {
-  createDualStackFixtureMapping,
-  singleStackEnhancements,
-  dualStackEnhancements,
-};
+export { createDualStackFixtureMapping, singleStackEnhancements, dualStackEnhancements };

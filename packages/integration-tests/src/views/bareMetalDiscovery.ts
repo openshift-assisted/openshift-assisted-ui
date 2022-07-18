@@ -25,17 +25,13 @@ export const bareMetalDiscoveryPage = {
     return cy.get('#form-input-usePlatformIntegration-field');
   },
   getIntegrationWithvSphereToggle: () => {
-    return cy
-      .contains('.pf-c-switch', Cypress.env('integrateWithVsphere'))
-      .find('.pf-c-switch__toggle');
+    return cy.contains('.pf-c-switch', Cypress.env('integrateWithVsphere')).find('.pf-c-switch__toggle');
   },
   toggleIntegrateWithvSphere: () => {
     bareMetalDiscoveryPage.getIntegrationWithvSphereToggle().click();
   },
   validateToggleIntegrateWithvSphereIsBlue: () => {
-    bareMetalDiscoveryPage
-      .getIntegrationWithvSphereToggle()
-      .should('have.css', 'background-color', 'rgb(0, 102, 204)');
+    bareMetalDiscoveryPage.getIntegrationWithvSphereToggle().should('have.css', 'background-color', 'rgb(0, 102, 204)');
   },
   waitForHostTablePopulation: (
     numMasters: number = Cypress.env('NUM_MASTERS'),
@@ -83,9 +79,7 @@ export const bareMetalDiscoveryPage = {
     cy.get('.table-toolbar .pf-c-toolbar__item:first').click();
     cy.get('.table-toolbar .pf-c-toolbar__item:last').click();
     cy.get('ul[role="menu"]').within(() => {
-      cy.get('[role="menuitem"]')
-        .contains(Cypress.env('hostRowKebabMenuChangeHostnameText'))
-        .click();
+      cy.get('[role="menuitem"]').contains(Cypress.env('hostRowKebabMenuChangeHostnameText')).click();
     });
     bareMetalDiscoveryPage.renameHost(`${prefix}-{{n}}`);
     bareMetalDiscoveryPage.clickSaveEditHostsForm();
@@ -94,10 +88,7 @@ export const bareMetalDiscoveryPage = {
     return cy.get(Cypress.env('hostnameFieldId'));
   },
   renameHost: (newHostName) => {
-    bareMetalDiscoveryPage
-      .getHostNameInput()
-      .clear()
-      .type(newHostName, { parseSpecialCharSequences: false });
+    bareMetalDiscoveryPage.getHostNameInput().clear().type(newHostName, { parseSpecialCharSequences: false });
     bareMetalDiscoveryPage.getHostNameInput().should('have.value', newHostName);
   },
   deleteHost: () => {

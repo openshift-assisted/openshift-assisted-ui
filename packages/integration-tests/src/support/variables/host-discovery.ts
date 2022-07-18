@@ -36,12 +36,6 @@ Cypress.env(
   'bareMetalInventoryAddHostsButtonDownloadDiscoveryIso',
   '#bare-metal-inventory-add-host-button-download-discovery-iso',
 );
-Cypress.env(
-  'useContainerNativeVirtualizationField',
-  '#form-checkbox-useContainerNativeVirtualization-field',
-);
-Cypress.env(
-  'useExtraDisksForLocalStorageField',
-  '#form-checkbox-useExtraDisksForLocalStorage-field',
-);
+Cypress.env('useContainerNativeVirtualizationField', '#form-checkbox-useContainerNativeVirtualization-field');
+Cypress.env('useExtraDisksForLocalStorageField', '#form-checkbox-useExtraDisksForLocalStorage-field');
 Cypress.env('integrateWithVsphere', 'Integrate with vSphere');

@@ -44,7 +44,7 @@ describe(`Assisted Installer Dualstack Networking`, () => {
 
     utils.setTransformSignal('dual-stack');
     cy.wait('@update-cluster');
-      
+
     networkingPage.getClusterManagedNetworking().should('be.disabled').and('be.checked');
     networkingPage.getStackTypeDualStack().should('be.enabled').and('be.checked');
     networkingPage.getVipDhcp().should('be.disabled').and('not.be.checked');
@@ -60,11 +60,10 @@ describe(`Assisted Installer Dualstack Networking`, () => {
 
     utils.setTransformSignal('single-stack');
     cy.wait('@update-cluster');
-    
+
     networkingPage.getClusterManagedNetworking().should('be.enabled').and('be.checked');
     networkingPage.getStackTypeSingleStack().should('be.enabled').and('be.checked');
     networkingPage.getVipDhcp().should('be.enabled').and('be.checked');
     networkingPage.getSdnNetworkingField().should('be.enabled').and('be.checked');
   });
-
 });

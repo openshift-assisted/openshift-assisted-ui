@@ -6,7 +6,10 @@ import { transformBasedOnUIVersion } from '../../support/transformations';
 
 describe(`Assisted Installer SNO Cluster Installation`, () => {
   before(() => {
-    cy.loadAiAPIIntercepts({ activeSignal: '', activeScenario: 'AI_CREATE_SNO' });
+    cy.loadAiAPIIntercepts({
+      activeSignal: '',
+      activeScenario: 'AI_CREATE_SNO',
+    });
     transformBasedOnUIVersion();
   });
 
