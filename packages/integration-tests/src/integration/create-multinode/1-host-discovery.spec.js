@@ -38,6 +38,7 @@ describe(`Assisted Installer Multinode Host discovery`, () => {
       bareMetalDiscoveryPage.openAddHostsModal();
 
       bareMetalDiscoveryIsoModal.getGenerateDiscoveryIso().click();
+      bareMetalDiscoveryIsoModal.getGeneratingButton().should('be.visible');
       bareMetalDiscoveryIsoModal.waitForIsoGeneration();
       bareMetalDiscoveryIsoModal.verifyDownloadIsoLinks();
 
@@ -45,6 +46,20 @@ describe(`Assisted Installer Multinode Host discovery`, () => {
         utils.setLastWizardSignal('ISO_DOWNLOADED');
       });
       bareMetalDiscoveryIsoModal.getCloseIsoButton().click();
+    });
+
+    it('Should discriminate between full and minimal image', () => {
+      bareMetalDiscoveryPage.openAddHostsModal();
+      bareMetalDiscoveryIsoModal.getGenerateDiscoveryIso().click();
+      const minimalURL = bareMetalDiscoveryIsoModal.getIsoUrl();
+      bareMetalDiscoveryIsoModal.getEditISO().click();
+      bareMetalDiscoveryIsoModal.getImageType().check("full-iso")
+      bareMetalDiscoveryIsoModal.getGenerateDiscoveryIso().click();
+      const fullURL = bareMetalDiscoveryIsoModal.getIsoUrl();
+      console.log("print from here");
+      console.log(minimalURL);
+      console.log(fullURL);
+      expect(fullURL).to.not.equal(minimalURL);
     });
 
     it('Should generate three hosts in Insufficient state', () => {
@@ -70,6 +85,14 @@ describe(`Assisted Installer Multinode Host discovery`, () => {
         ]);
       });
       commonActions.getNextButton().should('be.enabled');
+    });
+
+    describe(`Redesign of host discovery step`, () => {
+      it('Instructions should appear inside the Add Host modal', () => {
+        bareMetalDiscoveryIsoModal.getAddHostsButton().click();
+        bareMetalDiscoveryIsoModal.getGenerateDiscoveryIso().click();
+        bareMetalDiscoveryIsoModal.getAddHostsInstructions().should('exist');
+      });
     });
   });
 });

@@ -76,6 +76,25 @@ export const bareMetalDiscoveryIsoModal = {
   getGenerateDiscoveryIso: () => {
     return cy.get(`.pf-c-modal-box__footer > .pf-m-primary`).contains('Generate Discovery ISO');
   },
+  getGeneratingButton: () => {
+    return cy.get(`.pf-c-modal-box__footer > .pf-m-primary`).contains('Generating');
+  },
+  getAddHostsInstructions: () => {
+    return cy.contains('Adding hosts instructions').title();
+  },
+  getAddHostsButton: () => {
+    return cy.get('#host-inventory-button-download-discovery-iso');
+  },
+  getIsoUrl: () => {
+    return cy.get(Cypress.env('copyableInputAriaLabel'))
+      .eq(0)
+  },
+  getEditISO: () => {
+    return cy.get('[data-testid="edit-iso-btn"]')
+  },
+  getImageType: () => {
+    return cy.get('input[name="imageType"]')
+  },
   getCancelGenerateDiscoveryIsoButton: () => {
     return cy.get('.pf-c-modal-box__footer > .pf-m-link');
   },
@@ -108,7 +127,7 @@ export const bareMetalDiscoveryIsoModal = {
     }
   },
   waitForIsoGeneration: (timeout = Cypress.env('GENERATE_ISO_TIMEOUT')) => {
-    cy.get('h4', { timeout: timeout }).should('contain', 'Discovery ISO is ready to download');
+    cy.get('h4', { timeout: timeout }).should('contain', ' Discovery ISO is ready for download');
   },
   verifyDownloadIsoLinks: () => {
     return cy
