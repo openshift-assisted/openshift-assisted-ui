@@ -16,7 +16,7 @@ describe(`Assisted Installer Multinode Cluster Installation`, () => {
 
   describe('Creating a new cluster', () => {
     it('Can submit the form to create a new cluster', () => {
-      commonActions.openNewClusterPage();
+      commonActions.visitNewClusterPage();
 
       clusterDetailsPage.inputClusterName();
       clusterDetailsPage.getRedHatDnsServiceCheck().check();

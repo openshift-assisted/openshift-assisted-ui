@@ -72,7 +72,7 @@ export const commonActions = {
       commonActions.clickNextButton();
     }
   },
-  openNewClusterPage: () => {
+  visitNewClusterPage: () => {
     cy.visit('/clusters/~new');
   },
 };

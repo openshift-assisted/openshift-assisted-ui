@@ -14,5 +14,6 @@ Cypress.env('cpuArchitectureFieldHelperId', '#form-input-cpuArchitecture-field-h
 Cypress.env('pullSecretFieldHelperId', '#form-input-pullSecret-field-helper');
 Cypress.env('clusterNameFieldHelperId', '#form-input-name-field-helper');
 Cypress.env('baseDnsDomainFieldHelperId', '#form-input-baseDnsDomain-field-helper');
+Cypress.env('newClusterLocation', '\'/clusters/~new\'');
 
 
