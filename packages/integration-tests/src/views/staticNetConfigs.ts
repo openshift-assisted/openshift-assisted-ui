@@ -138,7 +138,7 @@ export const staticNetConfigsPage = {
       return cy.get('button[data-testid="add-host"]');
     },
     getCopyConfigurationButton: () => {
-      return cy.get('button[data-testid="copy-host-cofiguration"]');
+      return cy.get('input[data-testid="copy-host-configuration"]');
     },
     addHostsYamlAndInterfaceMappings: () => {
       if (Cypress.env('MASTER_MAC_ADDRESSES')) {

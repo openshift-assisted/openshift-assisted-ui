@@ -8,7 +8,7 @@ const NEW_CLUSTER_URL = '/clusters/~new';
 
 describe(`Assisted Installer Static IP Cluster Installation`, () => {
   before(() => {
-    cy.loadAiAPIIntercepts({ activeSignal: '', activeScenario: 'AI_CREATE_STATIC_IP' });
+    cy.loadAiAPIIntercepts({ activeSignal: '', activeScenario: 'AI_CREATE_STATIC_IP_SNO' });
     transformBasedOnUIVersion();
   });
 
