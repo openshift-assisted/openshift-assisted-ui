@@ -1,5 +1,13 @@
-import { hasWizardSignal, setLastWizardSignal, getTransformSignal, clearTransformSignal } from './utils';
-import { fakeClusterId, fakeClusterInfraEnvId } from '../fixtures/cluster/base-cluster';
+import {
+  hasWizardSignal,
+  setLastWizardSignal,
+  getTransformSignal,
+  clearTransformSignal,
+} from './utils';
+import {
+  fakeClusterId,
+  fakeClusterInfraEnvId,
+} from '../fixtures/cluster/base-cluster';
 import { hostIds, getUpdatedHosts } from '../fixtures/hosts';
 import openShiftVersions from '../fixtures/infra-envs/openshift-versions';
 import featureSupport from '../fixtures/infra-envs/feature-support';
@@ -11,8 +19,26 @@ import { infraEnv, imageDownload } from '../fixtures/infra-envs';
 import createSnoFixtureMapping from '../fixtures/create-sno';
 import createMultinodeFixtureMapping from '../fixtures/create-mn';
 import createReadOnlyClusterFixtureMapping from '../fixtures/read-only';
-import { createDualStackFixtureMapping, singleStackEnhancements, dualStackEnhancements } from '../fixtures/dualstack';
-import { dualStackNetworkingRequest, ipv4NetworkingRequest } from '../fixtures/dualstack/requests';
+import {
+  createDualStackFixtureMapping,
+  singleStackEnhancements,
+  dualStackEnhancements,
+} from '../fixtures/dualstack';
+import {
+  dualStackNetworkingRequest,
+  ipv4NetworkingRequest,
+} from '../fixtures/dualstack/requests';
+import {
+  staticIPInfraEnv,
+  staticIPNetworkEnhancements,
+  staticIPHostEnhancements,
+  staticIPHostEnhancementsYaml,
+} from '../fixtures/static-ip';
+import {
+  staticIPNetworkConf,
+  staticIPHostConfig,
+  staticIPHostConfigYaml,
+} from '../fixtures/static-ip/requests';
 
 const allInfraEnvsApiPath = '/api/assisted-install/v2/infra-envs/';
 const allClustersApiPath = '/api/assisted-install/v2/clusters/';
@@ -36,6 +62,24 @@ const transformFixture = (req, fixture) => {
           expect(req.body, "Networking request body").to.deep.equal(dualStackNetworkingRequest);
           enhancements = { ...req.body, ...dualStackEnhancements };
           break;
+        case 'static-ip-1':
+          expect(req.body.static_network_config).to.deep.equal(
+            staticIPNetworkConf
+          );
+          enhancements = { ...req.body, ...staticIPNetworkEnhancements };
+          break;
+        case 'static-ip-host-1':
+          expect(req.body.static_network_config).to.deep.equal(
+            staticIPHostConfig
+          );
+          enhancements = { ...req.body, ...staticIPHostEnhancements };
+          break;
+        case 'static-ip-host-1-yaml':
+          expect(req.body.static_network_config).to.deep.equal(
+            staticIPHostConfigYaml
+          );
+          enhancements = { ...req.body, ...staticIPHostEnhancementsYaml };
+          break;
         default:
           enhancements = req.body;
           break;
@@ -53,6 +97,7 @@ const mockClusterResponse = (req) => {
 
   switch (activeScenario) {
     case 'AI_CREATE_SNO':
+    case 'AI_CREATE_STATIC_IP':
       fixtureMapping = createSnoFixtureMapping;
       break;
     case 'AI_CREATE_MULTINODE':
@@ -75,6 +120,30 @@ const mockClusterResponse = (req) => {
   }
 };
 
+const mockInfraEnvResponse = (req) => {
+  const activeScenario = Cypress.env('AI_SCENARIO');
+  let response = null;
+
+  switch (activeScenario) {
+    case 'AI_CREATE_SNO':
+    case 'AI_CREATE_MULTINODE':
+    case 'AI_CREATE_DUALSTACK':
+    case 'AI_READONLY_CLUSTER':
+      response = infraEnv;
+      break;
+    case 'AI_CREATE_STATIC_IP':
+      response = staticIPInfraEnv;
+      break;
+    default:
+  }
+
+  if (response) {
+    req.reply(transformFixture(req, response));
+  } else {
+    throw new Error('Incorrect fixture mapping for scenario ' + activeScenario);
+  }
+};
+
 const setScenarioEnvVars = ({ activeScenario }) => {
   Cypress.env('AI_SCENARIO', activeScenario);
   clearTransformSignal();
@@ -82,6 +151,12 @@ const setScenarioEnvVars = ({ activeScenario }) => {
   switch (activeScenario) {
     case 'AI_CREATE_SNO':
       Cypress.env('CLUSTER_NAME', 'ai-e2e-sno');
+      Cypress.env('ASSISTED_SNO_DEPLOYMENT', true);
+      Cypress.env('NUM_MASTERS', 1);
+      Cypress.env('NUM_WORKERS', 0);
+      break;
+    case 'AI_CREATE_STATIC_IP':
+      Cypress.env('CLUSTER_NAME', 'ai-e2e-static-ip');
       Cypress.env('ASSISTED_SNO_DEPLOYMENT', true);
       Cypress.env('NUM_MASTERS', 1);
       Cypress.env('NUM_WORKERS', 0);
@@ -132,15 +207,19 @@ const addInfraEnvIntercepts = () => {
     'filter-infra-envs',
   );
 
-  cy.intercept('GET', infraEnvApiPath, infraEnv).as('infra-env-details');
+  cy.intercept('GET', infraEnvApiPath, mockInfraEnvResponse).as('infra-env-details');
 
   cy.intercept('GET', `${infraEnvApiPath}/downloads/image-url`, imageDownload).as(
     'download-iso-image',
   );
 
-  cy.intercept('PATCH', infraEnvApiPath, infraEnv).as('update-infra-env');
+  cy.intercept('PATCH', infraEnvApiPath, mockInfraEnvResponse).as(
+    'update-infra-env'
+  );
 
-  cy.intercept('POST', allInfraEnvsApiPath, infraEnv).as('create-infra-env');
+  cy.intercept('POST', allInfraEnvsApiPath, mockInfraEnvResponse).as(
+    'create-infra-env'
+  );
 };
 
 const addHostIntercepts = () => {

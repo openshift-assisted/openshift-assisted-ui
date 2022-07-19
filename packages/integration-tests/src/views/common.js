@@ -49,6 +49,9 @@ export const commonActions = {
   getBackButton: () => {
     return cy.get(Cypress.env('backButton'));
   },
+  clickBackButton: () => {
+    cy.get(Cypress.env('backButton')).should('be.enabled').click();
+  },
   waitForSave: () => {
     cy.get(Cypress.env('spanRoleProgressBar')).should('not.match', /.*Saving.*changes.*/);
   },
@@ -74,5 +77,8 @@ export const commonActions = {
   },
   openNewClusterPage: () => {
     cy.visit('/clusters/~new');
+  },
+  getCurrentWizzardStep: () => {
+    return cy.get('.pf-c-wizard__nav-link.pf-m-current');
   },
 };

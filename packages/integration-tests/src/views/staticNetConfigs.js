@@ -11,6 +11,13 @@ export const staticNetConfigsPage = {
       .scrollIntoView()
       .click({ force: true });
   },
+  confirmViewChange: () => {
+    cy.get('body').then(($body) => {
+      if ($body.hasClass('pf-c-backdrop__open')) {
+        cy.get(`button[data-testid='confirm-modal-submit']`).click();
+      }
+    });
+  },
   formView: {
     selectInternetProtocolVersion: (ipVersion = Cypress.env('ASSISTED_STATIC_IP_VERSION')) => {
       cy.get(Cypress.env('selectProtocolVersion')).select(ipVersion);
@@ -47,6 +54,15 @@ export const staticNetConfigsPage = {
     },
     inputIpv6Dns: (ipv6Dns) => {
       cy.get(Cypress.env('ipv6Dns')).type(ipv6Dns);
+    },
+    getAddHostButton: () => {
+      return cy.get('button[data-testid="add-host"]');
+    },
+    inputHostMacAddress: (macAddress, index = 0) => {
+      cy.get(`[data-testid=mac-address-${index}]`).type(macAddress);
+    },
+    inputHostIPAddress: (ipAddress, index = 0) => {
+      cy.get(`[data-testid=ipv4-address-${index}]`).type(ipAddress);
     },
     addHostsFormViewInterfaceMappings: () => {
       if (Cypress.env('MASTER_MAC_ADDRESSES')) {
@@ -101,11 +117,26 @@ export const staticNetConfigsPage = {
   },
   yamlView: {
     getStartFromScratch: () => {
-      cy.get(
+      return cy.get(
         `.pf-c-empty-state__secondary > .pf-c-button:contains(${Cypress.env(
           'yamlStartFromScratchText',
         )})`,
       );
+    },
+    getYamlForm: () => {
+      return cy.get('.inputarea.monaco-mouse-cursor-text');
+    },
+    getMacAddressInput: (index = 0) => {
+      return cy.get(`[data-testid="mac-address-${index}-0"`);
+    },
+    getInterfaceInput: (index = 0) => {
+      return cy.get(`[data-testid="interface-name-${index}-0"`);
+    },
+    getAddHostButton: () => {
+      return cy.get('button[data-testid="add-host"]');
+    },
+    getCopyConfigurationButton: () => {
+      return cy.get('button[data-testid="copy-host-cofiguration"]');
     },
     addHostsYamlAndInterfaceMappings: () => {
       if (Cypress.env('MASTER_MAC_ADDRESSES')) {
