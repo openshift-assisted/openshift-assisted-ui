@@ -1,0 +1,20 @@
+interfaces:
+  - name: eth0
+    type: ethernet
+    state: up
+    ipv4:
+      address:
+        - ip: 192.0.0.10
+          prefix-length: 24
+      enabled: true
+      dhcp: false
+dns-resolver:
+  config:
+    server:
+      - 192.0.0.1
+routes:
+  config:
+    - destination: 0.0.0.0/0
+      next-hop-address: 192.0.0.2
+      next-hop-interface: eth0
+      table-id: 254

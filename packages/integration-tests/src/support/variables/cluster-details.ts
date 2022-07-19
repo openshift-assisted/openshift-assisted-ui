@@ -9,7 +9,7 @@ Cypress.env('highAvailabilityModeFieldId', '#form-input-highAvailabilityMode-fie
 Cypress.env('cpuArchitectureFieldId', '#form-input-cpuArchitecture-field');
 Cypress.env('checkboxSNODisclaimerFieldId', '#form-checkbox-SNODisclaimer-field');
 Cypress.env('useRedHatDnsServiceFieldId', '#form-checkbox-useRedHatDnsService-field');
-Cypress.env('enableStaticIpRadioButtonText', 'Static network configuration');
+Cypress.env('enableStaticIpRadioButtonText', 'Static IP, bridges, and bonds');
 Cypress.env('cpuArchitectureFieldHelperId', '#form-input-cpuArchitecture-field-helper');
 Cypress.env('pullSecretFieldHelperId', '#form-input-pullSecret-field-helper');
 Cypress.env('clusterNameFieldHelperId', '#form-input-name-field-helper');

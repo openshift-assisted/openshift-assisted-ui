@@ -2,6 +2,7 @@ import './commands';
 import './interceptors';
 import './selectors';
 import './variables/index';
+import 'cypress-file-upload';
 import * as utils from './utils';
 
 // eslint-disable-next-line consistent-return

@@ -1,40 +1,62 @@
 import * as YAML from 'yaml';
 
 export const staticNetConfigsPage = {
+  getYamlView: () => cy.get(Cypress.env('yamlView')),
+  getFormView: () => cy.get(Cypress.env('formView')),
   enableYamlView: () => {
-    cy.get(`.pf-c-radio__label:contains(${Cypress.env('yamlViewRadioText')})`)
+    staticNetConfigsPage.getYamlView()
       .scrollIntoView()
       .click({ force: true });
   },
   enableFormView: () => {
-    cy.get(`.pf-c-radio__label:contains(${Cypress.env('formViewRadioText')})`)
+    staticNetConfigsPage.getFormView()
       .scrollIntoView()
       .click({ force: true });
   },
+  confirmViewChange: () => {
+    cy.get('body').then(($body) => {
+      if ($body.hasClass('pf-c-backdrop__open')) {
+        cy.get(`button[data-testid='confirm-modal-submit']`).click();
+      }
+    });
+  },
   formView: {
+    getProtocolVersionSelect: () => cy.get(Cypress.env('selectProtocolVersion')),
+    getVlanCheckbox: () => cy.get(Cypress.env('useVlan')),
+    getIPv4MachineNetwork: () => cy.get(Cypress.env('ipv4MachineNetworkIp')),
+    getIpv4MachineNetworkPrefixLength: () => cy.get(Cypress.env('ipv4MachineNetworkPrefixLength')),
+    getIPv6MachineNetwork: () => cy.get(Cypress.env('ipv6MachineNetworkIp')),
+    getIpv6MachineNetworkPrefixLength: () => cy.get(Cypress.env('ipv6MachineNetworkPrefixLength')),
+    getIPv4DefaultGateway: () => cy.get(Cypress.env('ipv4Gateway')),
+    getDNS: () => cy.get(Cypress.env('dns')),
+    getMACAddress: (index = 0) => cy.get(`[data-testid=mac-address-${index}]`),
+    getIPv4Address: (index = 0) => cy.get(`[data-testid=ipv4-address-${index}]`),
+    getIPv6Address: (index = 0) => cy.get(`[data-testid=ipv6-address-${index}]`),
+    getAddHostConfigButton: () => cy.get(Cypress.env('addHostDataTestId')),
+
     selectInternetProtocolVersion: (ipVersion = Cypress.env('ASSISTED_STATIC_IP_VERSION')) => {
-      cy.get(Cypress.env('selectProtocolVersion')).select(ipVersion);
+      staticNetConfigsPage.formView.getProtocolVersionSelect().select(ipVersion);
     },
     enableVlan: () => {
-      cy.get(Cypress.env('useVlan')).check().should('be.checked');
+      staticNetConfigsPage.formView.getVlanCheckbox().check().should('be.checked');
     },
     disableVlan: () => {
-      cy.get(Cypress.env('useVlan')).uncheck().should('be.unchecked');
+      staticNetConfigsPage.formView.getVlanCheckbox().uncheck().should('be.unchecked');
     },
     inputVlanId: (vlanId = Cypress.env('ASSISTED_STATIC_IP_VLAN')) => {
       cy.get(Cypress.env('vlanId')).type(vlanId);
     },
     inputIpv4MachineNetwork: (ipv4MachineNetwork) => {
-      cy.get(Cypress.env('ipv4MachineNetworkIp')).type(ipv4MachineNetwork);
+      staticNetConfigsPage.formView.getIPv4MachineNetwork().type(ipv4MachineNetwork);
     },
     inputIpv4MachineNetworkPrefixLength: (ipv4PrefixLength) => {
-      cy.get(Cypress.env('ipv4MachineNetworkPrefixLength')).type(ipv4PrefixLength);
+      staticNetConfigsPage.formView.getIpv4MachineNetworkPrefixLength().type(ipv4PrefixLength);
     },
     inputIpv4DefaultGateway: (ipv4DefaultGateway) => {
-      cy.get(Cypress.env('ipv4Gatway')).type(ipv4DefaultGateway);
+      staticNetConfigsPage.formView.getIPv4DefaultGateway().type(ipv4DefaultGateway);
     },
-    inputIpv4Dns: (ipv4Dns) => {
-      cy.get(Cypress.env('ipv4Dns')).type(ipv4Dns);
+    inputDns: (dns) => {
+      staticNetConfigsPage.formView.getDNS().type(dns);
     },
     inputIpv6MachineNetwork: (ipv6MachineNetwork) => {
       cy.get(Cypress.env('ipv6MachineNetworkIp')).type(ipv6MachineNetwork);
@@ -45,8 +67,11 @@ export const staticNetConfigsPage = {
     inputIpv6DefaultGateway: (ipv6DefaultGateway) => {
       cy.get(Cypress.env('ipv6Gateway')).type(ipv6DefaultGateway);
     },
-    inputIpv6Dns: (ipv6Dns) => {
-      cy.get(Cypress.env('ipv6Dns')).type(ipv6Dns);
+    inputHostMacAddress: (macAddress, index = 0) => {
+      staticNetConfigsPage.formView.getMACAddress(index).type(macAddress);
+    },
+    inputHostIPAddress: (ipAddress, index = 0) => {
+      staticNetConfigsPage.formView.getIPv4Address(index).type(ipAddress);
     },
     addHostsFormViewInterfaceMappings: () => {
       if (Cypress.env('MASTER_MAC_ADDRESSES')) {
@@ -54,43 +79,43 @@ export const staticNetConfigsPage = {
           cy.fixture(`${masterMac}.json`).then((masterMacMapping) => {
             // Interface mapping currently only contains one interface..
             // This might change in the future
-            cy.get(`[data-testid=mac-address-${index}]`).scrollIntoView().type(masterMacMapping[0].mac_address);
+            staticNetConfigsPage.formView.getMACAddress(index).scrollIntoView().type(masterMacMapping[0].mac_address);
             cy.fixture(`${masterMac}.yaml`).then((masterMacYaml) => {
-              cy.get(`[data-testid=ipv4-address-${index}]`).type(
+              staticNetConfigsPage.formView.getIPv4Address(index).type(
                 YAML.parse(masterMacYaml)['interfaces'][0]['ipv4']['address'][0]['ip'],
               );
               if (Cypress.env('ASSISTED_STATIC_IP_VERSION') === 'dualstack') {
-                cy.get(`[data-testid=ipv6-address-${index}]`).type(
+                staticNetConfigsPage.formView.getIPv6Address(index).type(
                   YAML.parse(masterMacYaml)['interfaces'][0]['ipv6']['address'][0]['ip'],
                 );
               }
             });
           });
           if (index < Cypress.env('NUM_MASTERS') - 1) {
-            cy.get(Cypress.env('addHostDataTestId')).click();
+            staticNetConfigsPage.formView.getAddHostConfigButton().click();
           }
         });
       }
       if (Cypress.env('WORKER_MAC_ADDRESSES')) {
-        cy.get(Cypress.env('addHostDataTestId')).click();
+        staticNetConfigsPage.formView.getAddHostConfigButton().click();
         cy.wrap(Cypress.env('WORKER_MAC_ADDRESSES')).each((workerMac, index) => {
           cy.fixture(`${workerMac}.json`).then((workerMacMapping) => {
             const macIndex = index + Number(Cypress.env('NUM_MASTERS'));
             // Interface mapping currently only contains one interface.. This might change in the future
-            cy.get(`[data-testid=mac-address-${macIndex}]`).scrollIntoView().type(workerMacMapping[0].mac_address);
+            staticNetConfigsPage.formView.getMACAddress(index).scrollIntoView().type(workerMacMapping[0].mac_address);
             cy.fixture(`${workerMac}.yaml`).then((workerMacYaml) => {
-              cy.get(`[data-testid=ipv4-address-${macIndex}]`).type(
+              staticNetConfigsPage.formView.getIPv4Address(index).type(
                 YAML.parse(workerMacYaml)['interfaces'][0]['ipv4']['address'][0]['ip'],
               );
               if (Cypress.env('ASSISTED_STATIC_IP_VERSION') === 'dualstack') {
-                cy.get(`[data-testid=ipv6-address-${macIndex}]`).type(
+                staticNetConfigsPage.formView.getIPv6Address(macIndex).type(
                   YAML.parse(workerMacYaml)['interfaces'][0]['ipv6']['address'][0]['ip'],
                 );
               }
             });
           });
           if (index < Cypress.env('NUM_WORKERS') - 1) {
-            cy.get(Cypress.env('addHostDataTestId')).click();
+            staticNetConfigsPage.formView.getAddHostConfigButton().click();
           }
         });
       }
@@ -98,7 +123,22 @@ export const staticNetConfigsPage = {
   },
   yamlView: {
     getStartFromScratch: () => {
-      cy.get(`.pf-c-empty-state__secondary > .pf-c-button:contains(${Cypress.env('yamlStartFromScratchText')})`);
+      return cy.get(`.pf-c-empty-state__secondary > .pf-c-button:contains(${Cypress.env('yamlStartFromScratchText')})`);
+    },
+    getYamlForm: () => {
+      return cy.get('.inputarea.monaco-mouse-cursor-text');
+    },
+    getMacAddressInput: (index = 0) => {
+      return cy.get(`[data-testid="mac-address-${index}-0"`);
+    },
+    getInterfaceInput: (index = 0) => {
+      return cy.get(`[data-testid="interface-name-${index}-0"`);
+    },
+    getAddHostButton: () => {
+      return cy.get('button[data-testid="add-host"]');
+    },
+    getCopyConfigurationButton: () => {
+      return cy.get('button[data-testid="copy-host-cofiguration"]');
     },
     addHostsYamlAndInterfaceMappings: () => {
       if (Cypress.env('MASTER_MAC_ADDRESSES')) {
@@ -113,12 +153,12 @@ export const staticNetConfigsPage = {
           });
           cy.get(Cypress.env('copyHostConfiguration')).uncheck();
           if (index < Cypress.env('NUM_MASTERS') - 1) {
-            cy.get(Cypress.env('addHostDataTestId')).click();
+            staticNetConfigsPage.formView.getAddHostConfigButton().click();
           }
         });
       }
       if (Cypress.env('WORKER_MAC_ADDRESSES')) {
-        cy.get(Cypress.env('addHostDataTestId')).click();
+        staticNetConfigsPage.formView.getAddHostConfigButton().click();
         cy.wrap(Cypress.env('WORKER_MAC_ADDRESSES')).each((workerMac, index) => {
           cy.get(Cypress.env('inputTypeFile')).attachFile(`${workerMac}.yaml`);
           cy.fixture(`${workerMac}.json`).then((workerMacMapping) => {
@@ -131,7 +171,7 @@ export const staticNetConfigsPage = {
           });
           cy.get(Cypress.env('copyHostConfiguration')).uncheck();
           if (index < Cypress.env('NUM_WORKERS') - 1) {
-            cy.get(Cypress.env('addHostDataTestId')).click();
+            staticNetConfigsPage.formView.getAddHostConfigButton().click();
           }
         });
       }
