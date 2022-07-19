@@ -33,11 +33,15 @@ import {
   staticIPNetworkEnhancements,
   staticIPHostEnhancements,
   staticIPHostEnhancementsYaml,
+  staticIP2HostEnhancements,
+  staticIP2HostEnhancementsYaml
 } from '../fixtures/static-ip';
 import {
   staticIPNetworkConf,
   staticIPHostConfig,
+  staticIPHost2Config,
   staticIPHostConfigYaml,
+  staticIPHost2ConfigYaml,
 } from '../fixtures/static-ip/requests';
 
 const allInfraEnvsApiPath = '/api/assisted-install/v2/infra-envs/';
@@ -68,18 +72,30 @@ const transformFixture = (req, fixture) => {
           );
           enhancements = { ...req.body, ...staticIPNetworkEnhancements };
           break;
-        case 'static-ip-host-1':
+          case 'static-ip-host-1':
+            expect(req.body.static_network_config).to.deep.equal(
+              staticIPHostConfig
+            );
+            enhancements = { ...req.body, ...staticIPHostEnhancements };
+            break;
+        case 'static-ip-host-2':
           expect(req.body.static_network_config).to.deep.equal(
-            staticIPHostConfig
+            staticIPHost2Config
           );
-          enhancements = { ...req.body, ...staticIPHostEnhancements };
+          enhancements = { ...req.body, ...staticIP2HostEnhancements };
           break;
-        case 'static-ip-host-1-yaml':
-          expect(req.body.static_network_config).to.deep.equal(
-            staticIPHostConfigYaml
-          );
-          enhancements = { ...req.body, ...staticIPHostEnhancementsYaml };
-          break;
+          case 'static-ip-host-1-yaml':
+            expect(req.body.static_network_config).to.deep.equal(
+              staticIPHostConfigYaml
+            );
+            enhancements = { ...req.body, ...staticIPHostEnhancementsYaml };
+            break;
+          case 'static-ip-host-2-yaml':
+            expect(req.body.static_network_config).to.deep.equal(
+              staticIPHost2ConfigYaml
+            );
+            enhancements = { ...req.body, ...staticIP2HostEnhancementsYaml };
+            break;
         default:
           enhancements = req.body;
           break;
@@ -97,10 +113,11 @@ const mockClusterResponse = (req) => {
 
   switch (activeScenario) {
     case 'AI_CREATE_SNO':
-    case 'AI_CREATE_STATIC_IP':
+    case 'AI_CREATE_STATIC_IP_SNO':
       fixtureMapping = createSnoFixtureMapping;
       break;
-    case 'AI_CREATE_MULTINODE':
+      case 'AI_CREATE_MULTINODE':
+      case 'AI_CREATE_STATIC_IP_MNO':
       fixtureMapping = createMultinodeFixtureMapping;
       break;
     case 'AI_CREATE_DUALSTACK':
@@ -131,7 +148,8 @@ const mockInfraEnvResponse = (req) => {
     case 'AI_READONLY_CLUSTER':
       response = infraEnv;
       break;
-    case 'AI_CREATE_STATIC_IP':
+    case 'AI_CREATE_STATIC_IP_SNO':
+    case 'AI_CREATE_STATIC_IP_MNO':
       response = staticIPInfraEnv;
       break;
     default:
@@ -150,18 +168,14 @@ const setScenarioEnvVars = ({ activeScenario }) => {
 
   switch (activeScenario) {
     case 'AI_CREATE_SNO':
+    case 'AI_CREATE_STATIC_IP_SNO':
       Cypress.env('CLUSTER_NAME', 'ai-e2e-sno');
       Cypress.env('ASSISTED_SNO_DEPLOYMENT', true);
       Cypress.env('NUM_MASTERS', 1);
       Cypress.env('NUM_WORKERS', 0);
       break;
-    case 'AI_CREATE_STATIC_IP':
-      Cypress.env('CLUSTER_NAME', 'ai-e2e-static-ip');
-      Cypress.env('ASSISTED_SNO_DEPLOYMENT', true);
-      Cypress.env('NUM_MASTERS', 1);
-      Cypress.env('NUM_WORKERS', 0);
-      break;
     case 'AI_CREATE_MULTINODE':
+    case 'AI_CREATE_STATIC_IP_MNO':
       Cypress.env('CLUSTER_NAME', 'ai-e2e-multinode');
       Cypress.env('ASSISTED_SNO_DEPLOYMENT', false);
       break;
