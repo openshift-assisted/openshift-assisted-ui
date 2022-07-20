@@ -16,7 +16,7 @@ Cypress.env('generateIsoModalFooterText', 'Generate Discovery ISO');
 Cypress.env('httpProxyFieldId', '#form-input-httpProxy-field');
 Cypress.env('httpsProxyFieldId', '#form-input-httpsProxy-field');
 Cypress.env('noProxyFieldId', '#form-input-noProxy-field');
-Cypress.env('isoReadyToDownloadText', 'Discovery ISO is ready to download');
+Cypress.env('isoReadyToDownloadText', 'Discovery ISO is ready to be downloaded');
 Cypress.env('editIso', `[data-testid=edit-iso-btn]`);
 Cypress.env('closeIso', `[data-testid=close-iso-btn]`);
 Cypress.env('hostRole', `[data-testid=host-role]`);

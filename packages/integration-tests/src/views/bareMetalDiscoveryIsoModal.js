@@ -85,10 +85,6 @@ export const bareMetalDiscoveryIsoModal = {
   getAddHostsButton: () => {
     return cy.get('#host-inventory-button-download-discovery-iso');
   },
-  getIsoUrl: () => {
-    return cy.get(Cypress.env('copyableInputAriaLabel'))
-      .eq(0)
-  },
   getEditISO: () => {
     return cy.get('[data-testid="edit-iso-btn"]')
   },
@@ -127,7 +123,7 @@ export const bareMetalDiscoveryIsoModal = {
     }
   },
   waitForIsoGeneration: (timeout = Cypress.env('GENERATE_ISO_TIMEOUT')) => {
-    cy.get('h4', { timeout: timeout }).should('contain', ' Discovery ISO is ready for download');
+    cy.get('h4', { timeout: timeout }).should('contain', 'Discovery ISO is ready to be downloaded');
   },
   verifyDownloadIsoLinks: () => {
     return cy
