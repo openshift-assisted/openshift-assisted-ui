@@ -1,8 +1,3 @@
-interface AIInterceptsConfig {
-  activeSignal: string;
-  activeScenario: string;
-}
-
 declare namespace Cypress {
   interface Chainable {
     runCmd(cmd: string, setAlias?: boolean, failOnNonZeroExit?: boolean, timeout?: number): Chainable<Cypress.Exec>;

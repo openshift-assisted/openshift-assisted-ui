@@ -7,5 +7,5 @@
     "allowSyntheticDefaultImports": true,
     "types": ["cypress", "cypress-file-upload", "node"]
   },
-  "include": ["src/**/*.ts", "./Cypress.d.ts", "src/**/*.js"]
+  "include": ["./*.d.ts", "src/**/*.ts", "src/**/*.js"]
 }

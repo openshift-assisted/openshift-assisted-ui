@@ -5,6 +5,9 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "parserOptions": {
+        "project": ["packages/*/tsconfig(.*)?.json"]
+      },
       "plugins": ["import"],
       "extends": [
         "eslint:recommended",

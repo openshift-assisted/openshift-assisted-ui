@@ -33,34 +33,34 @@ describe(`Assisted Installer Disk Encryption`, () => {
   describe(`Unit tests`, () => {
     beforeEach(() => {
       cy.loadAiAPIIntercepts(null);
-      diskEncryptionSection.getMastersEncryptionSwitch().click({force: true});
+      diskEncryptionSection.getMastersEncryptionSwitch().click({ force: true });
     });
 
     afterEach(() => {
       commonActions.waitForSave();
       commonActions.waitForNext();
-      diskEncryptionSection.getMastersEncryptionSwitch().click({force: true});
+      diskEncryptionSection.getMastersEncryptionSwitch().click({ force: true });
     });
 
     it('Can use disk encryption', () => {
       //enable disk encryption
-      diskEncryptionSection.getWorkersEncryptionSwitch().click({force: true});
+      diskEncryptionSection.getWorkersEncryptionSwitch().click({ force: true });
       diskEncryptionSection.getEncryptionMode().first().should('be.checked');
       diskEncryptionSection.getEncryptionMode().first().should('have.value', 'tpmv2');
-      diskEncryptionSection.getWorkersEncryptionSwitch().click({force: true});
+      diskEncryptionSection.getWorkersEncryptionSwitch().click({ force: true });
       //enableTangServers
-      diskEncryptionSection.getEncryptionMode().check("tang");
+      diskEncryptionSection.getEncryptionMode().check('tang');
       diskEncryptionSection.getTangServerUrl(0).should('be.visible');
       diskEncryptionSection.getTangServerThumbprint(0).should('be.visible');
       diskEncryptionSection.getEncryptionMode().first().check();
     });
 
     it('Add tang servers', () => {
-      diskEncryptionSection.getEncryptionMode().check("tang");
+      diskEncryptionSection.getEncryptionMode().check('tang');
       diskEncryptionSection.getAnotherTangServerButton().click();
       fillTangServers(0);
       diskEncryptionSection.getTangServerUrl(1).should('be.visible');
-      diskEncryptionSection.getTangServerThumbprint(1).should('be.visible')
+      diskEncryptionSection.getTangServerThumbprint(1).should('be.visible');
       fillTangServers(1);
     });
   });
@@ -68,8 +68,8 @@ describe(`Assisted Installer Disk Encryption`, () => {
   describe(`Disk Encryption Submission`, () => {
     it('Can submit the form with Tang encryption', () => {
       cy.loadAiAPIIntercepts(null);
-      diskEncryptionSection.getMastersEncryptionSwitch().click({force: true});
-      diskEncryptionSection.getEncryptionMode().check("tang");
+      diskEncryptionSection.getMastersEncryptionSwitch().click({ force: true });
+      diskEncryptionSection.getEncryptionMode().check('tang');
       fillTangServers(0);
 
       commonActions.clickNextButton();

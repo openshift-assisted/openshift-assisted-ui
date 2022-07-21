@@ -1,4 +1,4 @@
-import { imageDownloadLink } from '../fixtures/infra-envs';
+import { isoDownloadLink } from '../fixtures/infra-envs';
 
 export const bareMetalDiscoveryIsoModal = {
   getGenerateDiscoveryIsoModalId: () => {
@@ -81,10 +81,10 @@ export const bareMetalDiscoveryIsoModal = {
     return cy.get('#host-inventory-button-download-discovery-iso');
   },
   getEditISO: () => {
-    return cy.get('[data-testid="edit-iso-btn"]')
+    return cy.get('[data-testid="edit-iso-btn"]');
   },
   getImageType: () => {
-    return cy.get('input[name="imageType"]')
+    return cy.get('input[name="imageType"]');
   },
   getCancelGenerateDiscoveryIsoButton: () => {
     return cy.get('.pf-c-modal-box__footer > .pf-m-link');
@@ -123,7 +123,7 @@ export const bareMetalDiscoveryIsoModal = {
       .get("[aria-label='Copyable input']")
       .should('have.length', 2)
       .each((downloadLink) => {
-        cy.wrap(downloadLink).should('contain.value', imageDownloadLink);
+        cy.wrap(downloadLink).should('contain.value', isoDownloadLink);
       });
   },
   getEditIsoButton: () => {
