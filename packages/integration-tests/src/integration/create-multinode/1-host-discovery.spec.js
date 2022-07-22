@@ -38,6 +38,7 @@ describe(`Assisted Installer Multinode Host discovery`, () => {
       bareMetalDiscoveryPage.openAddHostsModal();
 
       bareMetalDiscoveryIsoModal.getGenerateDiscoveryIso().click();
+      bareMetalDiscoveryIsoModal.getGeneratingButton().should('be.visible');
       bareMetalDiscoveryIsoModal.waitForIsoGeneration();
       bareMetalDiscoveryIsoModal.verifyDownloadIsoLinks();
 
@@ -45,6 +46,12 @@ describe(`Assisted Installer Multinode Host discovery`, () => {
         utils.setLastWizardSignal('ISO_DOWNLOADED');
       });
       bareMetalDiscoveryIsoModal.getCloseIsoButton().click();
+    });
+
+    it('Instructions should appear inside the Add Host modal', () => {
+      bareMetalDiscoveryIsoModal.getAddHostsButton().click();
+      bareMetalDiscoveryIsoModal.getGenerateDiscoveryIso().click();
+      bareMetalDiscoveryIsoModal.getAddHostsInstructions().should('exist');
     });
 
     it('Should generate three hosts in Insufficient state', () => {

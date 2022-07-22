@@ -2,7 +2,7 @@ import { navbar } from '../../views/navbar';
 import { transformBasedOnUIVersion } from '../../support/transformations';
 import { commonActions } from '../../views/common';
 
-describe('Assisted Installer UI behaviour', () => {
+describe('Assisted Installer UI behaviour - cluster updates', () => {
   before(() => {
     cy.loadAiAPIIntercepts({
       activeSignal: 'READY_TO_INSTALL',
