@@ -1,4 +1,4 @@
-export const diskEncryptionPage = {
+export const diskEncryptionSection = {
   getTangServerUrl : (index) => {
     return cy.get(`#form-input-diskEncryptionTangServers-${index}-url-field`);
   },
@@ -14,7 +14,7 @@ export const diskEncryptionPage = {
   getEncryptionMode: () => {
     return cy.get('input[name="diskEncryptionMode"]');
   },
-  addAnotherTangServer: () => {
+  getAnotherTangServerButton: () => {
     return cy.contains('Add another Tang server');
   },
 }
