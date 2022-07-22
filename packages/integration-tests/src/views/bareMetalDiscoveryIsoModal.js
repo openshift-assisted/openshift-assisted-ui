@@ -123,7 +123,7 @@ export const bareMetalDiscoveryIsoModal = {
     }
   },
   waitForIsoGeneration: (timeout = Cypress.env('GENERATE_ISO_TIMEOUT')) => {
-    cy.get('h4', { timeout: timeout }).should('contain', 'Discovery ISO is ready to be downloaded');
+    cy.get('h4', { timeout: timeout }).should('contain', Cypress.env('isoReadyToDownloadText'));
   },
   verifyDownloadIsoLinks: () => {
     return cy
