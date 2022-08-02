@@ -1,6 +1,6 @@
-import {transformBasedOnUIVersion} from "../../support/transformations";
-import {bareMetalDiscoveryPage} from "../../views/bareMetalDiscovery";
-import {bareMetalDiscoveryIsoModal} from "../../views/bareMetalDiscoveryIsoModal";
+import { transformBasedOnUIVersion } from '../../support/transformations';
+import { bareMetalDiscoveryPage } from '../../views/bareMetalDiscovery';
+import { bareMetalDiscoveryIsoModal } from '../../views/bareMetalDiscoveryIsoModal';
 
 describe('Assisted Installer UI behaviour - infra env updates', () => {
   before(() => {
@@ -20,13 +20,12 @@ describe('Assisted Installer UI behaviour - infra env updates', () => {
     bareMetalDiscoveryPage.openAddHostsModal();
     bareMetalDiscoveryIsoModal.getGenerateDiscoveryIso().click();
     bareMetalDiscoveryIsoModal.getEditISO().click();
-    bareMetalDiscoveryIsoModal.getImageType().check("full-iso");
+    bareMetalDiscoveryIsoModal.getImageType().check('minimal-iso');
     bareMetalDiscoveryIsoModal.getGenerateDiscoveryIso().click();
-    cy.wait(['@update-infra-env', '@update-infra-env']).then(
-      (interceptions) => {
-        expect(interceptions[0].request.body.image_type).to.equal('minimal-iso');
-        expect(interceptions[1].request.body.image_type).to.equal('full-iso');
-      }
-    );
+    cy.wait(['@update-infra-env', '@update-infra-env']).then((interceptions) => {
+      // The infraEnv fixture has full-iso initially, so we change it to the minimal
+      const isoRequests = interceptions.map((x) => x.request.body.image_type);
+      expect(isoRequests.join(',')).to.equal(['full-iso', 'minimal-iso'].join(','));
+    });
   });
 });
