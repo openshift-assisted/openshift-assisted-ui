@@ -69,6 +69,7 @@ export const commonActions = {
     } else {
       commonActions.getHeader('h2').should('contain', 'Host discovery');
       commonActions.clickNextButton();
+      commonActions.clickNextButton();
     }
   },
   visitNewClusterPage: () => {
