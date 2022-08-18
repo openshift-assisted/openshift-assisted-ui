@@ -24,7 +24,7 @@ describe(`Assisted Installer Read Only Cluster`, () => {
       navbar.clickOnNavItem('Cluster details');
 
       clusterDetailsPage.getClusterNameField().should('be.disabled');
-      clusterDetailsPage.getBaseDnsDomain().should('have.attr', 'readonly');
+      clusterDetailsPage.getBaseDnsDomain().should('be.disabled');
     });
 
     it('Should display the Host discovery page in viewer mode', () => {
@@ -32,7 +32,7 @@ describe(`Assisted Installer Read Only Cluster`, () => {
 
       // General controls
       bareMetalDiscoveryPage.getIntegrationWithvSphere().should('be.disabled');
-      bareMetalDiscoveryPage.getAddHostsButton().should('be.disabled');
+      bareMetalDiscoveryPage.getAddHostsButton().should('not.exist');
       bareMetalDiscoveryPage.getCnvField().should('be.disabled');
       bareMetalDiscoveryPage.getOcsOperator().should('be.disabled');
 
