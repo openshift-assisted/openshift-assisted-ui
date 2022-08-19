@@ -13,7 +13,7 @@ describe(`Assisted Installer SNO Review`, () => {
 
   beforeEach(() => {
     cy.loadAiAPIIntercepts(null);
-    cy.visit(`/clusters/${Cypress.env('clusterId')}`);
+    commonActions.visitClusterDetailsPage();
     commonActions.getHeader('h2').should('contain', 'Review and create');
   });
 

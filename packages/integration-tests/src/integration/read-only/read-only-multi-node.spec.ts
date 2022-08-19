@@ -16,7 +16,7 @@ describe(`Assisted Installer Read Only Cluster`, () => {
 
   beforeEach(() => {
     cy.loadAiAPIIntercepts(null);
-    cy.visit(`/clusters/${Cypress.env('clusterId')}`);
+    commonActions.visitClusterDetailsPage();
   });
 
   describe('Read Only cluster', () => {

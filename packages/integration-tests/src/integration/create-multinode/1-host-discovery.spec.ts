@@ -1,7 +1,7 @@
 import { commonActions } from '../../views/common';
 import { bareMetalDiscoveryPage } from '../../views/bareMetalDiscovery';
 import { bareMetalDiscoveryIsoModal } from '../../views/bareMetalDiscoveryIsoModal';
-import { installationPage } from '../../views/installationPage';
+import { hostsTableSection } from '../../views/hostsTableSection';
 import { navbar } from '../../views/navbar';
 
 import { transformBasedOnUIVersion } from '../../support/transformations';
@@ -12,10 +12,10 @@ const validateHostTableDetails = () => {
   Cypress.env('masterMemory', '33.20 GiB');
   Cypress.env('masterDiskTotalSize', '12.88 GB');
 
-  installationPage.validateHostCpuCores(3, 0);
-  installationPage.validateHostDisk(3, 0);
-  installationPage.validateHostMemory(3, 0);
-  installationPage.validateHostRoles(3, 0);
+  hostsTableSection.validateHostCpuCores(3, 0);
+  hostsTableSection.validateHostDiskSize(3, 0);
+  hostsTableSection.validateHostMemory(3, 0);
+  hostsTableSection.validateHostRoles(3, 0);
 };
 
 describe(`Assisted Installer Multinode Host discovery`, () => {
@@ -29,7 +29,7 @@ describe(`Assisted Installer Multinode Host discovery`, () => {
 
   beforeEach(() => {
     cy.loadAiAPIIntercepts(null);
-    cy.visit(`/clusters/${Cypress.env('clusterId')}`);
+    commonActions.visitClusterDetailsPage();
   });
 
   describe('Downloading the Discovery ISO', () => {
@@ -68,9 +68,8 @@ describe(`Assisted Installer Multinode Host discovery`, () => {
       bareMetalDiscoveryPage.massRenameHosts(hostPrefix);
       cy.wait(['@rename-host-1', '@rename-host-2', '@rename-host-3']).then(() => {
         utils.setLastWizardSignal('HOST_RENAMED_3');
-        bareMetalDiscoveryPage.waitForHardwareStatus('Ready');
-
-        installationPage.validateHostNames(3, 0, [`${hostPrefix}-1`, `${hostPrefix}-2`, `${hostPrefix}-3`]);
+        hostsTableSection.waitForHardwareStatus('Ready');
+        hostsTableSection.validateHostNames(3, 0, [`${hostPrefix}-1`, `${hostPrefix}-2`, `${hostPrefix}-3`]);
       });
       commonActions.getNextButton().should('be.enabled');
     });

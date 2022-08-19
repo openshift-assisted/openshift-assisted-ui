@@ -3,6 +3,7 @@ import { bareMetalDiscoveryPage } from '../../views/bareMetalDiscovery';
 import { bareMetalDiscoveryIsoModal } from '../../views/bareMetalDiscoveryIsoModal';
 import { navbar } from '../../views/navbar';
 import * as utils from '../../support/utils';
+import { hostsTableSection } from '../../views/hostsTableSection';
 
 describe(`Assisted Installer SNO Host discovery`, () => {
   before(() => {
@@ -14,7 +15,7 @@ describe(`Assisted Installer SNO Host discovery`, () => {
 
   beforeEach(() => {
     cy.loadAiAPIIntercepts(null);
-    cy.visit(`/clusters/${Cypress.env('clusterId')}`);
+    commonActions.visitClusterDetailsPage();
   });
 
   describe('Downloading the Discovery ISO', () => {
@@ -39,7 +40,7 @@ describe(`Assisted Installer SNO Host discovery`, () => {
 
       bareMetalDiscoveryPage.waitForHostTablePopulation();
       bareMetalDiscoveryPage.waitForHostRowToContain('localhost');
-      bareMetalDiscoveryPage.waitForHardwareStatus('Insufficient');
+      hostsTableSection.waitForHardwareStatus('Insufficient');
     });
 
     it('Should rename the host, get valid state and see the "next" button enabled', () => {
@@ -56,7 +57,7 @@ describe(`Assisted Installer SNO Host discovery`, () => {
       });
 
       bareMetalDiscoveryPage.waitForHostRowToContain(renamedHost);
-      bareMetalDiscoveryPage.waitForHardwareStatus('Ready');
+      hostsTableSection.waitForHardwareStatus('Ready');
       bareMetalDiscoveryPage.waitForHostTablePopulation(1, 0);
       commonActions.getNextButton().should('be.enabled');
     });

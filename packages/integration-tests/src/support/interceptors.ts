@@ -11,6 +11,7 @@ import { infraEnv, imageDownload } from '../fixtures/infra-envs';
 import createSnoFixtureMapping from '../fixtures/create-sno';
 import createMultinodeFixtureMapping from '../fixtures/create-mn';
 import createReadOnlyClusterFixtureMapping from '../fixtures/read-only';
+import createStorageFixtureMapping from '../fixtures/storage';
 import { createDualStackFixtureMapping, singleStackEnhancements, dualStackEnhancements } from '../fixtures/dualstack';
 import { dualStackNetworkingRequest, ipv4NetworkingRequest } from '../fixtures/dualstack/requests';
 
@@ -47,11 +48,9 @@ const transformFixture = (req, fixture) => {
   }
 };
 
-const mockClusterResponse = (req) => {
-  const activeScenario: string = Cypress.env('AI_SCENARIO');
+const getScenarioFixtureMapping = () => {
   let fixtureMapping = null;
-
-  switch (activeScenario) {
+  switch (Cypress.env('AI_SCENARIO')) {
     case 'AI_CREATE_SNO':
       fixtureMapping = createSnoFixtureMapping;
       break;
@@ -64,14 +63,22 @@ const mockClusterResponse = (req) => {
     case 'AI_READONLY_CLUSTER':
       fixtureMapping = createReadOnlyClusterFixtureMapping;
       break;
+    case 'AI_STORAGE_CLUSTER':
+      fixtureMapping = createStorageFixtureMapping;
+      break;
     default:
       break;
   }
+  return fixtureMapping;
+};
+
+const mockClusterResponse = (req) => {
+  const fixtureMapping = getScenarioFixtureMapping();
   if (fixtureMapping) {
     const fixture = fixtureMapping[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping['default'];
     req.reply(transformFixture(req, fixture));
   } else {
-    throw new Error('Incorrect fixture mapping for scenario ' + activeScenario);
+    throw new Error('Incorrect fixture mapping for scenario ' + ((Cypress.env('AI_SCENARIO') as string) || ''));
   }
 };
 
@@ -97,6 +104,12 @@ const setScenarioEnvVars = ({ activeScenario }) => {
     case 'AI_READONLY_CLUSTER':
       Cypress.env('ASSISTED_SNO_DEPLOYMENT', false);
       Cypress.env('CLUSTER_NAME', 'ai-e2e-readonly');
+      break;
+    case 'AI_STORAGE_CLUSTER':
+      Cypress.env('ASSISTED_SNO_DEPLOYMENT', false);
+      Cypress.env('CLUSTER_NAME', 'ai-e2e-storage');
+      Cypress.env('NUM_MASTERS', 3);
+      Cypress.env('NUM_WORKERS', 2);
       break;
     default:
       break;
@@ -141,7 +154,12 @@ const addInfraEnvIntercepts = () => {
 
 const addHostIntercepts = () => {
   cy.intercept('GET', `${infraEnvApiPath}/hosts/`, (req) => {
-    const hostsFixture = getUpdatedHosts();
+    const fixtureMapping = getScenarioFixtureMapping();
+    let hostsFixture = fixtureMapping.staticHosts;
+
+    if (!hostsFixture) {
+      hostsFixture = getUpdatedHosts();
+    }
     req.reply(hostsFixture);
   });
 
