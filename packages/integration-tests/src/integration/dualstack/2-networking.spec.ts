@@ -28,7 +28,11 @@ describe(`Assisted Installer Dualstack Networking`, () => {
   it('Can correctly configure IPv4 networking type', () => {
     networkingPage.getStackTypeSingleStack().should('be.enabled').and('be.checked');
     networkingPage.getClusterManagedNetworking().should('be.enabled').and('be.checked');
-    networkingPage.getVipDhcp().should('be.enabled').and('be.checked');
+    networkingPage.getVipDhcp().should('be.enabled').and('not.be.checked');
+
+    networkingPage.getApiVipField().type('192.168.122.10');
+    networkingPage.getIngressVipField().type('192.168.122.110')
+
     networkingPage.getAdvancedNetwork().should('be.enabled').and('not.be.checked');
 
     utils.setTransformSignal('single-stack');
@@ -63,7 +67,7 @@ describe(`Assisted Installer Dualstack Networking`, () => {
 
     networkingPage.getClusterManagedNetworking().should('be.enabled').and('be.checked');
     networkingPage.getStackTypeSingleStack().should('be.enabled').and('be.checked');
-    networkingPage.getVipDhcp().should('be.enabled').and('be.checked');
+    networkingPage.getVipDhcp().should('be.enabled').and('not.be.checked');
     networkingPage.getSdnNetworkingField().should('be.enabled').and('be.checked');
   });
 });

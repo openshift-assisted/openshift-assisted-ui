@@ -58,7 +58,7 @@ const dualstackClusterBase = {
   high_availability_mode: 'Full',
   network_type: 'OpenShiftSDN',
   user_managed_networking: false,
-  vip_dhcp_allocation: true,
+  vip_dhcp_allocation: false,
   connectivity_majority_groups: JSON.stringify(connectivityMajorityGroups),
   validations_info: JSON.stringify(clusterValidationsInfo),
   enabled_host_count: 3,
