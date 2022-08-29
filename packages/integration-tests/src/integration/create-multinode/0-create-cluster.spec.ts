@@ -33,6 +33,7 @@ describe(`Assisted Installer Multinode Cluster Installation`, () => {
       cy.wait('@create-cluster');
       cy.wait('@create-infra-env');
       utils.setLastWizardSignal('CLUSTER_CREATED');
+      commonActions.clickNextButton();
 
       cy.get('h2').should('contain', 'Host discovery');
     });

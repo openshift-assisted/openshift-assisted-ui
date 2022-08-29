@@ -26,6 +26,7 @@ describe('Assisted Installer UI behaviour - cluster updates', () => {
 
       navbar.clickOnNavItem('Cluster details');
       commonActions.clickNextButton();
+      commonActions.clickNextButton();
       commonActions.getHeader('h2').should('contain', 'Host discovery');
     });
   });
