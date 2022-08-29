@@ -7,8 +7,6 @@ const readyToInstallCluster = clusterReadyBuilder(dualstackClusterBase);
 const readyToInstallDualstackCluster = clusterDualstackBuilder(readyToInstallCluster);
 
 const singleStackEnhancements = {
-  api_vip: '192.168.122.10',
-  ingress_vip: '192.168.122.110',
   feature_usage: JSON.stringify(featureUsage),
   e2e_mock_source: '5-dualstack-ipv4',
   status: 'ready',
