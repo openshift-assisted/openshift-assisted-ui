@@ -1,8 +1,8 @@
 export const diskEncryptionSection = {
-  getTangServerUrl : (index) => {
+  getTangServerUrl: (index) => {
     return cy.get(`#form-input-diskEncryptionTangServers-${index}-url-field`);
   },
-  getTangServerThumbprint : (index) => {
+  getTangServerThumbprint: (index) => {
     return cy.get(`#form-input-diskEncryptionTangServers-${index}-thumbprint-field`);
   },
   getMastersEncryptionSwitch: () => {
@@ -17,4 +17,4 @@ export const diskEncryptionSection = {
   getAnotherTangServerButton: () => {
     return cy.contains('Add another Tang server');
   },
-}
+};

@@ -2,13 +2,13 @@ import { getCwd, getUiVersion } from '../support/utils';
 import * as utils from '../support/utils';
 
 export const commonActions = {
-  clickButtonContainingText: (text) => {
+  clickButtonContainingText: (text: string) => {
     cy.get(`button:contains('${text}')`).scrollIntoView().should('be.visible').click();
   },
-  clickBreadCrumbItem: (breadCrumbItemName) => {
-    cy.get('.pf-c-breadcrumb__item').contains(breadCrumbItemName).click();
+  openWizardStep: (stepName: string) => {
+    cy.get('.pf-c-wizard__nav-item').contains(stepName).click();
   },
-  clickDropDownMenuItem: (menuItemName) => {
+  clickDropDownMenuItem: (menuItemName: string) => {
     cy.get('.pf-c-dropdown__menu-item').contains(menuItemName).click();
   },
   newLogAssistedUIVersion: () => {
@@ -64,15 +64,20 @@ export const commonActions = {
   },
   startAtNetworkingStep: () => {
     if (utils.hasWizardSignal('READY_TO_INSTALL')) {
-      commonActions.getHeader('h2').should('contain', 'Review and create');
-      commonActions.getBackButton().click();
+      commonActions.openWizardStep('Networking');
     } else {
       commonActions.getHeader('h2').should('contain', 'Host discovery');
       commonActions.clickNextButton();
       commonActions.clickNextButton();
     }
   },
+  startAtStorageStep: () => {
+    commonActions.openWizardStep('Storage');
+  },
   visitNewClusterPage: () => {
     cy.visit('/clusters/~new');
+  },
+  visitClusterDetailsPage: () => {
+    cy.visit(`/clusters/${Cypress.env('clusterId')}`);
   },
 };

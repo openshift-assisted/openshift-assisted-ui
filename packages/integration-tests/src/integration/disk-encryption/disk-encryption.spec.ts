@@ -1,5 +1,5 @@
 import { clusterDetailsPage } from '../../views/clusterDetails';
-import { diskEncryptionSection } from '../../views/diskEncryption';
+import { diskEncryptionSection } from '../../views/diskEncryptionSection';
 import { bareMetalDiscoveryPage } from '../../views/bareMetalDiscovery';
 import { commonActions } from '../../views/common';
 import { diskEncryptionValues, tangServerValues } from '../../fixtures/disk-encryption';

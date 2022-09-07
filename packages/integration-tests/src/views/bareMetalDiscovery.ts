@@ -45,17 +45,6 @@ export const bareMetalDiscoveryPage = {
       }
     });
   },
-  waitForHardwareStatus: (
-    status,
-    numMasters: number = Cypress.env('NUM_MASTERS'),
-    numWorkers: number = Cypress.env('NUM_WORKERS'),
-    timeout = Cypress.env('HOST_READY_TIMEOUT'),
-  ) => {
-    // Start at index 2 here because of selector
-    for (let i = 2; i <= numMasters + numWorkers + 1; i++) {
-      cy.hostDetailSelector(i, 'Status', timeout).should('contain', status);
-    }
-  },
   waitForHostRowToContain: (text, timeout = Cypress.env('HOST_DISCOVERY_TIMEOUT')) => {
     cy.get('table.hosts-table > tbody > tr', { timeout: timeout }).should('contain', text);
   },

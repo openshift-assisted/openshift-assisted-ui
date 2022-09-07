@@ -7,10 +7,13 @@ const hostIds = [
   '1e40aa5d-0b69-4122-a562-bff1e35e7071',
   '2e40aa5d-0b69-4122-a562-bff1e35e7072',
   '3e40aa5d-0b69-4122-a562-bff1e35e7073',
+  '4e40aa5d-0b69-4122-a562-bff1e35e7074',
+  '5e40aa5d-0b69-4122-a562-bff1e35e7075',
 ];
-const hostIPs = ['192.168.122.0/24', 'IP2', 'IP3'];
 
-const discoveredHosts = [hostDiscover(0), hostDiscover(1), hostDiscover(2)];
+const hostIPs = ['192.168.122.0/24', 'IP2', 'IP3', 'IP4', 'IP5'];
+
+const discoveredHosts = [hostDiscover(0), hostDiscover(1), hostDiscover(2), hostDiscover(3), hostDiscover(4)];
 
 const getDiscoveredHostsCount = () => {
   const signals = ['HOST_DISCOVERED_1', 'HOST_DISCOVERED_2', 'HOST_DISCOVERED_3'];
@@ -19,6 +22,10 @@ const getDiscoveredHostsCount = () => {
     return 3;
   }
   return firstUndiscoveredIndex;
+};
+
+const getRenamedHost = (hostIndex: number) => {
+  return hostRename(discoveredHosts[hostIndex], `${Cypress.env('HOST_RENAME')}-${hostIndex + 1}`);
 };
 
 const getUpdatedHosts = () => {
@@ -33,9 +40,9 @@ const getUpdatedHosts = () => {
   if (/HOST_DISCOVERED_\d/.test(lastSignal)) {
     transformer = (index) => discoveredHosts[index];
   } else if (/HOST_RENAMED_\d/.test(lastSignal)) {
-    transformer = (index) => hostRename(discoveredHosts[index], `${Cypress.env('HOST_RENAME')}-${index + 1}`);
+    transformer = getRenamedHost;
   } else if (hasWizardSignal('READY_TO_INSTALL')) {
-    transformer = (index) => hostReady(hostRename(discoveredHosts[index], Cypress.env('HOST_RENAME')));
+    transformer = (index) => hostReady(getRenamedHost(index));
   }
 
   return new Array(discoveredHostsCount).fill(0).map((_, index) => {

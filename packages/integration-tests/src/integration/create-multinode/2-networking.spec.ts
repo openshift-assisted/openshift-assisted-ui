@@ -12,7 +12,7 @@ describe(`Assisted Installer Multinode Networking`, () => {
 
   beforeEach(() => {
     cy.loadAiAPIIntercepts(null);
-    cy.visit(`/clusters/${Cypress.env('clusterId')}`);
+    commonActions.visitClusterDetailsPage();
     commonActions.startAtNetworkingStep();
   });
 

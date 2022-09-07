@@ -13,7 +13,7 @@ describe('Assisted Installer UI behaviour - infra env updates', () => {
 
   beforeEach(() => {
     cy.loadAiAPIIntercepts(null);
-    cy.visit(`/clusters/${Cypress.env('clusterId')}`);
+    commonActions.visitClusterDetailsPage();
   });
 
   it('Should discriminate between full and minimal image', () => {
