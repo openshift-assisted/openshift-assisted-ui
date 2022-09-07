@@ -27,14 +27,18 @@ describe(`Assisted Installer Read Only Cluster`, () => {
       clusterDetailsPage.getBaseDnsDomain().should('be.disabled');
     });
 
+    it('Should display Operators page in viewer mode', () => {
+      navbar.clickOnNavItem('Operators');
+      bareMetalDiscoveryPage.getCnvField().should('be.disabled');
+      bareMetalDiscoveryPage.getOcsOperator().should('be.disabled');
+    });
+
     it('Should display the Host discovery page in viewer mode', () => {
       navbar.clickOnNavItem('Host discovery');
 
       // General controls
       bareMetalDiscoveryPage.getIntegrationWithvSphere().should('be.disabled');
       bareMetalDiscoveryPage.getAddHostsButton().should('not.exist');
-      bareMetalDiscoveryPage.getCnvField().should('be.disabled');
-      bareMetalDiscoveryPage.getOcsOperator().should('be.disabled');
 
       // Host Table actions
       bareMetalDiscoveryPage.getHostTableMassActions().should('not.exist');
@@ -42,8 +46,13 @@ describe(`Assisted Installer Read Only Cluster`, () => {
       bareMetalDiscoveryPage.validateIsReadOnlyHostMenu();
     });
 
+    it('Should display Storage page in viewer mode', () => {
+      navbar.clickOnNavItem('Storage');
+      bareMetalDiscoveryPage.getHostTableMassActions().should('not.exist');
+      bareMetalDiscoveryPage.validateIsReadOnlyHostMenu();
+    });
+
     it('Should display the Networking page in viewer mode', () => {
-      // TODO Set the cluster to have Dual Stack to cover more fields
       navbar.clickOnNavItem('Networking');
 
       networkingPage.getClusterManagedNetworking().should('be.disabled');
