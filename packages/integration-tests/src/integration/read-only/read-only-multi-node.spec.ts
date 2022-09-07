@@ -3,6 +3,7 @@ import { clusterDetailsPage } from '../../views/clusterDetails';
 import { bareMetalDiscoveryPage } from '../../views/bareMetalDiscovery';
 import { networkingPage } from '../../views/networkingPage';
 import { reviewAndCreatePage } from '../../views/reviewCreate';
+import { commonActions } from '../../views/common';
 import { transformBasedOnUIVersion } from '../../support/transformations';
 
 describe(`Assisted Installer Read Only Cluster`, () => {
