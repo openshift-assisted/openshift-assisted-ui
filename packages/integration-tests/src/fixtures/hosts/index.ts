@@ -13,7 +13,9 @@ const hostIds = [
 
 const hostIPs = ['192.168.122.0/24', 'IP2', 'IP3', 'IP4', 'IP5'];
 
-const discoveredHosts = [hostDiscover(0), hostDiscover(1), hostDiscover(2), hostDiscover(3), hostDiscover(4)];
+const discoveredHosts = Array(5)
+  .fill(null)
+  .map((_value, index) => hostDiscover(index));
 
 const getDiscoveredHostsCount = () => {
   const signals = ['HOST_DISCOVERED_1', 'HOST_DISCOVERED_2', 'HOST_DISCOVERED_3'];
