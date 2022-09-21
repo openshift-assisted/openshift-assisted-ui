@@ -76,5 +76,34 @@ describe(`Assisted Installer Storage Step`, () => {
         hostsTableSection.validateHostDisksDetails(host.disks);
       });
     });
+
+    it('Should display the skip formatting disk column', () => {      
+      const hosts = [        
+        {
+          hostId: 3,
+          disks: workerDisks,
+        },
+      ];
+
+      hosts.forEach((host) => {
+        hostsTableSection.getHostDetails(host.hostId).click();
+        storagePage.validateSkipFormattingDisks();
+      });
+    });
+
+    it('Should display the skip formatting disk warning', () => {      
+      const hosts = [        
+        {
+          hostId: 3,
+          disks: workerDisks,
+        },
+      ];
+
+      hosts.forEach((host) => {
+        hostsTableSection.getHostDetails(host.hostId).click();
+        storagePage.validateSkipFormattingWarning();
+      });
+    });
+   
   });
 });

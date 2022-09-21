@@ -24,4 +24,18 @@ export const storagePage = {
         expect(hostDisk).to.contain('2');
       });
   },
+   getSkipFormattingCheckbox: () => {
+    return cy.get('input[id="select-formatted-0"]');
+  },
+  validateSkipFormattingDisks: (
+    numWorkers: number = Cypress.env('NUM_WORKERS'),
+  ) => {
+    cy.get(Cypress.env('skipFormattingDataLabel'))
+      .should('have.length', numWorkers)
+    cy.get('input[type="checkbox"]').should('not.be.checked')
+  },
+  validateSkipFormattingWarning: () => {
+    cy.get('.pf-c-alert__title').should('contain',Cypress.env('skipFormattingWarningTitle'));
+    cy.get('.pf-c-alert__description').should('contain',Cypress.env('skipFormattingWarningDesc'));
+  },
 };
