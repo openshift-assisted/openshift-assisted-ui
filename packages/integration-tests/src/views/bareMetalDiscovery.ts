@@ -18,8 +18,11 @@ export const bareMetalDiscoveryPage = {
   getCnvField: () => {
     return cy.get(Cypress.env('useContainerNativeVirtualizationField'));
   },
-  getOcsOperator: () => {
-    return cy.get(Cypress.env('useExtraDisksForLocalStorageField'));
+  getOdfOperator: () => {
+    return cy.get(Cypress.env('useOpenShiftDataFoundation'));
+  },
+  getLvmOperator: () => {
+    return cy.get(Cypress.env('useOdfLogicalVolumeManagerField'));
   },
   getIntegrationWithvSphere: () => {
     return cy.get('#form-input-usePlatformIntegration-field');

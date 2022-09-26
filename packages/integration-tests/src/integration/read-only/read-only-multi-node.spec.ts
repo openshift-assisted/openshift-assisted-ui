@@ -31,7 +31,8 @@ describe(`Assisted Installer Read Only Cluster`, () => {
     it('Should display Operators page in viewer mode', () => {
       navbar.clickOnNavItem('Operators');
       bareMetalDiscoveryPage.getCnvField().should('be.disabled');
-      bareMetalDiscoveryPage.getOcsOperator().should('be.disabled');
+      bareMetalDiscoveryPage.getOdfOperator().should('be.disabled');
+      bareMetalDiscoveryPage.getLvmOperator().should('not.exist');
     });
 
     it('Should display the Host discovery page in viewer mode', () => {
