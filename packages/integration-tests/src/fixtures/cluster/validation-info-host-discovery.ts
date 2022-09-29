@@ -19,6 +19,11 @@ const operatorValidations = [
     status: 'success',
     message: 'odf is disabled',
   },
+  {
+    id: 'lvm-requirements-satisfied',
+    status: 'success',
+    message: 'lvm is disabled',
+  },
 ];
 
 const hostValidationsInfo = {
