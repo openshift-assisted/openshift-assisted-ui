@@ -3,6 +3,7 @@ import { clusterDetailsPage } from '../../views/clusterDetails';
 import { bareMetalDiscoveryPage } from '../../views/bareMetalDiscovery';
 import { networkingPage } from '../../views/networkingPage';
 import { reviewAndCreatePage } from '../../views/reviewCreate';
+import { commonActions } from '../../views/common';
 import { transformBasedOnUIVersion } from '../../support/transformations';
 import { commonActions } from '../../views/common';
 
@@ -25,7 +26,14 @@ describe(`Assisted Installer Read Only Cluster`, () => {
       navbar.clickOnNavItem('Cluster details');
 
       clusterDetailsPage.getClusterNameField().should('be.disabled');
-      clusterDetailsPage.getBaseDnsDomain().should('have.attr', 'readonly');
+      clusterDetailsPage.getBaseDnsDomain().should('be.disabled');
+    });
+
+    it('Should display Operators page in viewer mode', () => {
+      navbar.clickOnNavItem('Operators');
+      bareMetalDiscoveryPage.getCnvField().should('be.disabled');
+      bareMetalDiscoveryPage.getOdfOperator().should('be.disabled');
+      bareMetalDiscoveryPage.getLvmOperator().should('not.exist');
     });
 
     it('Should display the Host discovery page in viewer mode', () => {
@@ -33,9 +41,7 @@ describe(`Assisted Installer Read Only Cluster`, () => {
 
       // General controls
       bareMetalDiscoveryPage.getIntegrationWithvSphere().should('be.disabled');
-      bareMetalDiscoveryPage.getAddHostsButton().should('be.disabled');
-      bareMetalDiscoveryPage.getCnvField().should('be.disabled');
-      bareMetalDiscoveryPage.getOcsOperator().should('be.disabled');
+      bareMetalDiscoveryPage.getAddHostsButton().should('not.exist');
 
       // Host Table actions
       bareMetalDiscoveryPage.getHostTableMassActions().should('not.exist');
@@ -43,8 +49,13 @@ describe(`Assisted Installer Read Only Cluster`, () => {
       bareMetalDiscoveryPage.validateIsReadOnlyHostMenu();
     });
 
+    it('Should display Storage page in viewer mode', () => {
+      navbar.clickOnNavItem('Storage');
+      bareMetalDiscoveryPage.getHostTableMassActions().should('not.exist');
+      bareMetalDiscoveryPage.validateIsReadOnlyHostMenu();
+    });
+
     it('Should display the Networking page in viewer mode', () => {
-      // TODO Set the cluster to have Dual Stack to cover more fields
       navbar.clickOnNavItem('Networking');
 
       networkingPage.getClusterManagedNetworking().should('be.disabled');
