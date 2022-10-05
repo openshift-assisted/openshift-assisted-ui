@@ -36,11 +36,15 @@ export const getTransformSignal = (): SignalName | undefined => Cypress.env('TRA
 
 export const getUiVersion = () => {
   return new Cypress.Promise((resolve) => {
-    cy.newByDataTestId('assisted-ui-lib-version')
-      .invoke('text')
-      .then((uiVersion) => {
-        resolve(uiVersion);
-      });
+    if (Cypress.env('AI_MOCKED_UI_VERSION')) {
+      resolve(Cypress.env('AI_MOCKED_UI_VERSION'));
+    } else {
+      cy.newByDataTestId('assisted-ui-lib-version')
+        .invoke('text')
+        .then((uiVersion) => {
+          resolve(uiVersion);
+        });
+    }
   });
 };
 
@@ -67,4 +71,12 @@ export const setHostsRole = (
   for (let i = 2 + numMasters; i < 2 + numMasters + numWorkers; i++) {
     cy.get(hostDetailSelector(i, 'Role')).click().find('li#worker').click();
   }
+};
+
+export const isVersionIncluding = (testVersion, minVersion) => {
+  const semver = Cypress.env('semver');
+  return semver.gte(
+    semver.valid(semver.coerce(testVersion)),
+    semver.valid(semver.coerce(minVersion)),
+  );
 };
