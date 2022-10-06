@@ -72,11 +72,3 @@ export const setHostsRole = (
     cy.get(hostDetailSelector(i, 'Role')).click().find('li#worker').click();
   }
 };
-
-export const isVersionIncluding = (testVersion, minVersion) => {
-  const semver = Cypress.env('semver');
-  return semver.gte(
-    semver.valid(semver.coerce(testVersion)),
-    semver.valid(semver.coerce(minVersion)),
-  );
-};

@@ -1,9 +1,6 @@
-import * as semver from 'semver';
 /*
 VARIABLES
  */
-// assign packages to env var for access and use accross all files
-Cypress.env('semver', semver);
 Cypress.env('clusterNameFieldValidator', `[aria-label='Validation']`);
 Cypress.env('clusterNameFieldId', '#form-input-name-field');
 Cypress.env('openshiftVersionFieldId', '#form-input-openshiftVersion-field');

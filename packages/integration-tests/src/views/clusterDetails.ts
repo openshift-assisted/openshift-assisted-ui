@@ -1,4 +1,3 @@
-import { getUiVersion, isVersionIncluding } from '../support/utils';
 export const clusterDetailsPage = {
   getClusterNameField: () => {
     return cy.get(Cypress.env('clusterNameFieldId'));
