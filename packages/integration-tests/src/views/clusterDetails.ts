@@ -8,13 +8,21 @@ export const clusterDetailsPage = {
   getOpenshiftVersionField: () => {
     return cy.get(Cypress.env('openshiftVersionFieldId'));
   },
-  inputOpenshiftVersion: (version = Cypress.env('OPENSHIFT_VERSION')) => {   
-    // since version 2.11 we change the openshiftVersion dropdown
-    cy.get(`#form-input-openshiftVersion-field > button.pf-c-dropdown__toggle`).click();
-    cy.get(`ul.pf-c-dropdown__menu`).within(() => {
+  openOpenshiftVersionDropdown: () => {
+    clusterDetailsPage.getOpenshiftVersionField().find('button.pf-c-dropdown__toggle').click();
+  },
+  getOpenshiftVersionDropdown: () => {
+    return clusterDetailsPage.getOpenshiftVersionField().find('.pf-c-dropdown__menu');
+  },
+  getSelectedOpenShiftVersion: () => {
+    return clusterDetailsPage.getOpenshiftVersionField().find('.pf-c-dropdown__toggle-text')
+  },
+  inputOpenshiftVersion: (version = Cypress.env('OPENSHIFT_VERSION')) => {
+    clusterDetailsPage.openOpenshiftVersionDropdown();
+    clusterDetailsPage.getOpenshiftVersionDropdown().within(() => {
       cy.get('li').contains(version).click();
     });
-    cy.get(`#form-input-openshiftVersion-field .pf-c-dropdown__toggle-text`).should(
+    clusterDetailsPage.getSelectedOpenShiftVersion().should(
       'contain',
       `OpenShift ${version}`,
     );
@@ -54,20 +62,14 @@ export const clusterDetailsPage = {
     clusterDetailsPage.getSno().should('be.visible').check();
     clusterDetailsPage.getSno().should('be.checked');
   },
-  getCpuArchitectureField: () => {
+  getArmCpuArchitectureField: () => {
     return cy.get(Cypress.env('cpuArchitectureFieldId'));
   },
-  validateInputCpuArchitectureLabelHelper: (msg) => {
-    cy.get('.pf-c-form__group-control > .pf-c-check > .pf-c-check__label > .pf-c-button > svg').click();
-    cy.get('.pf-c-popover__content').should('contain', msg);
+  enableArmCpuArchitecture: () => {
+    clusterDetailsPage.getArmCpuArchitectureField().check();
   },
-  enableCpuArchitecture: () => {
-    clusterDetailsPage.getCpuArchitectureField().should('be.visible').check();
-    clusterDetailsPage.getCpuArchitectureField().should('be.checked');
-  },
-  disableCpuArchitecture: () => {
-    clusterDetailsPage.getCpuArchitectureField().should('be.visible').uncheck();
-    clusterDetailsPage.getCpuArchitectureField().should('not.be.checked');
+  disableArmCpuArchitecture: () => {
+    clusterDetailsPage.getArmCpuArchitectureField().uncheck();
   },
   getSnoDisclaimer: () => {
     return cy.get(Cypress.env('checkboxSNODisclaimerFieldId'));

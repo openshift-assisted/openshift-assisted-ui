@@ -25,8 +25,7 @@ describe(`Assisted Installer Multinode Cluster Installation`, () => {
       clusterDetailsPage.getRedHatDnsServiceCheck().check();
       clusterDetailsPage.inputOpenshiftVersion();
       clusterDetailsPage.inputPullSecret();
-
-      clusterDetailsPage.getCpuArchitectureField().should('be.disabled');
+      
       commonActions.getInfoAlert().should('not.exist');
       commonActions.clickNextButton();
 
