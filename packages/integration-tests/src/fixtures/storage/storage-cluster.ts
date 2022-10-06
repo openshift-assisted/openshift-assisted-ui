@@ -71,12 +71,17 @@ const clusterValidation = {
     {
       id: 'lso-requirements-satisfied',
       status: 'success',
-      message: '',
+      message: 'lso is disabled',
     },
     {
       id: 'odf-requirements-satisfied',
       status: 'success',
-      message: '',
+      message: 'odf is disabled',
+    },
+    {
+      id: 'lvm-requirements-satisfied',
+      status: 'success',
+      message: 'lvm is disabled',
     },
   ],
 };

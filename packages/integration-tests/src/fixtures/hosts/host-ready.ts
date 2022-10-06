@@ -91,14 +91,16 @@ const hostReadyValidationsInfo = (hostName) => ({
       status: 'success',
       message: 'odf is disabled',
     },
+    {
+      id: 'lvm-requirements-satisfied',
+      status: 'success',
+      message: 'lvm is disabled',
+    },
   ],
 });
 
-// TODO use the merging of hostValidations instead of defining it all again!!!
 const hostReady = (originalHost) => {
   const allValidations = hostReadyValidationsInfo(originalHost.requested_hostname);
-  // TODO perform as an upgrade of existing validations!!!
-  //console.log('%c host-ready.js line:102 validations ', 'font-size: 16px; color: green', validations);
   return {
     ...originalHost,
     validations_info: JSON.stringify(allValidations),

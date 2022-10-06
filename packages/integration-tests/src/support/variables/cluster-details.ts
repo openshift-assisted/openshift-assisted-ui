@@ -1,3 +1,6 @@
+/*
+VARIABLES
+ */
 Cypress.env('clusterNameFieldValidator', `[aria-label='Validation']`);
 Cypress.env('clusterNameFieldId', '#form-input-name-field');
 Cypress.env('openshiftVersionFieldId', '#form-input-openshiftVersion-field');

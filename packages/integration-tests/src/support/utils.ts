@@ -36,11 +36,15 @@ export const getTransformSignal = (): SignalName | undefined => Cypress.env('TRA
 
 export const getUiVersion = () => {
   return new Cypress.Promise((resolve) => {
-    cy.newByDataTestId('assisted-ui-lib-version')
-      .invoke('text')
-      .then((uiVersion) => {
-        resolve(uiVersion);
-      });
+    if (Cypress.env('AI_MOCKED_UI_VERSION')) {
+      resolve(Cypress.env('AI_MOCKED_UI_VERSION'));
+    } else {
+      cy.newByDataTestId('assisted-ui-lib-version')
+        .invoke('text')
+        .then((uiVersion) => {
+          resolve(uiVersion);
+        });
+    }
   });
 };
 

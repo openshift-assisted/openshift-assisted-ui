@@ -8,18 +8,16 @@ export const clusterDetailsPage = {
   getOpenshiftVersionField: () => {
     return cy.get(Cypress.env('openshiftVersionFieldId'));
   },
-  inputOpenshiftVersion: (version = Cypress.env('OPENSHIFT_VERSION')) => {
-    // select option based on option.val() == version
-    cy.get(`#form-input-openshiftVersion-field > option`).each((option) => {
-      if (option.text().includes(version)) {
-        clusterDetailsPage.getOpenshiftVersionField().select(option.text());
-        // Stop iteration after first match for given X.Y version.
-        // OpenShift versions are (currently) listed is descending order starting from newest.
-        return false;
-      }
-      return true;
+  inputOpenshiftVersion: (version = Cypress.env('OPENSHIFT_VERSION')) => {   
+    // since version 2.11 we change the openshiftVersion dropdown
+    cy.get(`#form-input-openshiftVersion-field > button.pf-c-dropdown__toggle`).click();
+    cy.get(`ul.pf-c-dropdown__menu`).within(() => {
+      cy.get('li').contains(version).click();
     });
-    clusterDetailsPage.getOpenshiftVersionField().should('contain', `OpenShift ${version}`);
+    cy.get(`#form-input-openshiftVersion-field .pf-c-dropdown__toggle-text`).should(
+      'contain',
+      `OpenShift ${version}`,
+    );
   },
   getPullSecret: () => {
     return cy.get(Cypress.env('pullSecretFieldId'));
