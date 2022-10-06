@@ -1,3 +1,3 @@
 // Storage Step 
-Cypress.env('skipFormattingWarningTitle', 'Some bootable disks are set to skip formatting');
-Cypress.env('skipFormattingWarningDesc', 'Make sure those disks don\'t interrupt the boot order of the hosts.');
+Cypress.env('skipFormattingWarningTitle', 'There may be issues with the boot order');
+Cypress.env('skipFormattingWarningDesc', 'You have opted out of formatting bootable disks on some hosts. To ensure the hosts reboot into the expected installation disk, manual user intervention may be required during OpenShift installation.');

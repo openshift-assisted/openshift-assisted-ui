@@ -46,8 +46,8 @@ describe(`Assisted Installer Storage Step`, () => {
     });
 
     it('Should display the existing hosts storage details', () => {
-      Cypress.env('masterDiskTotalSize', '17.80 GB');
-      Cypress.env('workerDiskTotalSize', '10.48 GB');
+      Cypress.env('masterDiskTotalSize', '35.59 GB');
+      Cypress.env('workerDiskTotalSize', '20.95 GB');
       hostsTableSection.waitForHardwareStatus('Ready');
       hostsTableSection.validateHostRoles();
       hostsTableSection.validateHostDiskSize();
@@ -72,38 +72,25 @@ describe(`Assisted Installer Storage Step`, () => {
 
       hosts.forEach((host) => {
         hostsTableSection.getHostDetails(host.hostId).click();
-        hostsTableSection.getHostDetailsTitle(host.hostId).should('have.text', '2 Disks');
+        hostsTableSection.getHostDetailsTitle(host.hostId).should('have.text', '3 Disks');
         hostsTableSection.validateHostDisksDetails(host.disks);
       });
     });
 
-    it('Should display the skip formatting disk column', () => {      
-      const hosts = [        
+    it('Should display the skip formatting disk column and warning', () => {
+      const hosts = [
         {
           hostId: 3,
+          realHostId: 'cf2f3477-896f-40be-876a-b2ac3f2a838c',
           disks: workerDisks,
         },
       ];
 
       hosts.forEach((host) => {
         hostsTableSection.getHostDetails(host.hostId).click();
-        storagePage.validateSkipFormattingDisks();
-      });
-    });
-
-    it('Should display the skip formatting disk warning', () => {      
-      const hosts = [        
-        {
-          hostId: 3,
-          disks: workerDisks,
-        },
-      ];
-
-      hosts.forEach((host) => {
-        hostsTableSection.getHostDetails(host.hostId).click();
+        storagePage.validateSkipFormattingDisks(host.realHostId);
         storagePage.validateSkipFormattingWarning();
       });
     });
-   
   });
 });

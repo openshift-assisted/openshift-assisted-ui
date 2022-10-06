@@ -21,21 +21,20 @@ export const storagePage = {
     cy.get(Cypress.env('diskNumberDataLabel'))
       .should('have.length', numMasters + numWorkers)
       .each((hostDisk) => {
-        expect(hostDisk).to.contain('2');
+        expect(hostDisk).to.contain('3');
       });
   },
-   getSkipFormattingCheckbox: () => {
-    return cy.get('input[id="select-formatted-0"]');
+  getSkipFormattingCheckbox: (hostId: string, indexSelect: number) => {
+    return cy.get(`input[id="select-formatted-${hostId}-${indexSelect}"]`);
+    ``;
   },
-  validateSkipFormattingDisks: (
-    numWorkers: number = Cypress.env('NUM_WORKERS'),
-  ) => {
-    cy.get(Cypress.env('skipFormattingDataLabel'))
-      .should('have.length', numWorkers)
-    cy.get('input[type="checkbox"]').should('not.be.checked')
+  validateSkipFormattingDisks: (hostId: string, numWorkers: number = Cypress.env('NUM_WORKERS')) => {
+    cy.get(Cypress.env('skipFormattingDataLabel')).should('have.length', numWorkers + 1);
+    storagePage.getSkipFormattingCheckbox(hostId, 0).should('not.be.checked');
+    storagePage.getSkipFormattingCheckbox(hostId, 1).should('be.checked');
   },
   validateSkipFormattingWarning: () => {
-    cy.get('.pf-c-alert__title').should('contain',Cypress.env('skipFormattingWarningTitle'));
-    cy.get('.pf-c-alert__description').should('contain',Cypress.env('skipFormattingWarningDesc'));
+    cy.get('.pf-c-alert__title').should('contain', Cypress.env('skipFormattingWarningTitle'));
+    cy.get('.pf-c-alert__description').should('contain', Cypress.env('skipFormattingWarningDesc'));
   },
 };
