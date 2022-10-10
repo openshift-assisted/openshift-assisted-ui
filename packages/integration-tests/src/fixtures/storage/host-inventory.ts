@@ -147,6 +147,23 @@ const createHostInventory = (id: number, memory: number, diskSpace: number) => {
         smart: 'SMART support is:     Unavailable - device lacks SMART capability.\n',
         vendor: 'QEMU',
       },
+      {
+        by_path: `/dev/disk/by-path/pci-0000:00:1f.2-ata-${hostSeqId + 2}`,
+        drive_type: 'HDD',
+        has_uuid: true,
+        hctl: '0:0:0:0',
+        id: `/dev/disk/by-path/pci-0000:00:1f.2-ata-${hostSeqId + 2}`,
+        installation_eligibility: {
+          eligible: true,
+          not_eligible_reasons: null,
+        },
+        model: 'QEMU_HARDDISK',
+        name: 'sda',
+        path: `/dev/sda-${hostSeqId + 2}`,
+        serial: 'QM00001',
+        size_bytes: diskSpace,
+        vendor: 'ATA',
+      },
     ],
     gpus: [
       {
