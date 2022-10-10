@@ -10,3 +10,4 @@ Cypress.env('clusterDetailButtonDownloadKubeconfigId', '#cluster-detail-button-d
 Cypress.env('clusterDetailClusterCredsTshootHintOpen', 'cluster-detail-cluster-creds-troubleshooting-hint-open');
 Cypress.env('clusterProgressStatusValueId', '#cluster-progress-status-value');
 Cypress.env('operatorsProgressItem', `[data-testid=operators-progress-item]`);
+Cypress.env('skipFormattingDataLabel', `td[data-label='Format?']`);
