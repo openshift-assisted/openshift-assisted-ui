@@ -77,7 +77,7 @@ describe(`Assisted Installer Storage Step`, () => {
       });
     });
 
-    it('Should display the skip formatting disk column and warning', () => {
+    it('Should display the skip formatting disk column, warning alert and warning icon', () => {
       const hosts = [
         {
           hostId: 3,
@@ -88,8 +88,9 @@ describe(`Assisted Installer Storage Step`, () => {
 
       hosts.forEach((host) => {
         hostsTableSection.getHostDetails(host.hostId).click();
-        storagePage.validateSkipFormattingDisks(host.realHostId);
+        storagePage.validateSkipFormattingDisks(host.realHostId, 3);
         storagePage.validateSkipFormattingWarning();
+        storagePage.validateSkipFormattingIcon(workerDisks[0].id);
       });
     });
   });
