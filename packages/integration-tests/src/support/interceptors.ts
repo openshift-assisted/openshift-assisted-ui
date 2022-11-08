@@ -28,22 +28,21 @@ const infraEnvApiPath = `${allInfraEnvsApiPath}${fakeClusterInfraEnvId}`;
 const clusterApiPath = `${allClustersApiPath}${fakeClusterId}`;
 
 const getPatchEnhancements = (activeTransformSignal: TransformSignal | undefined, signalRequest) => {
-  let enhancements;
+  let enhancements = {};
 
   switch (activeTransformSignal) {
     case 'single-stack':
       expect(signalRequest, 'Networking request body').to.deep.equal(ipv4NetworkingRequest);
-      enhancements = { ...signalRequest, ...singleStackEnhancements };
+      enhancements = singleStackEnhancements ;
       break;
     case 'dual-stack':
       expect(signalRequest, 'Networking request body').to.deep.equal(dualStackNetworkingRequest);
-      enhancements = { ...signalRequest, ...dualStackEnhancements };
+      enhancements = dualStackEnhancements;
       break;
     default:
-      enhancements = signalRequest;
       break;
   }
-  return enhancements;
+  return {...signalRequest, ...enhancements};
 }
 
 const transformClusterFixture = (req, fixtureMapping) => {
