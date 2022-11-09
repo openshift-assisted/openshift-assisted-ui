@@ -7,7 +7,7 @@ export const ipv4NetworkingRequest = {
   vip_dhcp_allocation: false,
   api_vip: '192.168.122.10',
   ingress_vip: '192.168.122.110',
-  network_type: 'OpenShiftSDN',
+  network_type: 'OVNKubernetes',
   machine_networks: [],
   cluster_networks: [
     {

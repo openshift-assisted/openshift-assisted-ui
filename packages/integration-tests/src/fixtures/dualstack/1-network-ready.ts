@@ -26,8 +26,28 @@ const featureUsage = {
   },
 };
 
+const featureUsageDualstack = {
+  'OVN network type': {
+    id: 'OVN_NETWORK_TYPE',
+    name: 'OVN network type',
+  },
+  'Requested hostname': {
+    data: {
+      host_count: 3,
+    },
+    id: 'REQUESTED_HOSTNAME',
+    name: 'Requested hostname',
+  },
+  'Dual-stack': {
+    id: 'DUAL-STACK',
+    name: 'Dual-stack',
+  },
+};
+
 const dualstackClusterBase = {
   ...baseCluster('ai-e2e-dualstack'),
+  apiVip: '192.168.122.10',
+  ingressVip: '192.168.122.110',
   cluster_networks: [
     {
       cidr: '10.128.0.0/14',
@@ -41,7 +61,12 @@ const dualstackClusterBase = {
       cluster_id: fakeClusterId,
     },
   ],
-  machine_networks: [],
+  machine_networks: [
+    {
+      cidr: '192.168.122.0/24',
+      cluster_id: fakeClusterId,
+    },
+  ],
   host_networks: [
     {
       cidr: '192.168.122.0/24',
@@ -67,4 +92,30 @@ const dualstackClusterBase = {
   status_info: 'User input required',
 };
 
-export { dualstackClusterBase, featureUsage };
+const addNetworkItem = (networkItems, data) => {
+  return networkItems.concat([{ ...data, clusterId: fakeClusterId }]);
+};
+
+const withDualStackNetworks = (singleStackCluster) => ({
+  ...singleStackCluster,
+  cluster_networks: addNetworkItem(singleStackCluster.cluster_networks, {
+    cidr: 'fd01::/48',
+    host_prefix: 64,
+  }),
+  service_networks: addNetworkItem(singleStackCluster.service_networks, {
+    cidr: 'fd02::/112',
+  }),
+  machine_networks: addNetworkItem(singleStackCluster.machine_networks, {
+    cidr: '1001:db9::/120',
+  }),
+  // We're adding this field to easily debug which mock is returning the response
+  e2e_mock_source: '1-dualstack-dualstack',
+  feature_usage: JSON.stringify(featureUsageDualstack),
+  validations_info: JSON.stringify(clusterValidationsInfo),
+  high_availability_mode: 'Full',
+  network_type: 'OVNKubernetes',
+  user_managed_networking: false,
+  vip_dhcp_allocation: false,
+});
+
+export { dualstackClusterBase, withDualStackNetworks };
