@@ -33,7 +33,7 @@ const getPatchEnhancements = (activeTransformSignal: TransformSignal | undefined
   switch (activeTransformSignal) {
     case 'single-stack':
       expect(signalRequest, 'Networking request body').to.deep.equal(ipv4NetworkingRequest);
-      enhancements = singleStackEnhancements ;
+      enhancements = singleStackEnhancements;
       break;
     case 'dual-stack':
       expect(signalRequest, 'Networking request body').to.deep.equal(dualStackNetworkingRequest);
@@ -42,8 +42,8 @@ const getPatchEnhancements = (activeTransformSignal: TransformSignal | undefined
     default:
       break;
   }
-  return {...signalRequest, ...enhancements};
-}
+  return { ...signalRequest, ...enhancements };
+};
 
 const transformClusterFixture = (req, fixtureMapping) => {
   let baseCluster = fixtureMapping[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping['default'];
