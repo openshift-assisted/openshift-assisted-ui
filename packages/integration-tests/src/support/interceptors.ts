@@ -1,4 +1,10 @@
-import { hasWizardSignal, setLastWizardSignal, getTransformSignal, clearTransformSignal } from './utils';
+import {
+  hasWizardSignal,
+  setLastWizardSignal,
+  getTransformSignal,
+  clearTransformSignal,
+  TransformSignal,
+} from './utils';
 import { fakeClusterId, fakeClusterInfraEnvId } from '../fixtures/cluster/base-cluster';
 import { hostIds, getUpdatedHosts } from '../fixtures/hosts';
 import openShiftVersions from '../fixtures/infra-envs/openshift-versions';
@@ -21,31 +27,34 @@ const allClustersApiPath = '/api/assisted-install/v2/clusters/';
 const infraEnvApiPath = `${allInfraEnvsApiPath}${fakeClusterInfraEnvId}`;
 const clusterApiPath = `${allClustersApiPath}${fakeClusterId}`;
 
-let enhancements = {};
-const transformFixture = (req, fixture) => {
-  const activeTransformSignal = getTransformSignal();
-  if (activeTransformSignal) {
-    if (req.method === 'PATCH') {
-      enhancements = req.body;
+const getPatchEnhancements = (activeTransformSignal: TransformSignal | undefined, signalRequest) => {
+  let enhancements = {};
 
-      switch (activeTransformSignal) {
-        case 'single-stack':
-          expect(req.body, 'Networking request body').to.deep.equal(ipv4NetworkingRequest);
-          enhancements = { ...req.body, ...singleStackEnhancements };
-          break;
-        case 'dual-stack':
-          expect(req.body, 'Networking request body').to.deep.equal(dualStackNetworkingRequest);
-          enhancements = { ...req.body, ...dualStackEnhancements };
-          break;
-        default:
-          enhancements = req.body;
-          break;
-      }
-    }
-    return { ...fixture, ...enhancements };
-  } else {
-    return fixture;
+  switch (activeTransformSignal) {
+    case 'single-stack':
+      expect(signalRequest, 'Networking request body').to.deep.equal(ipv4NetworkingRequest);
+      enhancements = singleStackEnhancements;
+      break;
+    case 'dual-stack':
+      expect(signalRequest, 'Networking request body').to.deep.equal(dualStackNetworkingRequest);
+      enhancements = dualStackEnhancements;
+      break;
+    default:
+      break;
   }
+  return { ...signalRequest, ...enhancements };
+};
+
+const transformClusterFixture = (req, fixtureMapping) => {
+  let baseCluster = fixtureMapping[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping['default'];
+
+  const activeTransformSignal = getTransformSignal();
+
+  if (activeTransformSignal && req.method === 'PATCH') {
+    baseCluster = { ...baseCluster, ...getPatchEnhancements(activeTransformSignal, req.body) };
+  }
+  const hosts = fixtureMapping.staticHosts || getUpdatedHosts();
+  return { ...baseCluster, hosts };
 };
 
 const getScenarioFixtureMapping = () => {
@@ -75,8 +84,7 @@ const getScenarioFixtureMapping = () => {
 const mockClusterResponse = (req) => {
   const fixtureMapping = getScenarioFixtureMapping();
   if (fixtureMapping) {
-    const fixture = fixtureMapping[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping['default'];
-    req.reply(transformFixture(req, fixture));
+    req.reply(transformClusterFixture(req, fixtureMapping));
   } else {
     throw new Error('Incorrect fixture mapping for scenario ' + ((Cypress.env('AI_SCENARIO') as string) || ''));
   }
@@ -153,16 +161,6 @@ const addInfraEnvIntercepts = () => {
 };
 
 const addHostIntercepts = () => {
-  cy.intercept('GET', `${infraEnvApiPath}/hosts/`, (req) => {
-    const fixtureMapping = getScenarioFixtureMapping();
-    let hostsFixture = fixtureMapping.staticHosts;
-
-    if (!hostsFixture) {
-      hostsFixture = getUpdatedHosts();
-    }
-    req.reply(hostsFixture);
-  });
-
   cy.intercept('PATCH', `${infraEnvApiPath}/hosts/**`, (req) => {
     const patchedHostId = req.url.match(/\/hosts\/(.+)$/)[1];
     const index = hostIds.findIndex((hostId) => hostId === patchedHostId);

@@ -2,6 +2,7 @@
 
 import { baseCluster, fakeClusterId } from '../cluster/base-cluster';
 import { clusterValidationsInfo } from '../cluster/validation-info-cluster-ready';
+import { hostIds } from '../hosts';
 
 const featureUsage = {
   'SDN network type': {
@@ -12,6 +13,7 @@ const featureUsage = {
 
 const readOnlyCluster = {
   e2e_mock_source: '1-base-cluster',
+  ...baseCluster('read-only-cluster'),
   monitored_operators: [
     {
       cluster_id: fakeClusterId,
@@ -23,7 +25,7 @@ const readOnlyCluster = {
   ],
   cluster_networks: [
     {
-      cidr: '10.128.0.0/14',
+      cidr: '172.40.0.0/16',
       cluster_id: fakeClusterId,
       host_prefix: 23,
     },
@@ -34,8 +36,22 @@ const readOnlyCluster = {
       cluster_id: fakeClusterId,
     },
   ],
+  user_managed_networking: false,
+  network_type: 'OpenShiftSDN',
+  machine_networks: [
+    {
+      cidr: '192.168.122.0/24',
+      cluster_id: fakeClusterId,
+    },
+  ],
+  host_networks: [
+    {
+      cidr: '192.168.122.0/24',
+      host_ids: [hostIds[0], hostIds[1], hostIds[2]],
+    },
+  ],
+
   feature_usage: JSON.stringify(featureUsage),
-  ...baseCluster('read-only-cluster'),
   status: 'ready',
   status_info: 'Cluster ready to be installed',
   validations_info: JSON.stringify(clusterValidationsInfo),

@@ -11,7 +11,8 @@ const signalOrder = [
   'READY_TO_INSTALL_DUALSTACK',
 ];
 
-type SignalName = typeof signalOrder[number];
+export type SignalName = typeof signalOrder[number];
+export type TransformSignal = 'dual-stack' | 'single-stack';
 
 export const setLastWizardSignal = (signalName: SignalName) => {
   Cypress.env('AI_LAST_SIGNAL', signalName);
@@ -24,15 +25,15 @@ export const hasWizardSignal = (signalName: SignalName) => {
   return reqSignalOrder !== -1 && reqSignalOrder <= currentSignalOrder;
 };
 
-export const setTransformSignal = (signalName: SignalName) => {
-  Cypress.env('TRANSFORM_SIGNAL', signalName);
+export const setTransformSignal = (transformSignal: TransformSignal) => {
+  Cypress.env('TRANSFORM_SIGNAL', transformSignal);
 };
 
 export const clearTransformSignal = () => {
   Cypress.env('TRANSFORM_SIGNAL', undefined);
 };
 
-export const getTransformSignal = (): SignalName | undefined => Cypress.env('TRANSFORM_SIGNAL');
+export const getTransformSignal = (): TransformSignal | undefined => Cypress.env('TRANSFORM_SIGNAL');
 
 export const getUiVersion = () => {
   return new Cypress.Promise((resolve) => {

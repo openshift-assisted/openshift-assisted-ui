@@ -5,7 +5,6 @@ import { networkingPage } from '../../views/networkingPage';
 import { reviewAndCreatePage } from '../../views/reviewCreate';
 import { commonActions } from '../../views/common';
 import { transformBasedOnUIVersion } from '../../support/transformations';
-import { commonActions } from '../../views/common';
 
 describe(`Assisted Installer Read Only Cluster`, () => {
   before(() => {
