@@ -1,4 +1,10 @@
+/**
+ * The signal order determinesa sequence of events.
+ * When a signal is given, it is implied that the previous steps
+ * have already taken place
+ */
 const signalOrder = [
+  // For general cluster creation flow
   'CLUSTER_CREATED',
   'ISO_DOWNLOADED',
   'HOST_DISCOVERED_1',
@@ -7,12 +13,18 @@ const signalOrder = [
   'HOST_RENAMED_2',
   'HOST_DISCOVERED_3',
   'HOST_RENAMED_3',
+
+  // Networking signals
+  // - Dual Stack
+  'NETWORKING_DUAL_STACK_DISCOVERED',
+  'NETWORKING_DUAL_STACK_SELECT_SINGLE_STACK',
+  'NETWORKING_DUAL_STACK_SELECT_DUAL_STACK',
+
+  // Last signal must always be Ready to install
   'READY_TO_INSTALL',
-  'READY_TO_INSTALL_DUALSTACK',
 ];
 
 export type SignalName = typeof signalOrder[number];
-export type TransformSignal = 'dual-stack' | 'single-stack';
 
 export const setLastWizardSignal = (signalName: SignalName) => {
   Cypress.env('AI_LAST_SIGNAL', signalName);
@@ -24,16 +36,6 @@ export const hasWizardSignal = (signalName: SignalName) => {
   const reqSignalOrder = signalOrder.findIndex((signal) => signal === signalName);
   return reqSignalOrder !== -1 && reqSignalOrder <= currentSignalOrder;
 };
-
-export const setTransformSignal = (transformSignal: TransformSignal) => {
-  Cypress.env('TRANSFORM_SIGNAL', transformSignal);
-};
-
-export const clearTransformSignal = () => {
-  Cypress.env('TRANSFORM_SIGNAL', undefined);
-};
-
-export const getTransformSignal = (): TransformSignal | undefined => Cypress.env('TRANSFORM_SIGNAL');
 
 export const getUiVersion = () => {
   return new Cypress.Promise((resolve) => {
@@ -60,16 +62,3 @@ export const getCwd = () => {
 export const hostDetailSelector = (row: number, label: string) =>
   // NOTE: The first row is number 2! Shift your indexes...
   `table.hosts-table > tbody:nth-child(${row}) > tr:nth-child(1) > [data-label="${label}"]`;
-
-export const setHostsRole = (
-  numMasters: number = Cypress.env('NUM_MASTERS'),
-  numWorkers: number = Cypress.env('NUM_WORKERS'),
-) => {
-  // set hosts role
-  for (let i = 2; i < 2 + numMasters; i++) {
-    cy.get(hostDetailSelector(i, 'Role')).click().find('li#master').click();
-  }
-  for (let i = 2 + numMasters; i < 2 + numMasters + numWorkers; i++) {
-    cy.get(hostDetailSelector(i, 'Role')).click().find('li#worker').click();
-  }
-};

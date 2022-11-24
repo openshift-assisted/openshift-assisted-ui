@@ -4,7 +4,7 @@ import { commonActions } from '../../views/common';
 describe(`Assisted Installer Dualstack Review`, () => {
   before(() => {
     cy.loadAiAPIIntercepts({
-      activeSignal: 'READY_TO_INSTALL_DUALSTACK',
+      activeSignal: 'READY_TO_INSTALL',
       activeScenario: 'AI_CREATE_DUALSTACK',
     });
   });

@@ -1,10 +1,4 @@
-import {
-  hasWizardSignal,
-  setLastWizardSignal,
-  getTransformSignal,
-  clearTransformSignal,
-  TransformSignal,
-} from './utils';
+import { hasWizardSignal, setLastWizardSignal } from './utils';
 import { fakeClusterId, fakeClusterInfraEnvId } from '../fixtures/cluster/base-cluster';
 import { hostIds, getUpdatedHosts } from '../fixtures/hosts';
 import openShiftVersions from '../fixtures/infra-envs/openshift-versions';
@@ -18,8 +12,7 @@ import createSnoFixtureMapping from '../fixtures/create-sno';
 import createMultinodeFixtureMapping from '../fixtures/create-mn';
 import createReadOnlyClusterFixtureMapping from '../fixtures/read-only';
 import createStorageFixtureMapping from '../fixtures/storage';
-import { createDualStackFixtureMapping, singleStackEnhancements, dualStackEnhancements } from '../fixtures/dualstack';
-import { dualStackNetworkingRequest, ipv4NetworkingRequest } from '../fixtures/dualstack/requests';
+import { createDualStackFixtureMapping } from '../fixtures/dualstack';
 
 const allInfraEnvsApiPath = '/api/assisted-install/v2/infra-envs/';
 const allClustersApiPath = '/api/assisted-install/v2/clusters/';
@@ -27,32 +20,9 @@ const allClustersApiPath = '/api/assisted-install/v2/clusters/';
 const infraEnvApiPath = `${allInfraEnvsApiPath}${fakeClusterInfraEnvId}`;
 const clusterApiPath = `${allClustersApiPath}${fakeClusterId}`;
 
-const getPatchEnhancements = (activeTransformSignal: TransformSignal | undefined, signalRequest) => {
-  let enhancements = {};
-
-  switch (activeTransformSignal) {
-    case 'single-stack':
-      expect(signalRequest, 'Networking request body').to.deep.equal(ipv4NetworkingRequest);
-      enhancements = singleStackEnhancements;
-      break;
-    case 'dual-stack':
-      expect(signalRequest, 'Networking request body').to.deep.equal(dualStackNetworkingRequest);
-      enhancements = dualStackEnhancements;
-      break;
-    default:
-      break;
-  }
-  return { ...signalRequest, ...enhancements };
-};
-
 const transformClusterFixture = (req, fixtureMapping) => {
-  let baseCluster = fixtureMapping[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping['default'];
+  const baseCluster = fixtureMapping[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping['default'];
 
-  const activeTransformSignal = getTransformSignal();
-
-  if (activeTransformSignal && req.method === 'PATCH') {
-    baseCluster = { ...baseCluster, ...getPatchEnhancements(activeTransformSignal, req.body) };
-  }
   const hosts = fixtureMapping.staticHosts || getUpdatedHosts();
   return { ...baseCluster, hosts };
 };
@@ -92,7 +62,6 @@ const mockClusterResponse = (req) => {
 
 const setScenarioEnvVars = ({ activeScenario }) => {
   Cypress.env('AI_SCENARIO', activeScenario);
-  clearTransformSignal();
 
   switch (activeScenario) {
     case 'AI_CREATE_SNO':

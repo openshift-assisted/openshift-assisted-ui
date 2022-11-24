@@ -41,10 +41,10 @@ const getUpdatedHosts = () => {
   let transformer: (index: number) => Record<string, unknown>;
   if (/HOST_DISCOVERED_\d/.test(lastSignal)) {
     transformer = (index) => discoveredHosts[index];
-  } else if (/HOST_RENAMED_\d/.test(lastSignal)) {
-    transformer = getRenamedHost;
   } else if (hasWizardSignal('READY_TO_INSTALL')) {
     transformer = (index) => hostReady(getRenamedHost(index));
+  } else {
+    transformer = getRenamedHost;
   }
 
   return new Array(discoveredHostsCount).fill(0).map((_, index) => {
