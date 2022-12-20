@@ -10,11 +10,21 @@ export const reviewAndCreatePage = {
     cy.get(Cypress.env('stackTypeValueId')).should('contain', stackType);
   },
   getClusterValidations: (timeout = 1000) => {
+    cy.get(Cypress.env('clusterValidationsValueId')).then((val) => {
+      if (!val.is('visible')) {
+        cy.get(Cypress.env('clusterValidations')).click();
+      }
+    });
     return cy.get(Cypress.env('clusterValidationsValueId'), {
       timeout: timeout,
     });
   },
   getHostValidations: (timeout = 1000) => {
+    cy.get(Cypress.env('clusterValidationsValueId')).then((val) => {
+      if (!val.is('visible')) {
+        cy.get(Cypress.env('clusterValidations')).click();
+      }
+    });
     return cy.get(Cypress.env('hostValidationsValueId'), { timeout: timeout });
   },
   checkAllValidationsPassed: (element) => {
