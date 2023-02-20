@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-const x86 = 'x86_64';
-const arm64 = 'arm64';
+export const x86 = 'x86_64';
+export const arm64 = 'arm64';
 
 const versions = {
   4.9: {

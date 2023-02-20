@@ -2,6 +2,7 @@ import { transformBasedOnUIVersion } from '../../support/transformations';
 import { commonActions } from '../../views/common';
 import { clusterDetailsPage } from '../../views/clusterDetails';
 import * as versionsFixtures from '../../fixtures/infra-envs/openshift-versions';
+import { arm64, x86 } from '../../fixtures/infra-envs/openshift-versions';
 
 describe('Assisted Installer UI behaviour - cluster creation', () => {
   before(() => {
@@ -39,10 +40,16 @@ describe('Assisted Installer UI behaviour - cluster creation', () => {
       commonActions.visitNewClusterPage();
 
       clusterDetailsPage.inputOpenshiftVersion(versionsFixtures.getVersionWithNoArmSupport());
-      clusterDetailsPage.getArmCpuArchitectureField().should('be.disabled');
+      clusterDetailsPage.openCpuArchitectureDropdown();
+      clusterDetailsPage.checkDisabledCpuArchitectureStatus(arm64, true);
+      clusterDetailsPage.checkDisabledCpuArchitectureStatus(x86, false);
+      clusterDetailsPage.selectCpuArchitecture(x86);
 
       clusterDetailsPage.inputOpenshiftVersion(versionsFixtures.getVersionWithArmSupport());
-      clusterDetailsPage.getArmCpuArchitectureField().should('be.enabled');
+      clusterDetailsPage.openCpuArchitectureDropdown();
+      clusterDetailsPage.checkDisabledCpuArchitectureStatus(arm64, false);
+      clusterDetailsPage.checkDisabledCpuArchitectureStatus(x86, false);
+      clusterDetailsPage.selectCpuArchitecture(arm64);
     });
   });
 });

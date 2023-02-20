@@ -62,14 +62,20 @@ export const clusterDetailsPage = {
     clusterDetailsPage.getSno().should('be.visible').check();
     clusterDetailsPage.getSno().should('be.checked');
   },
-  getArmCpuArchitectureField: () => {
-    return cy.get(Cypress.env('cpuArchitectureFieldId'));
+  openCpuArchitectureDropdown: () => {
+    cy.get(`${Cypress.env('cpuArchitectureFieldId')} > button.pf-c-dropdown__toggle`).click();
   },
-  enableArmCpuArchitecture: () => {
-    clusterDetailsPage.getArmCpuArchitectureField().check();
+  selectCpuArchitecture: (cpuArchitecture) => {
+    cy.get(`ul.pf-c-dropdown__menu li[id=${cpuArchitecture}] a`).click();
+    cy.get(`${Cypress.env('cpuArchitectureFieldId')} .pf-c-dropdown__toggle-text`).should(
+      'contain',
+      cpuArchitecture,
+    );
   },
-  disableArmCpuArchitecture: () => {
-    clusterDetailsPage.getArmCpuArchitectureField().uncheck();
+  checkDisabledCpuArchitectureStatus: (cpuArchitecture, isDisabled) => {
+    cy.get(`ul.pf-c-dropdown__menu li[id=${cpuArchitecture}] a`)
+      .invoke('attr', 'aria-disabled')
+      .should('eq', `${isDisabled}`); // it's a string
   },
   getSnoDisclaimer: () => {
     return cy.get(Cypress.env('checkboxSNODisclaimerFieldId'));
