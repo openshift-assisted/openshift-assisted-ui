@@ -22,10 +22,12 @@ const infraEnvApiPath = `${allInfraEnvsApiPath}${fakeClusterInfraEnvId}`;
 const clusterApiPath = `${allClustersApiPath}${fakeClusterId}`;
 
 const transformClusterFixture = (fixtureMapping) => {
-  const baseCluster = fixtureMapping[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping['default'];
+  const { clusters: clusterFixtures, hosts: hostsFixtures  } = fixtureMapping;
+
+  const baseCluster = clusterFixtures[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping.clusters['default'];
   baseCluster.platform.type = Cypress.env('AI_INTEGRATED_PLATFORM') || 'baremetal';
 
-  const hosts = fixtureMapping?.hosts || getUpdatedHosts();
+  const hosts = hostsFixtures ? (hostsFixtures[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping.hosts['default']) : getUpdatedHosts();
   return { ...baseCluster, hosts };
 };
 
@@ -63,7 +65,7 @@ const getScenarioFixtureMapping = () => {
 const mockClusterResponse = (req) => {
   const fixtureMapping = getScenarioFixtureMapping();
   if (fixtureMapping?.clusters) {
-    req.reply(transformClusterFixture(fixtureMapping.clusters));
+    req.reply(transformClusterFixture(fixtureMapping));
   } else {
     throw new Error('Incorrect fixture mapping for scenario ' + ((Cypress.env('AI_SCENARIO') as string) || ''));
   }
@@ -87,17 +89,17 @@ const setScenarioEnvVars = ({ activeScenario }) => {
   Cypress.env('AI_SCENARIO', activeScenario);
   Cypress.env('ASSISTED_SNO_DEPLOYMENT', false);
   Cypress.env('NUM_MASTERS', 3);
-  Cypress.env('NUM_WORKERS', 2);
+  Cypress.env('NUM_WORKERS', 0);
 
   switch (activeScenario) {
     case 'AI_CREATE_SNO':
       Cypress.env('ASSISTED_SNO_DEPLOYMENT', true);
-      Cypress.env('NUM_MASTERS', 1);
-      Cypress.env('NUM_WORKERS', 0);
       Cypress.env('CLUSTER_NAME', 'ai-e2e-sno');
+      Cypress.env('NUM_MASTERS', 1);
       break;
     case 'AI_CREATE_MULTINODE':
       Cypress.env('CLUSTER_NAME', 'ai-e2e-multinode');
+      Cypress.env('NUM_WORKERS', 0);
       break;
     case 'AI_CREATE_DUALSTACK':
       Cypress.env('CLUSTER_NAME', 'ai-e2e-dualstack');
@@ -107,6 +109,8 @@ const setScenarioEnvVars = ({ activeScenario }) => {
       break;
     case 'AI_STORAGE_CLUSTER':
       Cypress.env('CLUSTER_NAME', 'ai-e2e-storage');
+      Cypress.env('NUM_MASTERS', 3);
+      Cypress.env('NUM_WORKERS', 2);
       break;
     case 'AI_CREATE_STATIC_IP':
       Cypress.env('CLUSTER_NAME', 'ai-e2e-static-ip');

@@ -5,7 +5,7 @@ Cypress.env('preflightChecksSectionExpander', '.review-expandable button');
 Cypress.env('clusterPreflightChecksTitle', '[data-testid=cluster-preflight-checks-title]');
 Cypress.env('clusterPreflightChecksResult', '[data-testid=cluster-preflight-checks-value]');
 Cypress.env('hostsPreflightChecksResult', '[data-testid=host-preflight-checks-value]');
-Cypress.env('allValidationsPassedText', 'All validations passed');
+Cypress.env('allValidationsPassedText', 'All checks passed');
 
 // summary
 Cypress.env('clusterAddressValueId', '[data-testid=cluster-address]');

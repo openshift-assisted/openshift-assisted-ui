@@ -5,7 +5,9 @@ const createStorageFixtureMapping = {
   clusters: {
     default: storageCluster,
   },
-  hosts: storageHosts,
+  hosts: {
+    default: storageHosts,
+  },
 };
 
 export default createStorageFixtureMapping;
