@@ -62,6 +62,9 @@ export const clusterDetailsPage = {
     clusterDetailsPage.getSno().should('be.visible').check();
     clusterDetailsPage.getSno().should('be.checked');
   },
+  getStaticIpNetworkConfig: () => {
+    return cy.get(Cypress.env('staticIpNetworkConfigFieldId'));
+  },
   openCpuArchitectureDropdown: () => {
     cy.get(`${Cypress.env('cpuArchitectureFieldId')} > button.pf-c-dropdown__toggle`).click();
   },

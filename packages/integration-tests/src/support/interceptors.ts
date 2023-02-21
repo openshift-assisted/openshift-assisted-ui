@@ -12,7 +12,8 @@ import createSnoFixtureMapping from '../fixtures/create-sno';
 import createMultinodeFixtureMapping from '../fixtures/create-mn';
 import createReadOnlyClusterFixtureMapping from '../fixtures/read-only';
 import createStorageFixtureMapping from '../fixtures/storage';
-import { createDualStackFixtureMapping } from '../fixtures/dualstack';
+import createDualStackFixtureMapping from '../fixtures/dualstack';
+import createStaticIpFixtureMapping from '../fixtures/static-ip';
 
 const allInfraEnvsApiPath = '/api/assisted-install/v2/infra-envs/';
 const allClustersApiPath = '/api/assisted-install/v2/clusters/';
@@ -20,12 +21,16 @@ const allClustersApiPath = '/api/assisted-install/v2/clusters/';
 const infraEnvApiPath = `${allInfraEnvsApiPath}${fakeClusterInfraEnvId}`;
 const clusterApiPath = `${allClustersApiPath}${fakeClusterId}`;
 
-const transformClusterFixture = (req, fixtureMapping) => {
+const transformClusterFixture = (fixtureMapping) => {
   const baseCluster = fixtureMapping[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping['default'];
   baseCluster.platform.type = Cypress.env('AI_INTEGRATED_PLATFORM') || 'baremetal';
 
-  const hosts = fixtureMapping.staticHosts || getUpdatedHosts();
+  const hosts = fixtureMapping?.hosts || getUpdatedHosts();
   return { ...baseCluster, hosts };
+};
+
+const transformInfraEnvFixture = (fixtureMapping) => {
+  return fixtureMapping[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping['default'];
 };
 
 const getScenarioFixtureMapping = () => {
@@ -46,6 +51,9 @@ const getScenarioFixtureMapping = () => {
     case 'AI_STORAGE_CLUSTER':
       fixtureMapping = createStorageFixtureMapping;
       break;
+    case 'AI_CREATE_STATIC_IP':
+      fixtureMapping = createStaticIpFixtureMapping;
+      break;
     default:
       break;
   }
@@ -54,8 +62,8 @@ const getScenarioFixtureMapping = () => {
 
 const mockClusterResponse = (req) => {
   const fixtureMapping = getScenarioFixtureMapping();
-  if (fixtureMapping) {
-    req.reply(transformClusterFixture(req, fixtureMapping));
+  if (fixtureMapping?.clusters) {
+    req.reply(transformClusterFixture(fixtureMapping.clusters));
   } else {
     throw new Error('Incorrect fixture mapping for scenario ' + ((Cypress.env('AI_SCENARIO') as string) || ''));
   }
@@ -66,33 +74,42 @@ const mockSupportedPlatformsResponse = (req) => {
   req.reply(platforms);
 };
 
+const mockInfraEnvResponse = (req) => {
+  const fixtureMapping = getScenarioFixtureMapping();
+  if (fixtureMapping?.infraEnvs) {
+    req.reply(transformInfraEnvFixture(fixtureMapping.infraEnvs));
+  } else {
+    req.reply(infraEnv);
+  }
+};
+
 const setScenarioEnvVars = ({ activeScenario }) => {
   Cypress.env('AI_SCENARIO', activeScenario);
+  Cypress.env('ASSISTED_SNO_DEPLOYMENT', false);
+  Cypress.env('NUM_MASTERS', 3);
+  Cypress.env('NUM_WORKERS', 2);
 
   switch (activeScenario) {
     case 'AI_CREATE_SNO':
-      Cypress.env('CLUSTER_NAME', 'ai-e2e-sno');
       Cypress.env('ASSISTED_SNO_DEPLOYMENT', true);
       Cypress.env('NUM_MASTERS', 1);
       Cypress.env('NUM_WORKERS', 0);
+      Cypress.env('CLUSTER_NAME', 'ai-e2e-sno');
       break;
     case 'AI_CREATE_MULTINODE':
       Cypress.env('CLUSTER_NAME', 'ai-e2e-multinode');
-      Cypress.env('ASSISTED_SNO_DEPLOYMENT', false);
       break;
     case 'AI_CREATE_DUALSTACK':
       Cypress.env('CLUSTER_NAME', 'ai-e2e-dualstack');
-      Cypress.env('ASSISTED_SNO_DEPLOYMENT', false);
       break;
     case 'AI_READONLY_CLUSTER':
-      Cypress.env('ASSISTED_SNO_DEPLOYMENT', false);
       Cypress.env('CLUSTER_NAME', 'ai-e2e-readonly');
       break;
     case 'AI_STORAGE_CLUSTER':
-      Cypress.env('ASSISTED_SNO_DEPLOYMENT', false);
       Cypress.env('CLUSTER_NAME', 'ai-e2e-storage');
-      Cypress.env('NUM_MASTERS', 3);
-      Cypress.env('NUM_WORKERS', 2);
+      break;
+    case 'AI_CREATE_STATIC_IP':
+      Cypress.env('CLUSTER_NAME', 'ai-e2e-static-ip');
       break;
     default:
       break;
@@ -126,13 +143,13 @@ const addClusterPatchAndDetailsIntercepts = () => {
 const addInfraEnvIntercepts = () => {
   cy.intercept('GET', `${allInfraEnvsApiPath}?cluster_id=${fakeClusterId}`, [infraEnv]).as('filter-infra-envs');
 
-  cy.intercept('GET', infraEnvApiPath, infraEnv).as('infra-env-details');
+  cy.intercept('GET', infraEnvApiPath, mockInfraEnvResponse).as('infra-env-details');
 
   cy.intercept('GET', `${infraEnvApiPath}/downloads/image-url`, imageDownload).as('download-iso-image');
 
-  cy.intercept('PATCH', infraEnvApiPath, infraEnv).as('update-infra-env');
+  cy.intercept('PATCH', infraEnvApiPath, mockInfraEnvResponse).as('update-infra-env');
 
-  cy.intercept('POST', allInfraEnvsApiPath, infraEnv).as('create-infra-env');
+  cy.intercept('POST', allInfraEnvsApiPath, mockInfraEnvResponse).as('create-infra-env');
 };
 
 const addHostIntercepts = () => {

@@ -1,7 +1,9 @@
 import { readOnlyCluster } from './5-cluster-ready';
 
 const createReadOnlyFixtureMapping = {
-  default: readOnlyCluster,
+  clusters: {
+    default: readOnlyCluster,
+  }
 };
 
 export default createReadOnlyFixtureMapping;

@@ -2,8 +2,10 @@ import storageCluster from './storage-cluster';
 import storageHosts from './storage-hosts';
 
 const createStorageFixtureMapping = {
-  default: storageCluster,
-  staticHosts: storageHosts,
+  clusters: {
+    default: storageCluster,
+  },
+  hosts: storageHosts,
 };
 
 export default createStorageFixtureMapping;

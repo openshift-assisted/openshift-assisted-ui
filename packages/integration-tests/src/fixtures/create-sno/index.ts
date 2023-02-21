@@ -11,11 +11,13 @@ const hostRenamedCluster = hostRenamedBuilder(hostDiscoveredCluster);
 const readyToInstallCluster = clusterReadyBuilder(hostRenamedCluster);
 
 const createSnoFixtureMapping = {
-  READY_TO_INSTALL: readyToInstallCluster,
-  HOST_RENAMED_1: hostRenamedCluster,
-  HOST_DISCOVERED_1: hostDiscoveredCluster,
-  ISO_DOWNLOADED: isoDownloadedCluster,
-  default: initialCluster,
+  clusters: {
+    READY_TO_INSTALL: readyToInstallCluster,
+    HOST_RENAMED_1: hostRenamedCluster,
+    HOST_DISCOVERED_1: hostDiscoveredCluster,
+    ISO_DOWNLOADED: isoDownloadedCluster,
+    default: initialCluster,
+  }
 };
 
 export default createSnoFixtureMapping;
