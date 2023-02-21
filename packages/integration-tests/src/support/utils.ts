@@ -6,6 +6,11 @@
 const signalOrder = [
   // For general cluster creation flow
   'CLUSTER_CREATED',
+  // Static IP configuration
+  'STATIC_IP_ENABLED',
+  'STATIC_IP_CONFIGURED',
+
+  // General cluster creation flow (continued)
   'ISO_DOWNLOADED',
   'HOST_DISCOVERED_1',
   'HOST_RENAMED_1',

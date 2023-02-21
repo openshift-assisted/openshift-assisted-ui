@@ -2,7 +2,7 @@ import { commonActions } from '../../views/common';
 import { clusterDetailsPage } from '../../views/clusterDetails';
 import * as utils from '../../support/utils';
 import { transformBasedOnUIVersion } from '../../support/transformations';
-
+import { dummyStaticNetworkConfig } from '../../fixtures/static-ip/static-network-config';
 
 describe(`Assisted Installer Static IP Cluster Creation`, () => {
   before(() => {
@@ -26,18 +26,19 @@ describe(`Assisted Installer Static IP Cluster Creation`, () => {
       clusterDetailsPage.getRedHatDnsServiceCheck().check();
       clusterDetailsPage.inputOpenshiftVersion();
       clusterDetailsPage.inputPullSecret();
-      clusterDetailsPage.getStaticIpNetworkConfig().click();
 
+      clusterDetailsPage.getStaticIpNetworkConfig().click();
       commonActions.getWizardStepNav('Static network configurations').should('exist');
-      // TODO assert request for infraEnv
 
       commonActions.getInfoAlert().should('not.exist');
       commonActions.waitForNext();
       commonActions.clickNextButton();
 
       cy.wait('@create-cluster');
-      cy.wait('@create-infra-env');
-      utils.setLastWizardSignal('CLUSTER_CREATED');
+      cy.wait('@create-infra-env').then(({ request }) => {
+        expect(request.body.static_network_config, 'Static IP request body').to.deep.equal(dummyStaticNetworkConfig);
+        utils.setLastWizardSignal('CLUSTER_CREATED');
+      });
 
       cy.get('h2').should('contain', 'Static network configurations');
     });
