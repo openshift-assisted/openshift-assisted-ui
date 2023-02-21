@@ -23,11 +23,12 @@ const clusterApiPath = `${allClustersApiPath}${fakeClusterId}`;
 
 const transformClusterFixture = (fixtureMapping) => {
   const { clusters: clusterFixtures, hosts: hostsFixtures  } = fixtureMapping;
-
   const baseCluster = clusterFixtures[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping.clusters['default'];
   baseCluster.platform.type = Cypress.env('AI_INTEGRATED_PLATFORM') || 'baremetal';
 
-  const hosts = hostsFixtures ? (hostsFixtures[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping.hosts['default']) : getUpdatedHosts();
+  const hosts = hostsFixtures
+    ? hostsFixtures[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping.hosts['default']
+    : getUpdatedHosts();
   return { ...baseCluster, hosts };
 };
 

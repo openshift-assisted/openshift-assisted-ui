@@ -11,30 +11,33 @@ const dnsText = '192.168.1.45';
 const ipv4Fields = {
   machineNetwork: '192.168.1.13',
   gateway: '192.168.1.32',
-}
+};
 
 const ipv6Fields = {
   machineNetwork: '2340::',
   gateway: '2340::f',
-}
+};
 
 const validateStaticIpRequest = (requestBody, ipVersion: NetworkSelection) => {
   const submitYaml = requestBody.static_network_config[0].network_yaml;
   let count = 0;
-  const includedValues = ipVersion === 'ipv4' ? [dnsText, ipv4Fields.gateway, ipv4Fields.machineNetwork] : [dnsText, ipv4Fields.gateway, ipv4Fields.machineNetwork, ipv6Fields.gateway, ipv6Fields.machineNetwork];
+  const includedValues =
+    ipVersion === 'ipv4'
+      ? [dnsText, ipv4Fields.gateway, ipv4Fields.machineNetwork]
+      : [dnsText, ipv4Fields.gateway, ipv4Fields.machineNetwork, ipv6Fields.gateway, ipv6Fields.machineNetwork];
   includedValues.forEach((includedValue) => {
     expect(submitYaml).to.contain(includedValue);
     count++;
   });
   expect(count).to.eq(includedValues.length);
-}
+};
 
 const fillStaticIpForm = (networkSelection: NetworkSelection, fields) => {
   const ipVersion = networkSelection === 'dual-stack' ? 'ipv6' : 'ipv4';
   staticIpPage.networkWideMachineNetwork(ipVersion).type(fields.machineNetwork);
   staticIpPage.networkWideMachineNetworkPrefix(ipVersion).type(machineNetworkPrefix);
   staticIpPage.networkWideMachineGateway(ipVersion).type(fields.gateway);
-}
+};
 
 describe(`Assisted Installer Static IP Network wide Configuration`, () => {
   before(() => {
@@ -63,10 +66,10 @@ describe(`Assisted Installer Static IP Network wide Configuration`, () => {
       commonActions.getDangerAlert().should('not.exist');
       commonActions.getNextButton().should('be.disabled'); // auto-save is triggered
 
-      cy.wait('@update-infra-env').then((({ request }) => {
+      cy.wait('@update-infra-env').then(({ request }) => {
         validateStaticIpRequest(request.body, 'ipv4');
         commonActions.getNextButton().should('be.enabled');
-      }));
+      });
     });
 
     it('Can configure dual stack Static IP', () => {
@@ -81,10 +84,10 @@ describe(`Assisted Installer Static IP Network wide Configuration`, () => {
       commonActions.getDangerAlert().should('not.exist');
       commonActions.getNextButton().should('be.disabled'); // auto-save is triggered
 
-      cy.wait('@update-infra-env').then((({ request }) => {
+      cy.wait('@update-infra-env').then(({ request }) => {
         validateStaticIpRequest(request.body, 'dual-stack');
         commonActions.getNextButton().should('be.enabled');
-      }));
+      });
 
       commonActions.getNextButton().click();
 
@@ -93,4 +96,3 @@ describe(`Assisted Installer Static IP Network wide Configuration`, () => {
     });
   });
 });
-

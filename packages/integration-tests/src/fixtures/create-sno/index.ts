@@ -17,7 +17,7 @@ const createSnoFixtureMapping = {
     HOST_DISCOVERED_1: hostDiscoveredCluster,
     ISO_DOWNLOADED: isoDownloadedCluster,
     default: initialCluster,
-  }
+  },
 };
 
 export default createSnoFixtureMapping;

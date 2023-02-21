@@ -23,5 +23,4 @@ export const staticIpPage = {
   dualStackNetworking: () => {
     return cy.get('#form-radio-protocolType-dualStack-field');
   },
-
 };

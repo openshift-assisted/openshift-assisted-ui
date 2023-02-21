@@ -20,7 +20,7 @@ const createMultinodeFixtureMapping = {
     HOST_RENAMED_3: hostRenamedCluster(),
     READY_TO_INSTALL: readyToInstallCluster,
     default: multinodeCluster,
-  }
+  },
 };
 
 export default createMultinodeFixtureMapping;

@@ -41,27 +41,24 @@ const getBaseCluster = ({ name }) => ({
   high_availability_mode: 'Full',
 });
 
-
-const getBaseInfraEnv = () => (
-  {
-    id: fakeClusterInfraEnvId,
-    'name': 'static-ip_infra-env',
-    'cluster_id': fakeClusterId,
-    'cpu_architecture': 'x86_64',
-    'static_network_config': JSON.stringify(dummyStaticNetworkConfig),
-    'href': `/api/assisted-install/v2/infra-envs/${fakeClusterInfraEnvId}`,
-    'download_url': `http://locahost:5000/images/${fakeClusterInfraEnvId}?arch=x86_64&type=full-iso&version=4.9`,
-    'created_at': '2022-04-19T10:18:35.159254Z',
-    'email_domain': 'Unknown',
-    'expires_at': '0001-01-01T00:00:00.000Z',
-    'kind': 'InfraEnv',
-    'openshift_version': '4.9',
-    'proxy': {},
-    'pull_secret_set': true,
-    'type': 'full-iso',
-    'updated_at': '2022-04-19T10:18:35.163383Z',
-    'user_name': 'admin',
-  }
-);
+const getBaseInfraEnv = () => ({
+  id: fakeClusterInfraEnvId,
+  name: 'static-ip_infra-env',
+  cluster_id: fakeClusterId,
+  cpu_architecture: 'x86_64',
+  static_network_config: JSON.stringify(dummyStaticNetworkConfig),
+  href: `/api/assisted-install/v2/infra-envs/${fakeClusterInfraEnvId}`,
+  download_url: `http://locahost:5000/images/${fakeClusterInfraEnvId}?arch=x86_64&type=full-iso&version=4.9`,
+  created_at: '2022-04-19T10:18:35.159254Z',
+  email_domain: 'Unknown',
+  expires_at: '0001-01-01T00:00:00.000Z',
+  kind: 'InfraEnv',
+  openshift_version: '4.9',
+  proxy: {},
+  pull_secret_set: true,
+  type: 'full-iso',
+  updated_at: '2022-04-19T10:18:35.163383Z',
+  user_name: 'admin',
+});
 
 export { getBaseCluster, getBaseInfraEnv };

@@ -11,7 +11,7 @@ const createDualStackFixtureMapping = {
     NETWORKING_DUAL_STACK_SELECT_SINGLE_STACK: dualstackClusterBase,
     NETWORKING_DUAL_STACK_SELECT_DUAL_STACK: dualStackSelectedCluster,
     READY_TO_INSTALL: readyToInstallCluster,
-  }
+  },
 };
 
 export default createDualStackFixtureMapping;
