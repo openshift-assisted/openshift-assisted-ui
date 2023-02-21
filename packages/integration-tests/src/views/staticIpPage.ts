@@ -12,7 +12,7 @@ export const staticIpPage = {
     return cy.get(`#form-input-ipConfigs-${ipVersion}-machineNetwork-prefixLength-field`);
   },
   networkWideMachineGateway: (ipVersion) => {
-    return cy.get(`#form-input-ipConfigs-${ipVersion}-machineNetwork-gateway-field`);
+    return cy.get(`#form-input-ipConfigs-${ipVersion}-gateway-field`);
   },
   hostSpecificMacAddress: (hostIdx: number) => {
     return cy.get(`[data-testid="mac-address-${hostIdx}"]`);
