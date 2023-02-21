@@ -36,6 +36,15 @@ describe('Assisted Installer UI behaviour - cluster creation', () => {
       });
     });
 
+    it('Should show when a version is beta', () => {
+      commonActions.visitNewClusterPage();
+      clusterDetailsPage.inputOpenshiftVersion('4.12');
+      cy.get('.pf-c-helper-text').contains('production-ready').should('exist');
+
+      clusterDetailsPage.inputOpenshiftVersion('4.11');
+      cy.get('.pf-c-helper-text').contains('production-ready').should('not.exist');
+    });
+
     it('Should activate ARM architecture only for the versions that support it', () => {
       commonActions.visitNewClusterPage();
 
