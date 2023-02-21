@@ -8,10 +8,6 @@ const featureUsage = {
     id: 'OVN_NETWORK_TYPE',
     name: 'OVN network type',
   },
-  SNO: {
-    id: 'SNO',
-    name: 'SNO',
-  },
 };
 
 const getBaseCluster = ({ name }) => ({
@@ -42,6 +38,7 @@ const getBaseCluster = ({ name }) => ({
   feature_usage: JSON.stringify(featureUsage),
   validations_info: JSON.stringify(clusterValidationsInfo),
   ...baseCluster(name),
+  high_availability_mode: 'Full',
 });
 
 
@@ -66,6 +63,5 @@ const getBaseInfraEnv = () => (
     'user_name': 'admin',
   }
 );
-
 
 export { getBaseCluster, getBaseInfraEnv };
