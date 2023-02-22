@@ -22,6 +22,7 @@ const clusterApiPath = `${allClustersApiPath}${fakeClusterId}`;
 
 const transformClusterFixture = (req, fixtureMapping) => {
   const baseCluster = fixtureMapping[Cypress.env('AI_LAST_SIGNAL')] || fixtureMapping['default'];
+  baseCluster.platform.type = Cypress.env('AI_INTEGRATED_PLATFORM') || 'baremetal';
 
   const hosts = fixtureMapping.staticHosts || getUpdatedHosts();
   return { ...baseCluster, hosts };
@@ -58,6 +59,11 @@ const mockClusterResponse = (req) => {
   } else {
     throw new Error('Incorrect fixture mapping for scenario ' + ((Cypress.env('AI_SCENARIO') as string) || ''));
   }
+};
+
+const mockSupportedPlatformsResponse = (req) => {
+  const platforms = Cypress.env('AI_SUPPORTED_PLATFORMS') || ['none'];
+  req.reply(platforms);
 };
 
 const setScenarioEnvVars = ({ activeScenario }) => {
@@ -143,7 +149,9 @@ const addHostIntercepts = () => {
 };
 
 const addPlatformFeatureIntercepts = () => {
-  cy.intercept('GET', `${clusterApiPath}/supported-platforms`, ['none']);
+  cy.intercept('GET', `${clusterApiPath}/supported-platforms`, mockSupportedPlatformsResponse).as(
+    'supported-platforms',
+  );
 
   cy.intercept('GET', '/api/assisted-install/v2/openshift-versions', openShiftVersions);
 

@@ -20,7 +20,7 @@
   "trashAssetsBeforeRuns": false,
   "ignoreTestFiles": [],
   "env": {
-    "OPENSHIFT_VERSION": "4.9.29",
+    "OPENSHIFT_VERSION": "4.12.0-ec.3",
     "DNS_DOMAIN_NAME": "redhat.com",
     "CLUSTER_NAME": "ai-e2e-sno",
     "HOST_RENAME": "e2e-control-host",

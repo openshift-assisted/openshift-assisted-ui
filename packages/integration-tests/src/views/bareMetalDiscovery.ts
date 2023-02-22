@@ -24,17 +24,13 @@ export const bareMetalDiscoveryPage = {
   getLvmOperator: () => {
     return cy.get(Cypress.env('useOdfLogicalVolumeManagerField'));
   },
-  getIntegrationWithvSphere: () => {
-    return cy.get('#form-input-usePlatformIntegration-field');
-  },
-  getIntegrationWithvSphereToggle: () => {
-    return cy.contains('.pf-c-switch', Cypress.env('integrateWithVsphere')).find('.pf-c-switch__toggle');
-  },
-  toggleIntegrateWithvSphere: () => {
-    bareMetalDiscoveryPage.getIntegrationWithvSphereToggle().click();
-  },
-  validateToggleIntegrateWithvSphereIsBlue: () => {
-    bareMetalDiscoveryPage.getIntegrationWithvSphereToggle().should('have.css', 'background-color', 'rgb(0, 102, 204)');
+  platformIntegration: {
+    getFullPotentialHint: () => {
+      return cy.get('[data-testid="discover-platform-integration-hosts"]');
+    },
+    getToggleSwitch: () => {
+      return cy.get('#form-input-usePlatformIntegration-field');
+    },
   },
   waitForHostTablePopulation: (
     numMasters: number = Cypress.env('NUM_MASTERS'),
