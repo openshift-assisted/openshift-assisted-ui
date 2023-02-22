@@ -10,15 +10,17 @@ const hostRenamedCluster = () => hostRenamedBuilder(hostDiscoveredCluster());
 const readyToInstallCluster = clusterReadyBuilder(hostRenamedCluster());
 
 const createMultinodeFixtureMapping = {
-  ISO_DOWNLOADED: isoDownloadedCluster,
-  HOST_DISCOVERED_1: hostDiscoveredCluster(),
-  HOST_DISCOVERED_2: hostDiscoveredCluster(),
-  HOST_DISCOVERED_3: hostDiscoveredCluster(),
-  HOST_RENAMED_1: hostRenamedCluster(),
-  HOST_RENAMED_2: hostRenamedCluster(),
-  HOST_RENAMED_3: hostRenamedCluster(),
-  READY_TO_INSTALL: readyToInstallCluster,
-  default: multinodeCluster,
+  clusters: {
+    ISO_DOWNLOADED: isoDownloadedCluster,
+    HOST_DISCOVERED_1: hostDiscoveredCluster(),
+    HOST_DISCOVERED_2: hostDiscoveredCluster(),
+    HOST_DISCOVERED_3: hostDiscoveredCluster(),
+    HOST_RENAMED_1: hostRenamedCluster(),
+    HOST_RENAMED_2: hostRenamedCluster(),
+    HOST_RENAMED_3: hostRenamedCluster(),
+    READY_TO_INSTALL: readyToInstallCluster,
+    default: multinodeCluster,
+  },
 };
 
 export default createMultinodeFixtureMapping;

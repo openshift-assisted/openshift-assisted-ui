@@ -6,10 +6,12 @@ const dualStackSelectedCluster = withDualStackNetworks(dualstackClusterBase);
 const readyToInstallCluster = clusterReadyBuilder(dualStackSelectedCluster);
 
 const createDualStackFixtureMapping = {
-  NETWORKING_DUAL_STACK_DISCOVERED: dualstackClusterBase,
-  NETWORKING_DUAL_STACK_SELECT_SINGLE_STACK: dualstackClusterBase,
-  NETWORKING_DUAL_STACK_SELECT_DUAL_STACK: dualStackSelectedCluster,
-  READY_TO_INSTALL: readyToInstallCluster,
+  clusters: {
+    NETWORKING_DUAL_STACK_DISCOVERED: dualstackClusterBase,
+    NETWORKING_DUAL_STACK_SELECT_SINGLE_STACK: dualstackClusterBase,
+    NETWORKING_DUAL_STACK_SELECT_DUAL_STACK: dualStackSelectedCluster,
+    READY_TO_INSTALL: readyToInstallCluster,
+  },
 };
 
-export { createDualStackFixtureMapping };
+export default createDualStackFixtureMapping;

@@ -15,17 +15,14 @@ export const clusterDetailsPage = {
     return clusterDetailsPage.getOpenshiftVersionField().find('.pf-c-dropdown__menu');
   },
   getSelectedOpenShiftVersion: () => {
-    return clusterDetailsPage.getOpenshiftVersionField().find('.pf-c-dropdown__toggle-text')
+    return clusterDetailsPage.getOpenshiftVersionField().find('.pf-c-dropdown__toggle-text');
   },
   inputOpenshiftVersion: (version = Cypress.env('OPENSHIFT_VERSION')) => {
     clusterDetailsPage.openOpenshiftVersionDropdown();
     clusterDetailsPage.getOpenshiftVersionDropdown().within(() => {
       cy.get('li').contains(version).click();
     });
-    clusterDetailsPage.getSelectedOpenShiftVersion().should(
-      'contain',
-      `OpenShift ${version}`,
-    );
+    clusterDetailsPage.getSelectedOpenShiftVersion().should('contain', `OpenShift ${version}`);
   },
   getPullSecret: () => {
     return cy.get(Cypress.env('pullSecretFieldId'));
@@ -62,15 +59,15 @@ export const clusterDetailsPage = {
     clusterDetailsPage.getSno().should('be.visible').check();
     clusterDetailsPage.getSno().should('be.checked');
   },
+  getStaticIpNetworkConfig: () => {
+    return cy.get(Cypress.env('staticIpNetworkConfigFieldId'));
+  },
   openCpuArchitectureDropdown: () => {
     cy.get(`${Cypress.env('cpuArchitectureFieldId')} > button.pf-c-dropdown__toggle`).click();
   },
   selectCpuArchitecture: (cpuArchitecture) => {
     cy.get(`ul.pf-c-dropdown__menu li[id=${cpuArchitecture}] a`).click();
-    cy.get(`${Cypress.env('cpuArchitectureFieldId')} .pf-c-dropdown__toggle-text`).should(
-      'contain',
-      cpuArchitecture,
-    );
+    cy.get(`${Cypress.env('cpuArchitectureFieldId')} .pf-c-dropdown__toggle-text`).should('contain', cpuArchitecture);
   },
   checkDisabledCpuArchitectureStatus: (cpuArchitecture, isDisabled) => {
     cy.get(`ul.pf-c-dropdown__menu li[id=${cpuArchitecture}] a`)
