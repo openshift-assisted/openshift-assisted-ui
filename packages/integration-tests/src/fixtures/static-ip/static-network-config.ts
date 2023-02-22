@@ -1,3 +1,5 @@
+import { dualStackHostConfigs } from './static-host-specific-config';
+
 const dummyStaticNetworkConfig = [
   {
     network_yaml:
@@ -14,4 +16,6 @@ const networkWideConfigured = [
   },
 ];
 
-export { dummyStaticNetworkConfig, networkWideConfigured };
+const dualStackSpecificHostsConfigured = dualStackHostConfigs;
+
+export { dummyStaticNetworkConfig, networkWideConfigured, dualStackSpecificHostsConfigured };

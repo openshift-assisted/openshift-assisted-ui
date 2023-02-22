@@ -1,6 +1,6 @@
 import { commonActions } from '../../views/common';
-import { transformBasedOnUIVersion } from '../../support/transformations';
 import { staticIpPage } from '../../views/staticIpPage';
+import { transformBasedOnUIVersion } from '../../support/transformations';
 
 type NetworkSelection = 'ipv4' | 'dual-stack';
 const ACTIVE_NAV_ITEM_CLASS = 'pf-m-current';
@@ -51,11 +51,11 @@ describe(`Assisted Installer Static IP Network wide Configuration`, () => {
   beforeEach(() => {
     cy.loadAiAPIIntercepts(null);
     commonActions.visitClusterDetailsPage();
+    commonActions.getWizardStepNav('Static network configurations').click();
   });
 
-  describe('Configuring Static IP - Form view', () => {
+  describe('Configuring Static IP in Form view', () => {
     it('Can configure single stack static IP', () => {
-      commonActions.getWizardStepNav('Static network configurations').click();
       commonActions.getWizardStepNav('Network-wide configurations').should('have.class', ACTIVE_NAV_ITEM_CLASS);
       commonActions.getWizardStepNav('Host specific configurations').should('not.have.class', ACTIVE_NAV_ITEM_CLASS);
 
@@ -73,7 +73,6 @@ describe(`Assisted Installer Static IP Network wide Configuration`, () => {
     });
 
     it('Can configure dual stack Static IP', () => {
-      commonActions.getWizardStepNav('Static network configurations').click();
       staticIpPage.dualStackNetworking().click();
 
       commonActions.getNextButton().should('be.disabled');
@@ -93,6 +92,26 @@ describe(`Assisted Installer Static IP Network wide Configuration`, () => {
 
       commonActions.getWizardStepNav('Network-wide configurations').should('not.have.class', ACTIVE_NAV_ITEM_CLASS);
       commonActions.getWizardStepNav('Host specific configurations').should('have.class', ACTIVE_NAV_ITEM_CLASS);
+    });
+  });
+
+  describe('Reading existing configuration in Form view', () => {
+    before(() => {
+      cy.loadAiAPIIntercepts({
+        activeSignal: 'STATIC_IP_NETWORK_WIDE_CONFIGURED',
+        activeScenario: 'AI_CREATE_STATIC_IP',
+      });
+    });
+
+    it('Can show the existing static IP configuration', () => {
+      staticIpPage.dualStackNetworking().should('not.be.checked');
+      staticIpPage.useVlan().should('not.be.checked');
+      staticIpPage.vlanField().should('not.exist');
+      staticIpPage.networkWideDns().should('have.value', '192.168.1.22');
+
+      staticIpPage.networkWideMachineNetwork('ipv4').should('have.value', '192.168.1.222');
+      staticIpPage.networkWideMachineNetworkPrefix('ipv4').should('have.value', '11');
+      staticIpPage.networkWideMachineGateway('ipv4').should('have.value', '192.168.1.224');
     });
   });
 });
