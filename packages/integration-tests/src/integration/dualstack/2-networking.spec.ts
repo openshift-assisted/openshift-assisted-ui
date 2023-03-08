@@ -37,8 +37,8 @@ describe(`Assisted Installer Dualstack Networking`, () => {
       networkingPage.getStackTypeDualStack().should('be.enabled').and('be.checked');
       networkingPage.getClusterManagedNetworking().should('be.disabled').and('be.checked');
       networkingPage.getVipDhcp().should('be.disabled').and('not.be.checked');
-      networkingPage.getOvnNetworkingField().should('be.enabled').and('be.checked');
-      networkingPage.getSdnNetworkingField().should('be.disabled');
+      networkingPage.getOvnNetworkingField().should('not.be.enabled').and('be.checked');
+      networkingPage.getSdnNetworkingField().should('not.be.enabled').and('not.be.checked');
       networkingPage.waitForNetworkStatusToNotContain('Some validations failed');
     });
   });

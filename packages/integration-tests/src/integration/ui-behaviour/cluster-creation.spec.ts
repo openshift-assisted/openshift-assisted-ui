@@ -31,7 +31,7 @@ describe('Assisted Installer UI behaviour - cluster creation', () => {
       clusterDetailsPage.openOpenshiftVersionDropdown();
 
       const expectedVersionIds = versionsFixtures.getExpectedVersionIds();
-      clusterDetailsPage.getOpenshiftVersionDropdown().find('li').each((versionItem, index) => {
+      clusterDetailsPage.getOpenshiftVersionDropdown().find('[role="menuitem"]').each((versionItem, index) => {
         expect(versionItem).to.have.id(expectedVersionIds[index]);
       });
     });
